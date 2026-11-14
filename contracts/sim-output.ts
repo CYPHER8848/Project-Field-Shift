@@ -1,13 +1,35 @@
-export interface ScenarioInput {
-  id: string; label: string; cropSequence: string[];
-  irrigationStrategy: 'rainfed' | 'supplemental' | 'irrigated';
+/**
+ * Frozen Phase 0 contract — transparent simulation output.
+ * The model is a rule-based decision aid, not a yield forecast.
+ */
+export type StrategyId = "existing_rotation" | "resilience_rotation" | "income_rotation";
+
+export interface MeterValues {
+  soilMoisture: number;
+  organicMatter: number;
+  nitrogen: number;
+  erosionRisk: number;
+  income: number;
+  waterUse: number;
 }
-export interface ScenarioYear {
-  year: number; waterStressIndex: number; heatStressDays: number;
-  soilCoverScore: number; relativeIncomeIndex: number;
+
+export interface SimulationYear {
+  year: number;
+  meters: MeterValues;
 }
-export interface ScenarioResult {
-  scenario: ScenarioInput; years: ScenarioYear[];
-  uncertainty: { low: number; central: number; high: number };
-  limitations: string[]; isForecast: false;
+
+export interface PercentileBand {
+  p10: number;
+  p50: number;
+  p90: number;
+}
+
+export interface SimulationOutput {
+  strategy: StrategyId;
+  years: SimulationYear[];
+  meters: MeterValues;
+  p10: PercentileBand;
+  p50: PercentileBand;
+  p90: PercentileBand;
+  limitations: string[];
 }
