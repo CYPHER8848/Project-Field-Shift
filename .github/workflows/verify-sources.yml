@@ -1,0 +1,34 @@
+name: Verify Data Sources
+
+on:
+  push:
+    branches: [main, phase-0/*]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_live_tests:
+        description: "Run live network verification suite against external endpoints"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  validate-evidence:
+    name: Validate Verification Evidence & Schema
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate evidence JSON and schema (safe / offline)
+        run: python scripts/verify_data_sources.py --check-evidence docs/evidence/verification_results.json
+
+      - name: Run live verification suite (optional manual trigger)
+        if: ${{ inputs.run_live_tests == true }}
+        run: python scripts/verify_data_sources.py --output docs/evidence/verification_results.json
