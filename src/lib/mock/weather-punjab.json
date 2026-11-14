@@ -1,0 +1,10 @@
+{
+  "source": "MOCK",
+  "location": { "id": "punjab-demo", "name": "Punjab demonstration point", "latitude": 30.9, "longitude": 75.85 },
+  "units": { "temperature": "°C", "precipitation": "mm/day", "radiation": "MJ/m²/day", "wetness": "fraction" },
+  "daily": [
+    { "date": "2025-06-01", "t2mMeanC": 31.2, "t2mMaxC": 39.1, "t2mMinC": 24.4, "precipitationMm": 0.0, "surfaceShortwaveRadiationMjM2": 24.1, "rootZoneWetnessFraction": 0.31, "topLayerWetnessFraction": 0.18 },
+    { "date": "2025-06-02", "t2mMeanC": 32.0, "t2mMaxC": 40.0, "t2mMinC": 25.1, "precipitationMm": 1.2, "surfaceShortwaveRadiationMjM2": 22.8, "rootZoneWetnessFraction": 0.32, "topLayerWetnessFraction": 0.20 }
+  ],
+  "retrievedAt": "synthetic-example"
+}
