@@ -1,7 +1,24 @@
-export type CropCategory = 'cereal' | 'pulse' | 'oilseed' | 'cover';
-export interface CropProfile {
-  id: string; name: string; category: CropCategory; growingDays: number; waterDemandMm: number;
-  heatSensitivity: 'low' | 'medium' | 'high'; soilCover: 'low' | 'medium' | 'high';
-  nitrogenFixing: boolean; notes: string;
+/**
+ * Frozen Phase 0 contract — curated crop trait table.
+ * Traits are decision-model inputs, not universal agronomic constants.
+ * Values and sources are populated by the data/science lead in Phase 1.
+ */
+export type CropSeason = "kharif" | "rabi" | "zaid" | "spring" | "summer" | "autumn" | "winter" | "year_round";
+
+export interface CropTraits {
+  id: string;
+  name: string;
+  waterUse: number;
+  nitrogenFixation: boolean;
+  rootingDepth: number;
+  coverValue: number;
+  season: CropSeason[];
+  waterUseUnit: "mm_per_growing_season";
+  rootingDepthUnit: "cm";
+  coverValueScale: "0_to_1";
+  sources: string[];
+  notes?: string;
 }
-export interface CropCatalog { regionId: string; source: 'curated' | 'mock'; crops: CropProfile[]; }
+
+/** Shared crop catalogue; region suitability is handled by the region/crop mapping. */
+export type CropCatalog = CropTraits[];
