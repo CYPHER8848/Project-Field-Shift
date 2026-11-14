@@ -1,11 +1,13 @@
 {
-  "scenario": { "id": "resilience-demo", "label": "Build resilience", "cropSequence": ["wheat", "chickpea", "cover-mix"], "irrigationStrategy": "supplemental" },
+  "strategy": "resilience_rotation",
   "years": [
-    { "year": 2026, "waterStressIndex": 0.42, "heatStressDays": 8, "soilCoverScore": 0.61, "relativeIncomeIndex": 1.0 },
-    { "year": 2030, "waterStressIndex": 0.38, "heatStressDays": 10, "soilCoverScore": 0.68, "relativeIncomeIndex": 0.97 },
-    { "year": 2040, "waterStressIndex": 0.45, "heatStressDays": 14, "soilCoverScore": 0.72, "relativeIncomeIndex": 0.94 }
+    { "year": 2026, "meters": { "soilMoisture": 0.42, "organicMatter": 1.8, "nitrogen": 38, "erosionRisk": 0.24, "income": 100, "waterUse": 420 } },
+    { "year": 2030, "meters": { "soilMoisture": 0.46, "organicMatter": 1.9, "nitrogen": 40, "erosionRisk": 0.21, "income": 98, "waterUse": 395 } },
+    { "year": 2040, "meters": { "soilMoisture": 0.44, "organicMatter": 2.0, "nitrogen": 42, "erosionRisk": 0.19, "income": 96, "waterUse": 405 } }
   ],
-  "uncertainty": { "low": 0.75, "central": 0.94, "high": 1.08 },
-  "limitations": ["Entirely synthetic demonstration values", "Not calibrated to a real farm", "Not a yield forecast or agronomic recommendation"],
-  "isForecast": false
+  "meters": { "soilMoisture": 0.44, "organicMatter": 2.0, "nitrogen": 42, "erosionRisk": 0.19, "income": 96, "waterUse": 405 },
+  "p10": { "soilMoisture": 0.38, "organicMatter": 1.7, "nitrogen": 35, "erosionRisk": 0.28, "income": 88, "waterUse": 440 },
+  "p50": { "soilMoisture": 0.44, "organicMatter": 2.0, "nitrogen": 42, "erosionRisk": 0.19, "income": 96, "waterUse": 405 },
+  "p90": { "soilMoisture": 0.51, "organicMatter": 2.2, "nitrogen": 48, "erosionRisk": 0.14, "income": 105, "waterUse": 370 },
+  "limitations": ["Entirely synthetic contract example; not observed farm data.", "Not calibrated to a real farm.", "Not a yield forecast or agronomic recommendation."]
 }
