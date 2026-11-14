@@ -21,11 +21,8 @@ Status reviewed: 14 November 2026.
 ## Still open before the Phase 0 gate
 - Finalise the four exact demo coordinates, especially the Sahel/Kenya representative site.
 - Run and record live POWER and Open Topo Data sample requests; validate GIBS layer IDs and tile retrieval.
-- Review the three contracts against the Master Plan's frozen shapes:
-  - Weather: weekly `{year, week, tmax, tmin, rain, soilWet, evap, solar}`.
-  - Crops: approximately 12 curated traits including water use, nitrogen fixation, rooting depth, cover value and season.
-  - Simulation output: `{strategy, years[], meters{}, p10/p50/p90}`.
-- Obtain whole-team agreement before freezing or changing contract schemas.
+- **Contracts frozen with whole-team agreement.** Weather uses weekly `{year, week, tmax, tmin, rain, soilWet, evap, solar}` records; crop traits include water use, nitrogen fixation, rooting depth, cover value and season; simulation output uses `{strategy, years[], meters{}, p10/p50/p90}`. Synthetic mock files have been reshaped to these interfaces.
+- Phase 1 data lead still needs to populate the crop catalogue (about 12 cited crops) and replace synthetic weather values with fetched weekly regional data.
 - Owner to configure branch protection/rules for `main`.
 - Create the shared team task board and add members.
 - Confirm the deployed URL opens in a normal browser session.
