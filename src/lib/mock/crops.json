@@ -1,10 +1,5 @@
-{
-  "regionId": "punjab-demo",
-  "source": "mock",
-  "crops": [
-    { "id": "wheat", "name": "Wheat", "category": "cereal", "growingDays": 145, "waterDemandMm": 450, "heatSensitivity": "high", "soilCover": "medium", "nitrogenFixing": false, "notes": "Illustrative crop profile; validate locally before use." },
-    { "id": "chickpea", "name": "Chickpea", "category": "pulse", "growingDays": 110, "waterDemandMm": 300, "heatSensitivity": "medium", "soilCover": "medium", "nitrogenFixing": true, "notes": "Illustrative crop profile; validate locally before use." },
-    { "id": "mustard", "name": "Mustard", "category": "oilseed", "growingDays": 120, "waterDemandMm": 350, "heatSensitivity": "medium", "soilCover": "medium", "nitrogenFixing": false, "notes": "Illustrative crop profile; validate locally before use." },
-    { "id": "cover-mix", "name": "Cover crop mix", "category": "cover", "growingDays": 60, "waterDemandMm": 180, "heatSensitivity": "medium", "soilCover": "high", "nitrogenFixing": true, "notes": "Generic placeholder, not a locally selected species mix." }
-  ]
-}
+[
+  { "id": "wheat", "name": "Wheat", "waterUse": 450, "nitrogenFixation": false, "rootingDepth": 120, "coverValue": 0.55, "season": ["rabi"], "waterUseUnit": "mm_per_growing_season", "rootingDepthUnit": "cm", "coverValueScale": "0_to_1", "sources": [], "notes": "Synthetic example values; replace with cited regional crop-trait sources." },
+  { "id": "rice", "name": "Rice", "waterUse": 1200, "nitrogenFixation": false, "rootingDepth": 60, "coverValue": 0.65, "season": ["kharif"], "waterUseUnit": "mm_per_growing_season", "rootingDepthUnit": "cm", "coverValueScale": "0_to_1", "sources": [], "notes": "Synthetic example values; replace with cited regional crop-trait sources." },
+  { "id": "chickpea", "name": "Chickpea", "waterUse": 300, "nitrogenFixation": true, "rootingDepth": 100, "coverValue": 0.50, "season": ["rabi"], "waterUseUnit": "mm_per_growing_season", "rootingDepthUnit": "cm", "coverValueScale": "0_to_1", "sources": [], "notes": "Synthetic example values; replace with cited regional crop-trait sources." }
+]
