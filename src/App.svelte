@@ -7,6 +7,7 @@
   import RegionSelectScreen from './components/region/RegionSelectScreen.svelte';
   import GbaGame from './components/gba/GbaGame.svelte';
   import PunjabStoryView from './components/story/PunjabStoryView.svelte';
+  import KarnatakaStoryView from './components/story/KarnatakaStoryView.svelte';
   import CompareScreen from './components/compare/CompareScreen.svelte';
   import NasaDataView from './components/nasa/NasaDataView.svelte';
   import JournalView from './components/journal/JournalView.svelte';
@@ -19,6 +20,7 @@
     | 'GBA_GAME' 
     | 'REGION_SELECT' 
     | 'PUNJAB_STORY' 
+    | 'KARNATAKA_STORY'
     | 'STRATEGY_COMPARE' 
     | 'JOURNAL' 
     | 'NASA_DATA' 
@@ -58,11 +60,15 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Region Selection Handler (Punjab active)
+  // Region Selection Handler (Punjab & Karnataka active)
   function handleSelectRegion(region: RegionInfo) {
     selectedRegion = region;
     meters = { ...region.initialMeters };
-    setView('PUNJAB_STORY');
+    if (region.id === 'karnataka') {
+      setView('KARNATAKA_STORY');
+    } else {
+      setView('PUNJAB_STORY');
+    }
   }
 
   // Season Progression in GBA Overworld
@@ -95,7 +101,7 @@
     meters.income = Math.max(20, Math.round(meters.income * (1 + strat.metrics.incomeReturn / 100)));
     meters.organicMatter = Math.min(100, Math.max(15, meters.organicMatter + strat.metrics.soilCarbonDelta * 0.5));
     meters.erosionRisk = Math.max(10, Math.min(90, meters.erosionRisk - 15));
-    setView('PUNJAB_STORY');
+    setView(selectedRegion.id === 'karnataka' ? 'KARNATAKA_STORY' : 'PUNJAB_STORY');
   }
 </script>
 
@@ -167,7 +173,7 @@
           onOpenCompare={() => setView('STRATEGY_COMPARE')}
           onOpenNasa={() => setView('NASA_DATA')}
           onOpenRegionSelect={() => setView('REGION_SELECT')}
-          onOpenStory={() => setView('PUNJAB_STORY')}
+          onOpenStory={() => setView(selectedRegion.id === 'karnataka' ? 'KARNATAKA_STORY' : 'PUNJAB_STORY')}
           onReturnToStart={() => setView('START')}
           onOpenStyleguide={() => setView('STYLEGUIDE')}
           onAdvanceSeason={advanceSeason}
@@ -180,8 +186,17 @@
         onBack={() => setView('PLAYMODE')}
       />
     {:else if currentView === 'PUNJAB_STORY'}
-      <!-- Screen 5: Punjab Story and AI-powered Farming Experience (DOCX Verbatim) -->
+      <!-- Screen 5A: Punjab Story and AI-powered Farming Experience (DOCX Verbatim) -->
       <PunjabStoryView 
+        onBackToRegions={() => setView('REGION_SELECT')}
+        onOpenOverworld={() => setView('GBA_GAME')}
+        onOpenJournal={() => setView('JOURNAL')}
+        onOpenStrategies={() => setView('STRATEGY_COMPARE')}
+        onOpenNasa={() => setView('NASA_DATA')}
+      />
+    {:else if currentView === 'KARNATAKA_STORY'}
+      <!-- Screen 5B: Karnataka Generational Story & Dryland Agroecology Minigames -->
+      <KarnatakaStoryView 
         onBackToRegions={() => setView('REGION_SELECT')}
         onOpenOverworld={() => setView('GBA_GAME')}
         onOpenJournal={() => setView('JOURNAL')}
@@ -193,17 +208,17 @@
       <CompareScreen 
         regionId={selectedRegion.id}
         onSelectStrategy={handleSelectStrategy}
-        onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : 'PUNJAB_STORY')}
+        onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : (selectedRegion.id === 'karnataka' ? 'KARNATAKA_STORY' : 'PUNJAB_STORY'))}
       />
     {:else if currentView === 'JOURNAL'}
       <!-- Field Journal View -->
-      <JournalView onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : 'PUNJAB_STORY')} />
+      <JournalView onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : (selectedRegion.id === 'karnataka' ? 'KARNATAKA_STORY' : 'PUNJAB_STORY'))} />
     {:else if currentView === 'NASA_DATA'}
       <!-- NASA Earth Science Logbook & Limitations -->
-      <NasaDataView onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : 'PUNJAB_STORY')} />
+      <NasaDataView onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : (selectedRegion.id === 'karnataka' ? 'KARNATAKA_STORY' : 'PUNJAB_STORY'))} />
     {:else if currentView === 'STYLEGUIDE'}
       <!-- Design Styleguide -->
-      <StyleguideView onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : 'PUNJAB_STORY')} />
+      <StyleguideView onBack={() => setView(previousView === 'GBA_GAME' ? 'GBA_GAME' : (selectedRegion.id === 'karnataka' ? 'KARNATAKA_STORY' : 'PUNJAB_STORY'))} />
     {/if}
   </main>
 </div>
