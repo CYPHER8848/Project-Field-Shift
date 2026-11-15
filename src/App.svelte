@@ -262,22 +262,22 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #0E140E;
-    color: #FFFFFF;
+    background-color: #121A14;
+    color: #FAF7F0;
   }
 
   .app-header {
-    background-color: #080D08;
-    border-bottom: 3px solid #00FF66;
-    padding: 8px 16px;
+    background: linear-gradient(180deg, #1A2D20 0%, #122017 100%);
+    border-bottom: 3px solid var(--journal-gold, #E5A93C);
+    padding: 10px 18px;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 255, 102, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   }
 
   .header-inner {
-    max-width: 1320px;
+    max-width: 1360px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -289,126 +289,167 @@
   .brand-link {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     text-align: left;
-    color: #00FF66;
   }
 
   .seed-symbol {
-    font-size: 1.1rem;
-    color: #FFB703;
+    font-size: 1.3rem;
+    color: var(--journal-gold, #E5A93C);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
   }
 
   .brand-title {
-    font-size: 0.95rem;
-    color: #00FF66;
-    letter-spacing: 1px;
+    font-family: var(--font-display, Georgia, serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #FAF7F0;
+    letter-spacing: 0.04em;
     line-height: 1;
   }
 
   .brand-sub {
+    font-family: var(--font-data, monospace);
     font-size: 0.65rem;
-    color: #FFB703;
-    padding: 2px 6px;
-    background-color: #1A261A;
-    border: 1px solid #FFB703;
-    border-radius: 2px;
+    color: var(--journal-gold, #E5A93C);
+    padding: 3px 7px;
+    background-color: rgba(229, 169, 60, 0.12);
+    border: 1px solid var(--journal-gold, #E5A93C);
+    border-radius: 4px;
     letter-spacing: 0.5px;
+    font-weight: 600;
   }
 
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
   .nav-tab {
-    font-family: var(--font-pixel);
-    font-size: 0.65rem;
-    color: #A0C8AA;
-    background-color: #141F14;
-    border: 2px solid #2E5A35;
-    padding: 6px 9px;
+    font-family: var(--font-pixel, monospace);
+    font-size: 0.64rem;
+    color: #CCE2D0;
+    background-color: #1D3323;
+    border: 2px solid #32553B;
+    border-radius: 6px;
+    padding: 7px 11px;
     cursor: pointer;
-    box-shadow: 0 3px 0 #000;
-    transition: transform var(--fast) var(--spring), background-color var(--fast) ease, color var(--fast) ease;
+    box-shadow: 0 3px 0 #0C160E;
+    transition: transform var(--fast, 130ms) var(--spring, ease), background-color var(--fast, 130ms) ease, color var(--fast, 130ms) ease;
   }
 
   .nav-tab:hover {
-    color: #00FF66;
-    border-color: #00FF66;
+    color: #FFFFFF;
+    background-color: #274530;
+    border-color: #4C7B56;
     transform: translateY(-2px);
-    box-shadow: 0 5px 0 #000;
+    box-shadow: 0 5px 0 #0C160E;
   }
 
   .nav-tab:active {
     transform: translateY(2px);
-    box-shadow: 0 1px 0 #000;
+    box-shadow: 0 1px 0 #0C160E;
   }
 
   .nav-tab.active {
-    background-color: #00FF66;
-    color: #000000;
-    border-color: #000000;
+    background-color: var(--journal-gold, #E5A93C);
+    color: #1B2B1F;
+    border-color: #1B2B1F;
     font-weight: bold;
-    box-shadow: 0 3px 0 #000, 0 0 10px rgba(0, 255, 102, 0.4);
+    box-shadow: 0 3px 0 #0C160E, 0 0 14px rgba(229, 169, 60, 0.35);
   }
 
   .sound-btn {
-    font-family: var(--font-pixel);
-    font-size: 0.65rem;
-    background-color: #1A281A;
-    color: #FFB703;
-    border: 2px solid #FFB703;
-    padding: 6px 10px;
+    font-family: var(--font-pixel, monospace);
+    font-size: 0.64rem;
+    background-color: #1D3323;
+    color: var(--journal-gold, #E5A93C);
+    border: 2px solid var(--journal-gold, #E5A93C);
+    border-radius: 6px;
+    padding: 7px 11px;
     cursor: pointer;
-    box-shadow: 0 3px 0 #000;
+    box-shadow: 0 3px 0 #0C160E;
+    transition: transform 120ms ease, background-color 120ms ease;
   }
 
   .sound-btn:hover {
-    background-color: #FFB703;
-    color: #000000;
+    background-color: var(--journal-gold, #E5A93C);
+    color: #1B2B1F;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #0C160E;
   }
 
   .mode-switch-bar {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
     padding: 10px 16px;
-    background-color: #141F14;
-    border-bottom: 2px solid #2E5A35;
+    background-color: #16261B;
+    border-bottom: 2px solid #28422F;
   }
 
   .mode-label {
-    font-size: 0.85rem;
-    color: #A0C8AA;
+    font-size: 0.82rem;
+    color: #A4C5AB;
+    font-weight: 500;
   }
 
   .mode-btn {
-    font-size: 0.65rem;
-    padding: 5px 12px;
-    background-color: #1A281A;
-    border: 2px solid #4A7A52;
-    color: #C0DFC4;
+    font-family: var(--font-pixel, monospace);
+    font-size: 0.62rem;
+    padding: 6px 14px;
+    background-color: #101D14;
+    border: 2px solid #36573E;
+    color: #D1E5D5;
+    border-radius: 4px;
     cursor: pointer;
+    transition: all 120ms ease;
+  }
+
+  .mode-btn:hover {
+    border-color: var(--journal-gold, #E5A93C);
+    color: #FFFFFF;
   }
 
   .mode-btn.active {
-    background-color: #FFB703;
-    color: #000000;
-    border-color: #000000;
+    background-color: var(--journal-gold, #E5A93C);
+    color: #1B2B1F;
+    border-color: #1B2B1F;
     font-weight: bold;
+    box-shadow: 0 2px 0 #0C160E;
   }
 
   .app-main {
     flex-grow: 1;
     width: 100%;
-    background-color: #0E140E;
+    background-color: #121A14;
+  }
+
+  /* Responsive Mobile Menu adjustments */
+  @media (max-width: 768px) {
+    .header-inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .brand-link {
+      justify-content: space-between;
+    }
+    .nav-links {
+      overflow-x: auto;
+      padding-bottom: 4px;
+      justify-content: flex-start;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
   }
 </style>

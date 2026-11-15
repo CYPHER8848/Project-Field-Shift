@@ -293,16 +293,16 @@
     margin: 0 auto;
   }
 
-  /* Top Arcade Banner */
+  /* Top Botanical Banner */
   .top-arcade-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0A140A;
-    border: 3px solid #00FF66;
-    border-radius: 4px;
+    background-color: var(--journal-forest, #1F3825);
+    border: 2.5px solid var(--journal-gold, #E5A93C);
+    border-radius: var(--radius-sm, 6px);
     padding: 10px 18px;
-    box-shadow: 0 0 16px rgba(0, 255, 102, 0.3), 0 4px 0 #000;
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
   }
 
   .banner-title-group {
@@ -310,19 +310,20 @@
   }
 
   .banner-title {
-    color: #00FF66;
-    font-size: 1.25rem;
-    letter-spacing: 1.5px;
+    color: var(--journal-paper, #FAF6ED);
+    font-family: var(--font-display, 'Fraunces', serif);
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
     margin-bottom: 2px;
   }
 
   .banner-sub {
-    font-size: 0.95rem;
-    color: #52B788;
+    font-size: 0.85rem;
+    color: var(--journal-gold, #E5A93C);
   }
 
   .corn-glyphs {
-    color: #FFB703;
+    color: var(--journal-gold, #E5A93C);
     font-size: 1rem;
     letter-spacing: 4px;
   }
@@ -389,8 +390,8 @@
 
   .scenario-box:hover .pixel-art-canvas,
   .scenario-box.active-card .pixel-art-canvas {
-    border-color: #00FF66;
-    box-shadow: 0 0 16px rgba(0, 255, 102, 0.6), 0 4px 0 #000;
+    border-color: var(--journal-gold, #E5A93C);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
   }
 
   .card-caption {
@@ -400,7 +401,7 @@
   }
 
   .scenario-box.active-card .card-caption {
-    color: #00FF66;
+    color: var(--journal-gold, #E5A93C);
     font-weight: bold;
   }
 
@@ -424,24 +425,26 @@
 
   .guide-dialogue-box {
     flex-grow: 1;
-    background-color: #0C160C;
-    border: 3px solid #00FF66;
-    box-shadow: 0 0 14px rgba(0, 255, 102, 0.25), 0 4px 0 #000;
-    padding: 14px 18px;
+    background-color: var(--journal-forest, #1F3825);
+    border: 2.5px solid var(--journal-gold, #E5A93C);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-md, 8px);
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
   .guide-title-tag {
-    color: #00FF66;
-    font-size: 0.72rem;
+    color: var(--journal-gold, #E5A93C);
+    font-size: 0.8rem;
+    font-weight: 700;
     letter-spacing: 1px;
   }
 
   .guide-text {
     font-size: 1.25rem;
-    color: #E0EAE0;
+    color: var(--journal-paper, #FAF6ED);
     line-height: 1.35;
   }
 
@@ -457,8 +460,9 @@
   .click-continue-btn {
     background: none;
     border: none;
-    color: #FFB703;
-    font-size: 0.68rem;
+    color: var(--journal-gold, #E5A93C);
+    font-size: 0.75rem;
+    font-weight: 700;
     cursor: pointer;
     animation: blinkText 1.5s infinite;
   }
@@ -469,16 +473,20 @@
   }
 
   .action-matrix-btn {
-    background-color: #00FF66;
-    color: #000;
-    border: 2px solid #000;
-    padding: 8px 14px;
-    font-size: 0.7rem;
+    background-color: var(--journal-gold, #E5A93C);
+    color: var(--journal-ink, #1B2B1F);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    padding: 10px 18px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm, 6px);
     cursor: pointer;
-    box-shadow: 0 3px 0 #000;
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s, background-color 0.15s;
   }
 
   .action-matrix-btn:hover {
-    background-color: #33FF88;
+    background-color: #F2BA49;
+    transform: translateY(-1px);
   }
 </style>

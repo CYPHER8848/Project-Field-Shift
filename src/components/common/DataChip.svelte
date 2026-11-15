@@ -36,7 +36,7 @@
 
   {#if showPopover}
     <div class="popover-backdrop" onclick={closePopover} role="presentation"></div>
-    <div class="satellite-note-card sticker-card" role="dialog" aria-modal="true">
+    <div class="satellite-note-card" role="dialog" aria-modal="true">
       <div class="note-header">
         <span class="badge font-data">NASA {note.dataset} DATA</span>
         <button class="close-btn" onclick={closePopover} aria-label="Close note">✕</button>
@@ -47,7 +47,7 @@
 
       <div class="plain-box">
         <div class="box-label font-display">Farmer's Version</div>
-        <p class="farmer-text">{note.farmerExplanation}</p>
+        <p class="farmer-text font-body">{note.farmerExplanation}</p>
       </div>
 
       <div class="science-box">
@@ -65,35 +65,36 @@
   }
 
   .data-chip {
-    font-family: var(--font-data);
-    font-size: 0.75rem;
+    font-family: var(--font-data, monospace);
+    font-size: 0.74rem;
     font-weight: 700;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background-color: var(--monsoon);
-    color: var(--paper);
-    border: 2px solid var(--ink);
-    border-radius: var(--radius-sm);
-    padding: 0.15em 0.55em;
-    box-shadow: 0 2px 0 var(--ink);
+    background-color: var(--journal-monsoon, #2B69A3);
+    color: #FFFFFF;
+    border: 1.5px solid var(--journal-border, #1B2B1F);
+    border-radius: var(--radius-sm, 6px);
+    padding: 2px 7px;
+    box-shadow: 0 2px 0 var(--journal-border, #1B2B1F);
     cursor: pointer;
     line-height: 1.2;
-    transition: transform var(--fast) var(--spring), box-shadow var(--fast) var(--spring);
+    transition: transform 120ms ease, box-shadow 120ms ease;
   }
 
   .data-chip:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 0 var(--ink);
+    box-shadow: 0 3px 0 var(--journal-border, #1B2B1F);
+    background-color: #3578B8;
   }
 
   .data-chip:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 var(--ink);
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 var(--journal-border, #1B2B1F);
   }
 
   .satellite-icon {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   .val {
@@ -113,12 +114,13 @@
     bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
-    width: 290px;
-    background-color: var(--paper);
-    border: 3px solid var(--ink);
-    border-radius: 12px;
-    box-shadow: var(--shadow-lg);
-    padding: var(--space-3);
+    width: 300px;
+    background-color: var(--journal-paper, #F9F6EE);
+    color: var(--journal-ink, #1B2B1F);
+    border: 2.5px solid var(--journal-border, #1B2B1F);
+    border-radius: var(--radius-md, 10px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), 0 4px 0 var(--journal-border, #1B2B1F);
+    padding: 14px;
     z-index: 100;
     display: flex;
     flex-direction: column;
@@ -142,16 +144,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1.5px solid rgba(27, 43, 31, 0.2);
+    padding-bottom: 6px;
   }
 
   .badge {
-    background-color: var(--monsoon);
-    color: var(--paper);
-    border: 1.5px solid var(--ink);
-    border-radius: 4px;
-    padding: 1px 6px;
-    font-size: 0.68rem;
-    font-weight: bold;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--journal-monsoon, #2B69A3);
+    letter-spacing: 0.5px;
   }
 
   .close-btn {
@@ -159,49 +160,54 @@
     border: none;
     font-size: 0.9rem;
     cursor: pointer;
-    font-weight: bold;
-    color: var(--ink);
+    color: var(--journal-ink, #1B2B1F);
+    padding: 2px 6px;
+    line-height: 1;
   }
 
   .note-title {
     font-size: 1.05rem;
-    color: var(--ink);
     margin: 0;
+    color: var(--journal-ink, #1B2B1F);
   }
 
   .sensor-tag {
-    font-size: 0.7rem;
-    color: color-mix(in srgb, var(--ink) 75%, transparent);
+    font-size: 0.72rem;
+    color: var(--journal-soil, #7E4A35);
   }
 
   .plain-box {
-    background-color: color-mix(in srgb, var(--turmeric) 18%, var(--paper));
-    border: 2px solid var(--ink);
-    border-radius: 8px;
+    background-color: #EDF5FA;
+    border-left: 3px solid var(--journal-monsoon, #2B69A3);
     padding: 6px 10px;
+    border-radius: 2px;
+  }
+
+  .science-box {
+    background-color: #FAF4E6;
+    border-left: 3px solid var(--journal-gold, #E5A93C);
+    padding: 6px 10px;
+    border-radius: 2px;
   }
 
   .box-label {
-    font-size: 0.78rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--journal-ink-muted, #556E5C);
     margin-bottom: 2px;
   }
 
   .farmer-text {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     line-height: 1.35;
-    color: var(--ink);
-  }
-
-  .science-box {
-    background-color: color-mix(in srgb, var(--monsoon) 12%, var(--paper));
-    border: 1.5px solid var(--ink);
-    border-radius: 6px;
-    padding: 6px 8px;
+    color: var(--journal-ink, #1B2B1F);
+    margin: 0;
   }
 
   .science-text {
-    font-size: 0.72rem;
-    line-height: 1.3;
-    color: var(--ink);
+    font-size: 0.74rem;
+    line-height: 1.35;
+    color: var(--journal-ink-soft, #2D4233);
+    margin: 0;
   }
 </style>

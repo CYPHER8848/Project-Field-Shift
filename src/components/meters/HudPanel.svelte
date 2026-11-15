@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <!-- 5 Tactile Jars & Meters Row -->
+  <!-- 5 Tactile Handcrafted Jars & Meters Row -->
   <div class="meters-row">
     <WaterJarMeter value={meters.soilMoisture} label="Soil Moisture" />
     <SoilProfileMeter value={meters.organicMatter} label="Organic Matter" />
@@ -55,63 +55,66 @@
   .hud-panel {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    background-color: color-mix(in srgb, var(--paper) 95%, var(--ink));
-    border: var(--outline);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    box-shadow: var(--shadow);
+    gap: 12px;
+    background-color: var(--journal-paper, #F9F6EE);
+    border: var(--border-ink, 2.5px solid #1B2B1F);
+    border-radius: var(--radius-md, 10px);
+    padding: 16px;
+    box-shadow: var(--shadow-pressable, 0 4px 0 #1B2B1F);
   }
 
   .hud-badge-strip {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-2);
+    gap: 10px;
     justify-content: space-between;
-    padding-bottom: var(--space-1);
-    border-bottom: 2px dashed var(--ink);
+    padding-bottom: 10px;
+    border-bottom: 1.5px dashed rgba(27, 43, 31, 0.3);
   }
 
   .badge-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border: 2px solid var(--ink);
-    border-radius: var(--radius-pill);
-    padding: 3px 12px;
-    box-shadow: var(--shadow-sm);
+    border: 2px solid var(--journal-border, #1B2B1F);
+    border-radius: 9999px;
+    padding: 4px 14px;
+    box-shadow: 0 2px 0 var(--journal-border, #1B2B1F);
     font-size: 0.88rem;
+    font-weight: 600;
   }
 
   .era-pill {
-    background-color: var(--turmeric);
-    color: var(--ink);
+    background-color: var(--journal-gold, #E5A93C);
+    color: var(--journal-ink, #1B2B1F);
   }
 
   .era-pill .sub {
     font-size: 0.72rem;
     font-weight: normal;
+    color: var(--journal-ink-soft, #2D4233);
   }
 
   .region-pill {
-    background-color: color-mix(in srgb, var(--soil) 25%, var(--paper));
-    color: var(--ink);
+    background-color: #EAF2EC;
+    color: var(--journal-forest, #1F3825);
+    border-color: var(--journal-border, #1B2B1F);
   }
 
   .season-pill {
-    background-color: color-mix(in srgb, var(--monsoon) 18%, var(--paper));
-    color: var(--ink);
+    background-color: #EDF5FA;
+    color: var(--journal-monsoon, #2B69A3);
     font-weight: 600;
   }
 
   .water-draw-tag {
-    font-size: 0.78rem;
-    color: var(--ink);
-    background-color: var(--paper);
-    border: 1.5px solid var(--ink);
-    border-radius: var(--radius-sm);
-    padding: 2px 8px;
+    font-size: 0.76rem;
+    color: var(--journal-ink, #1B2B1F);
+    background-color: var(--journal-surface-warm, #FAF7F0);
+    border: 1.5px solid var(--journal-border, #1B2B1F);
+    border-radius: 6px;
+    padding: 4px 10px;
   }
 
   .meters-row {
@@ -119,10 +122,10 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    gap: var(--space-2);
+    gap: 10px;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 768px) {
     .meters-row {
       overflow-x: auto;
       justify-content: flex-start;
