@@ -28,8 +28,9 @@ export interface SimulationOutput {
   strategy: StrategyId;
   years: SimulationYear[];
   meters: MeterValues;
-  p10: PercentileBand;
-  p50: PercentileBand;
-  p90: PercentileBand;
+  /** Uncertainty bands at the final horizon year: full meter sets at the 10th / 50th / 90th percentile. */
+  p10: MeterValues;
+  p50: MeterValues;
+  p90: MeterValues;
   limitations: string[];
 }
