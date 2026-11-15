@@ -12,7 +12,7 @@
 
 ## Evidence reported by local verification run
 
-The following details are transcribed from the Antigravity execution report. The reproducible script and machine-readable evidence still need to be pushed to this repository before this report can be independently rerun from GitHub.
+The following details are transcribed from the Antigravity execution report. The reproducible script and machine-readable evidence are included in this PR. GitHub Actions passed the offline validation of the evidence JSON and schema; it does not repeat the live endpoint requests described below.
 
 ### NASA POWER
 
@@ -36,7 +36,7 @@ https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,T2M_MAX,T2M_
   - `MODIS_Terra_NDVI_8Day` — reported rolling recent availability only; do not use for long historical series without checking its time domain.
   - `MODIS_Terra_Land_Surface_Temp_Day` — daytime land surface temperature.
   - `SMAP_L4_Analyzed_Root_Zone_Soil_Moisture` — root-zone moisture visualization.
-- Sample tile requests reportedly returned valid PNG responses (HTTP 200). Exact URLs and binary evidence should be retained in the test JSON when the branch is updated.
+- Sample tile requests reportedly returned valid PNG responses (HTTP 200). The evidence JSON records the request URLs, status codes, and PNG validation results; it does not store the full tile image bytes.
 
 ### ISRIC SoilGrids
 
@@ -77,17 +77,11 @@ These are provisional demonstration coordinates, not verified farm sites. The re
 
 ## Reproducibility and outstanding items
 
-Antigravity reported creating:
-- `scripts/verify_data_sources.py`
-- `docs/evidence/verification_results.json`
+The verification script and evidence JSON are included in this PR. The passing GitHub Actions run validates the saved evidence offline; it does not independently reproduce the historical live requests. A fresh live run remains optional if current endpoint availability needs reconfirmation.
 
-Those files were **not present on the remote branch when this report was committed**. The local Antigravity push failed because its terminal had no usable Git credentials. They must be pushed in a follow-up commit, and the JSON should contain request URLs, timestamps, HTTP statuses, concise response metadata and sample values (not unnecessary large raw payloads).
-
-Before treating this as fully closed:
-1. Commit the script and JSON evidence.
-2. Re-run the script from a clean checkout or CI and verify it exits successfully.
-3. Confirm exact region points and the intended Kenya/Sahel framing.
-4. Have the team review the data interpretation and approve the source decisions.
+Before treating the data-source decisions as final:
+1. Confirm the exact regional points and the intended Kenya/Sahel framing.
+2. Have the team review the data interpretation and approve the source decisions.
 
 ## Official references
 
