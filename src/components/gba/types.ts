@@ -73,3 +73,26 @@ export interface GbaGameEvent {
   type: 'dialogue_start' | 'open_compare' | 'open_nasa' | 'open_styleguide' | 'advance_era' | 'season_change';
   payload?: any;
 }
+
+export type EquippedTool = 'seeds' | 'water' | 'probe' | 'almanac';
+
+export type TimeOfDay = 'dawn' | 'noon' | 'sunset' | 'night';
+
+export interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+  color: string;
+  size: number;
+}
+
+export interface SoilProbeResult {
+  topsoilSOM: number;
+  rootzoneMoisture: number;
+  compactionMpa: number;
+  layerHealth: 'optimal' | 'stressed' | 'crusted';
+  timestamp: string;
+}

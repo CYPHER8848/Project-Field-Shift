@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import type { PlayerState, InteractiveEntity, DialogueNode, DialogueChoice } from './types';
+  import type { PlayerState, InteractiveEntity, DialogueNode, DialogueChoice, EquippedTool, TimeOfDay } from './types';
   import type { FarmMeters, EraInfo, RegionInfo } from '../../types/game';
   import { 
     INITIAL_PLAYER_POSITION, 
@@ -10,6 +10,7 @@
     WORLD_WIDTH, 
     WORLD_HEIGHT 
   } from './mapData';
+  import { sfx } from '../../utils/sound';
   import GbaCanvas from './GbaCanvas.svelte';
   import GbaDialogBox from './GbaDialogBox.svelte';
   import GbaHud from './GbaHud.svelte';
@@ -69,6 +70,29 @@
   // In-Game GBA Pause Menu State
   let isMenuOpen = $state(false);
 
+  // Equipped Tool & Atmosphere Systems
+  let equippedTool = $state<EquippedTool>('seeds');
+  let timeOfDay = $state<TimeOfDay>('noon');
+  let showMiniMap = $state(true);
+  let toolActionActive = $state<{ tool: EquippedTool; tick: number; x: number; y: number } | null>(null);
+
+  // In-Game Modals
+  let isProbeModalOpen = $state(false);
+  let isTubewellModalOpen = $state(false);
+  let tubewellRpm = $state(1450);
+
+  // In-Game Feedback Toast
+  let toastMessage = $state<string | null>(null);
+  let toastTimer: any = null;
+
+  function showToast(msg: string) {
+    toastMessage = msg;
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toastMessage = null;
+    }, 3200);
+  }
+
   // Keyboard inputs
   const keysDown = new Set<string>();
   let isSprinting = $state(false);
@@ -84,10 +108,8 @@
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
-    // Initial check for active entity
     checkProximity();
 
-    // Start movement physics loop
     const gameLoop = () => {
       updateMovement();
       loopId = requestAnimationFrame(gameLoop);
@@ -98,8 +120,46 @@
       cancelAnimationFrame(loopId);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      if (toastTimer) clearTimeout(toastTimer);
     };
   });
+
+  // Tool Cycling
+  function cycleTool() {
+    const tools: EquippedTool[] = ['seeds', 'water', 'probe', 'almanac'];
+    const idx = tools.indexOf(equippedTool);
+    equippedTool = tools[(idx + 1) % tools.length];
+    sfx.playSelect();
+
+    const labels: Record<EquippedTool, string> = {
+      seeds: 'Seed Pouch (Mung Bean / Clover Cover)',
+      water: 'AWD Irrigation Lota',
+      probe: 'NASA SMAP Soil Probe',
+      almanac: 'Crop Rotation Almanac'
+    };
+    showToast(`Equipped: ${labels[equippedTool]}`);
+  }
+
+  // Time of Day Lighting Cycling
+  function cycleTimeOfDay() {
+    const times: TimeOfDay[] = ['dawn', 'noon', 'sunset', 'night'];
+    const idx = times.indexOf(timeOfDay);
+    timeOfDay = times[(idx + 1) % times.length];
+    sfx.playSelect();
+  }
+
+  // Check if player is standing on either field terrace
+  function isPlayerOnField(): 'north' | 'south' | null {
+    // North Plot: x: 140..380, y: 270..420
+    if (player.x >= 140 && player.x <= 380 && player.y >= 270 && player.y <= 420) {
+      return 'north';
+    }
+    // South Plot: x: 180..440, y: 520..670
+    if (player.x >= 180 && player.x <= 440 && player.y >= 520 && player.y <= 670) {
+      return 'south';
+    }
+    return null;
+  }
 
   // Collision detection function
   function checkCollision(newX: number, newY: number): boolean {
@@ -110,12 +170,10 @@
       height: 14
     };
 
-    // Check world boundaries
     if (newX < 24 || newX > WORLD_WIDTH - 24 || newY < 30 || newY > WORLD_HEIGHT - 30) {
       return true;
     }
 
-    // Check static obstacles
     for (const obs of COLLISION_OBSTACLES) {
       if (
         pBox.x < obs.x + obs.width &&
@@ -131,7 +189,7 @@
 
   // Update Player Movement
   function updateMovement() {
-    if (activeDialogue || isMenuOpen) {
+    if (activeDialogue || isMenuOpen || isProbeModalOpen || isTubewellModalOpen) {
       player.isMoving = false;
       return;
     }
@@ -139,7 +197,6 @@
     let dx = 0;
     let dy = 0;
 
-    // Read keyboard
     if (keysDown.has('ArrowUp') || keysDown.has('KeyW') || virtualDir === 'up') {
       dy -= 1;
       player.direction = 'up';
@@ -161,10 +218,8 @@
     player.isMoving = isMoving;
 
     if (isMoving) {
-      // Sprint multiplier
       const currentSpeed = isSprinting ? player.speed * 1.55 : player.speed;
 
-      // Normalize diagonal movement
       if (dx !== 0 && dy !== 0) {
         dx *= 0.7071;
         dy *= 0.7071;
@@ -173,7 +228,6 @@
       const nextX = player.x + dx * currentSpeed;
       const nextY = player.y + dy * currentSpeed;
 
-      // Independent X and Y collision check (sliding along walls)
       if (!checkCollision(nextX, player.y)) {
         player.x = nextX;
       }
@@ -181,20 +235,20 @@
         player.y = nextY;
       }
 
-      // Step frame cycling
       stepTimer++;
+      if (stepTimer % 20 === 0) {
+        sfx.playStep();
+      }
       if (stepTimer % 8 === 0) {
         player.frame = (player.frame + 1) % 3;
       }
 
-      // Check proximity to interactive entities
       checkProximity();
     } else {
       player.frame = 0;
     }
   }
 
-  // Check proximity to interactive entities
   function checkProximity() {
     let closest: InteractiveEntity | null = null;
     let closestDist = Infinity;
@@ -227,9 +281,34 @@
       handleActionA();
     }
 
-    // Menu Key (Escape, M)
-    if (e.code === 'Escape' || e.code === 'KeyM') {
-      toggleMenu();
+    // Tool Cycle Key (Q, Tab)
+    if (e.code === 'KeyQ' || e.code === 'Tab') {
+      e.preventDefault();
+      cycleTool();
+    }
+
+    // Time of Day Cycle Key (T)
+    if (e.code === 'KeyT') {
+      e.preventDefault();
+      cycleTimeOfDay();
+    }
+
+    // MiniMap Radar Toggle Key (M)
+    if (e.code === 'KeyM') {
+      e.preventDefault();
+      showMiniMap = !showMiniMap;
+      sfx.playSelect();
+    }
+
+    // Menu Key (Escape)
+    if (e.code === 'Escape') {
+      if (isProbeModalOpen) {
+        isProbeModalOpen = false;
+      } else if (isTubewellModalOpen) {
+        isTubewellModalOpen = false;
+      } else {
+        toggleMenu();
+      }
     }
   }
 
@@ -240,30 +319,68 @@
     }
   }
 
-  // Action Button [A] Trigger (Interact or Advance Dialogue)
+  // Action Button [A] Trigger
   function handleActionA() {
-    if (isMenuOpen) return;
+    if (isMenuOpen || isProbeModalOpen || isTubewellModalOpen) return;
 
     if (activeDialogue) {
       dialogBoxRef?.handleActionPress();
       return;
     }
 
+    // If standing right next to an interactive entity, open dialogue
     if (activeEntity) {
       startDialogue(activeEntity.dialogueId);
+      return;
+    }
+
+    // Otherwise, check if player is standing on a field terrace to use tool!
+    const fieldLocation = isPlayerOnField();
+    if (fieldLocation) {
+      executeToolOnField(fieldLocation);
     }
   }
 
-  // Action Button [B] Trigger (Sprint or Cancel/Back)
+  // Execute equipped tool on field plot
+  function executeToolOnField(plot: 'north' | 'south') {
+    toolActionActive = {
+      tool: equippedTool,
+      tick: stepTimer,
+      x: player.x,
+      y: player.y
+    };
+
+    if (equippedTool === 'seeds') {
+      sfx.playSow();
+      meters.nitrogen = Math.min(100, meters.nitrogen + 4);
+      meters.organicMatter = Math.min(100, meters.organicMatter + 2);
+      showToast(`Sowed Legume Seeds on ${plot === 'north' ? 'North' : 'South'} Terrace! Nitrogen +4 kg/ha, SOM +2%`);
+    } else if (equippedTool === 'water') {
+      sfx.playWater();
+      meters.soilMoisture = Math.min(100, meters.soilMoisture + 8);
+      showToast(`AWD Sluice Hydrated ${plot === 'north' ? 'North' : 'South'} Terrace! Moisture +8%`);
+    } else if (equippedTool === 'probe') {
+      sfx.playScan();
+      isProbeModalOpen = true;
+    } else if (equippedTool === 'almanac') {
+      sfx.playSelect();
+      onOpenCompare();
+    }
+  }
+
+  // Action Button [B] Trigger
   function handleActionB() {
-    if (activeDialogue) {
+    if (isProbeModalOpen) {
+      isProbeModalOpen = false;
+    } else if (isTubewellModalOpen) {
+      isTubewellModalOpen = false;
+    } else if (activeDialogue) {
       activeDialogue = null;
     } else if (isMenuOpen) {
       isMenuOpen = false;
     }
   }
 
-  // Start Dialogue by ID
   function startDialogue(dialogueId: string) {
     const node = DIALOGUE_NODES[dialogueId];
     if (node) {
@@ -271,7 +388,6 @@
     }
   }
 
-  // Handle Dialogue Choice Selection
   function handleDialogueChoice(choice: DialogueChoice) {
     if (choice.nextDialogueId) {
       startDialogue(choice.nextDialogueId);
@@ -284,6 +400,15 @@
     } else if (choice.action === 'advance_season') {
       activeDialogue = null;
       onAdvanceSeason();
+    } else if (choice.action === 'calibrate_pump') {
+      activeDialogue = null;
+      isTubewellModalOpen = true;
+      sfx.playSelect();
+    } else if (choice.action === 'boost_som') {
+      activeDialogue = null;
+      meters.organicMatter = Math.min(100, meters.organicMatter + 6);
+      sfx.playSuccess();
+      showToast('Applied Sahiwal Compost! Soil Organic Matter +6%');
     } else {
       activeDialogue = null;
     }
@@ -291,6 +416,21 @@
 
   function toggleMenu() {
     isMenuOpen = !isMenuOpen;
+  }
+
+  // Apply Tubewell Calibration
+  function applyTubewellCalibration() {
+    sfx.playValve();
+    if (tubewellRpm > 1800) {
+      sfx.playAlert();
+      meters.income = Math.max(0, meters.income - 45); // Pump wear expense
+      showToast('Warning: High RPM triggered sand suction! Minor impeller cavitation pitting.');
+    } else {
+      sfx.playSuccess();
+      meters.soilMoisture = Math.min(100, meters.soilMoisture + 10);
+      showToast('Optimal AWD pump calibration applied! Water pumped without aquifer cavitation.');
+    }
+    isTubewellModalOpen = false;
   }
 </script>
 
@@ -301,12 +441,24 @@
     era={currentEra} 
     region={currentRegion} 
     seasonName={currentSeasonName}
+    {timeOfDay}
+    {equippedTool}
+    onToggleTimeOfDay={cycleTimeOfDay}
+    onCycleTool={cycleTool}
     onOpenMenu={toggleMenu}
     onOpenCompare={onOpenCompare}
   />
 
   <!-- Main Game Stage -->
   <div class="game-stage">
+    <!-- In-Game Toast Alert -->
+    {#if toastMessage}
+      <div class="overworld-toast font-data" role="status">
+        <span class="toast-dot">●</span>
+        <span>{toastMessage}</span>
+      </div>
+    {/if}
+
     <!-- Canvas Top-Down World Viewport -->
     <GbaCanvas 
       {player} 
@@ -314,7 +466,13 @@
       {weatherCondition}
       soilMoisture={meters.soilMoisture}
       {meters}
+      {equippedTool}
+      {timeOfDay}
+      {showMiniMap}
+      {toolActionActive}
       onInteract={(ent) => startDialogue(ent.dialogueId)} 
+      onCycleTool={cycleTool}
+      onToggleMiniMap={() => showMiniMap = !showMiniMap}
     />
 
     <!-- Overlaid Classic GBA Dialogue Box at Bottom -->
@@ -326,6 +484,134 @@
           onSelectChoice={handleDialogueChoice}
           onClose={() => activeDialogue = null}
         />
+      </div>
+    {/if}
+
+    <!-- Interactive NASA SMAP Soil Core Modal -->
+    {#if isProbeModalOpen}
+      <div class="pause-menu-backdrop" onclick={() => isProbeModalOpen = false} role="presentation">
+        <div 
+          class="soil-probe-modal sticker-card no-tape" 
+          role="dialog" 
+          tabindex="-1"
+          onclick={(e) => e.stopPropagation()} 
+          onkeydown={(e) => e.stopPropagation()}
+        >
+          <div class="modal-header">
+            <span class="font-display modal-title">NASA SMAP SOIL CORE PROFILE</span>
+            <span class="font-data modal-chip">[L4 Active Radiometer]</span>
+          </div>
+
+          <div class="strata-container font-body">
+            <!-- Stratum 1: Topsoil -->
+            <div class="stratum stratum-topsoil">
+              <div class="stratum-meta">
+                <span class="depth font-data">0 – 15 cm</span>
+                <span class="name font-display">Humus & Topsoil Horizon</span>
+              </div>
+              <p class="desc">
+                Soil Organic Matter: <strong>{meters.organicMatter}%</strong>. High biological aggregate crumb structure with active earthworm channels.
+              </p>
+            </div>
+
+            <!-- Stratum 2: Root-Zone Subsoil -->
+            <div class="stratum stratum-rootzone">
+              <div class="stratum-meta">
+                <span class="depth font-data">15 – 60 cm</span>
+                <span class="name font-display">Root-Zone Active Subsoil</span>
+              </div>
+              <p class="desc">
+                NASA SMAP Root-Zone Wetness (GWETROOT): <strong>{meters.soilMoisture}%</strong>. Active <em>Rhizobium</em> legume root nodules fixing biological nitrogen (<strong>{meters.nitrogen} kg/ha</strong>).
+              </p>
+            </div>
+
+            <!-- Stratum 3: Deep Hardpan / Aquifer -->
+            <div class="stratum stratum-hardpan">
+              <div class="stratum-meta">
+                <span class="depth font-data">60+ cm</span>
+                <span class="name font-display">Subsoil Hardpan & Aquifer Trend</span>
+              </div>
+              <p class="desc">
+                NASA GRACE Gravity Telemetry: Subterranean water table at <strong>{currentEra.year === 1990 ? '40m' : currentEra.year === 2026 ? '82m' : '65m'}</strong>. Deep taproots (Mustard/Millet) bio-drill through heavy plow compaction.
+              </p>
+            </div>
+          </div>
+
+          <div class="modal-footnote font-data">
+            * "Field Shift supports farmers and local experts. It does not replace their judgement."
+          </div>
+
+          <div class="modal-actions">
+            <button class="action-btn font-display" onclick={() => isProbeModalOpen = false}>
+              Close & Return to Field
+            </button>
+          </div>
+        </div>
+      </div>
+    {/if}
+
+    <!-- Interactive Tubewell Valve Balancer Modal -->
+    {#if isTubewellModalOpen}
+      <div class="pause-menu-backdrop" onclick={() => isTubewellModalOpen = false} role="presentation">
+        <div 
+          class="tubewell-modal sticker-card no-tape" 
+          role="dialog" 
+          tabindex="-1"
+          onclick={(e) => e.stopPropagation()} 
+          onkeydown={(e) => e.stopPropagation()}
+        >
+          <div class="modal-header">
+            <span class="font-display modal-title">ANCESTRAL TUBEWELL BALANCER</span>
+            <span class="font-data modal-chip">[AWD Valve Calibration]</span>
+          </div>
+
+          <div class="tubewell-body font-body">
+            <p>
+              Regulate diesel pump motor RPM. High extraction floods paddies quickly but risks pump cavitation and suction of aquifer silt below 80m.
+            </p>
+
+            <div class="slider-control">
+              <div class="slider-labels font-data">
+                <span>Motor Speed: <strong>{tubewellRpm} RPM</strong></span>
+                <span>{tubewellRpm > 1800 ? 'DANGER: CAVITATION' : 'OPTIMAL: AWD'}</span>
+              </div>
+              <input 
+                type="range" 
+                min="800" 
+                max="2200" 
+                step="50" 
+                bind:value={tubewellRpm}
+                class="rpm-slider"
+              />
+            </div>
+
+            <div class="telemetry-readout font-data">
+              <div class="tele-item">
+                <span class="label">Discharge Flow:</span>
+                <span class="val">{(tubewellRpm * 0.08).toFixed(1)} L/s</span>
+              </div>
+              <div class="tele-item">
+                <span class="label">Drawdown Rate:</span>
+                <span class="val">−{(tubewellRpm * 0.002).toFixed(2)} cm/hr</span>
+              </div>
+              <div class="tele-item">
+                <span class="label">Motor Strain:</span>
+                <span class="val {tubewellRpm > 1800 ? 'warn' : 'good'}">
+                  {tubewellRpm > 1800 ? 'High Cavitation Risk' : 'Laminar AWD Flow'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="action-btn font-display" onclick={applyTubewellCalibration}>
+              Apply Calibration
+            </button>
+            <button class="cancel-btn font-data" onclick={() => isTubewellModalOpen = false}>
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
     {/if}
 
@@ -344,7 +630,7 @@
             {#if onOpenStory}
               <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenStory?.(); }}>
                 <span class="bullet">▶</span>
-                <span>Enter Punjab Story Mode</span>
+                <span>Enter {currentRegion.name} Story Mode</span>
               </button>
             {/if}
             <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenCompare(); }}>
@@ -368,6 +654,14 @@
             <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenRegionSelect(); }}>
               <span class="bullet">▶</span>
               <span>Choose Region</span>
+            </button>
+            <button class="menu-item" onclick={() => { isMenuOpen = false; cycleTimeOfDay(); }}>
+              <span class="bullet">▶</span>
+              <span>Toggle Time of Day ({timeOfDay.toUpperCase()})</span>
+            </button>
+            <button class="menu-item" onclick={() => { isMenuOpen = false; showMiniMap = !showMiniMap; }}>
+              <span class="bullet">▶</span>
+              <span>Toggle Radar ({showMiniMap ? 'ON' : 'OFF'})</span>
             </button>
             <button class="menu-item" onclick={() => { isMenuOpen = false; onAdvanceSeason(); }}>
               <span class="bullet">▶</span>
@@ -396,6 +690,7 @@
     onActionA={handleActionA}
     onActionB={handleActionB}
     onStart={toggleMenu}
+    onCycleTool={cycleTool}
   />
 </div>
 
@@ -424,7 +719,44 @@
     z-index: 100;
   }
 
-  /* GBA In-Game Pause Menu */
+  /* In-Game Toast Alert */
+  .overworld-toast {
+    position: absolute;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--ink);
+    color: var(--paper);
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 150;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    animation: toast-in 200ms ease forwards;
+    pointer-events: none;
+  }
+
+  .toast-dot {
+    color: var(--turmeric);
+    font-size: 0.75rem;
+  }
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -8px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  /* Modals */
   .pause-menu-backdrop {
     position: absolute;
     inset: 0;
@@ -434,6 +766,7 @@
     align-items: center;
     justify-content: center;
     animation: fade-in 150ms ease forwards;
+    padding: var(--space-3);
   }
 
   @keyframes fade-in {
@@ -441,9 +774,9 @@
     to { opacity: 1; }
   }
 
-  .gba-pause-menu {
-    width: 380px;
-    max-width: 90%;
+  .soil-probe-modal, .tubewell-modal, .gba-pause-menu {
+    width: 480px;
+    max-width: 95%;
     background-color: var(--paper);
     border: 3.5px solid var(--ink);
     border-radius: var(--radius);
@@ -454,6 +787,169 @@
     gap: var(--space-3);
   }
 
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 6px;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--ink);
+  }
+
+  .modal-chip {
+    font-size: 0.75rem;
+    background-color: color-mix(in srgb, var(--turmeric) 35%, var(--paper));
+    border: 1px solid var(--ink);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .strata-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stratum {
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+  }
+
+  .stratum-topsoil {
+    background-color: color-mix(in srgb, var(--soil) 12%, var(--paper));
+    border-left: 6px solid var(--soil);
+  }
+
+  .stratum-rootzone {
+    background-color: color-mix(in srgb, var(--monsoon) 14%, var(--paper));
+    border-left: 6px solid var(--monsoon);
+  }
+
+  .stratum-hardpan {
+    background-color: color-mix(in srgb, var(--ink) 8%, var(--paper));
+    border-left: 6px solid var(--ink);
+  }
+
+  .stratum-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .stratum-meta .depth {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--soil);
+  }
+
+  .stratum-meta .name {
+    font-size: 0.88rem;
+    font-weight: bold;
+    color: var(--ink);
+  }
+
+  .stratum .desc {
+    font-size: 0.82rem;
+    margin: 0;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .modal-footnote {
+    font-size: 0.7rem;
+    color: var(--soil);
+    font-style: italic;
+    border-top: 1px dashed var(--ink);
+    padding-top: 6px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .action-btn {
+    background-color: var(--turmeric);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 0 var(--ink);
+  }
+
+  .action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--ink);
+  }
+
+  .cancel-btn {
+    background: none;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  /* Tubewell Modal */
+  .slider-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 0;
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+  }
+
+  .rpm-slider {
+    width: 100%;
+    accent-color: var(--soil);
+    cursor: pointer;
+  }
+
+  .telemetry-readout {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: color-mix(in srgb, var(--paper) 90%, var(--ink));
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+
+  .tele-item {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .tele-item .val.warn {
+    color: #CC3B2B;
+    font-weight: bold;
+  }
+
+  .tele-item .val.good {
+    color: var(--forest);
+    font-weight: bold;
+  }
+
+  /* GBA In-Game Pause Menu */
   .menu-title {
     font-size: 1.25rem;
     color: var(--ink);

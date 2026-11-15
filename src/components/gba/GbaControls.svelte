@@ -5,9 +5,10 @@
     onActionA: () => void;
     onActionB: () => void;
     onStart: () => void;
+    onCycleTool?: () => void;
   }
 
-  let { onDirectionStart, onDirectionEnd, onActionA, onActionB, onStart }: Props = $props();
+  let { onDirectionStart, onDirectionEnd, onActionA, onActionB, onStart, onCycleTool }: Props = $props();
 
   function handleTouchStart(e: TouchEvent | MouseEvent, dir: 'up' | 'down' | 'left' | 'right') {
     e.preventDefault();
@@ -75,6 +76,16 @@
 
   <!-- Middle Start / Select Buttons -->
   <div class="center-buttons">
+    {#if onCycleTool}
+      <button 
+        type="button" 
+        class="pill-btn font-data select-tool-btn"
+        onclick={onCycleTool}
+        aria-label="Cycle Equipped Tool"
+      >
+        TOOL
+      </button>
+    {/if}
     <button 
       type="button" 
       class="pill-btn font-data"
