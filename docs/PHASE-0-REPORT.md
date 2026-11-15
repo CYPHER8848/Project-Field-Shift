@@ -29,7 +29,7 @@ Four provisional regional points have evidence recorded for POWER, SRTM and GIBS
 - Finalise the four exact demo coordinates, especially the Sahel/Kenya representative site.
 - **Contracts frozen with whole-team agreement.** Weather uses weekly `{year, week, tmax, tmin, rain, soilWet, evap, solar}` records; crop traits include water use, nitrogen fixation, rooting depth, cover value and season; simulation output uses `{strategy, years[], meters{}, p10/p50/p90}`. Synthetic mock files have been reshaped to these interfaces.
 - Phase 1 data lead still needs to populate the crop catalogue (about 12 cited crops) and replace synthetic weather values with fetched weekly regional data.
-- Owner to configure branch protection/rules for `main`; the connected GitHub integration cannot read classic branch protection settings, and no repository rulesets were listed.
+- Active repository ruleset `Protect main` targets only `main`, requires pull requests, and blocks branch deletion and force pushes. It does not require an approval count or status checks.
 - Create the shared team task board and add the six members; their names and Master Plan role assignments are not in this repository.
 - Live app opened successfully in a new browser tab: https://dangolzenith12-code.github.io/Project-Field-Shift/.
 
