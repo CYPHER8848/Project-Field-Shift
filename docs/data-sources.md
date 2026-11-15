@@ -15,7 +15,7 @@ The static regional weather files are precomputed from the NASA POWER **daily po
 
 EVLAND is a latent-energy flux in the daily hydrology product. The prep script checks the response metadata before publishing values. If POWER reports mm/day, the value is used directly. If POWER reports MJ/m²/day, the script converts it to an equivalent mm/day using 2.45 MJ/kg. Any unrecognized unit causes the script to stop rather than publish a silent unit error. This is an energy-equivalent evaporation proxy, not a direct field measurement.
 
-The date range is 1981-01-01 through 2025-12-31 (45 calendar years). Records are grouped by ISO year and ISO week. A missing POWER value (`-999`) becomes `null`; it is never interpolated or replaced with synthetic values. In a week with partial observations, aggregation uses available daily values. Consumers should preserve nulls and should not treat them as zero.The final three calendar days (29–31 December 2025) belong to ISO year 2026, week 1. Therefore, the final record is labelled 2026-W01 and contains only those three days. This preserves the complete requested calendar date range.
+The date range is 1981-01-01 through 2025-12-31 (45 calendar years). Records are grouped by ISO year and ISO week. A missing POWER value (`-999`) becomes `null`; it is never interpolated or replaced with synthetic values. In a week with partial observations, aggregation uses available daily values. Consumers should preserve nulls and should not treat them as zero. The final three calendar days (29–31 December 2025) belong to ISO year 2026, week 1. Therefore, the final record is labelled 2026-W01 and contains only those three days. This preserves the complete requested calendar date range.
 
 ### API and parameter references
 
