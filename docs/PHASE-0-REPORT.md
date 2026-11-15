@@ -1,6 +1,6 @@
 # Phase 0 report
 
-Status reviewed: 14 November 2026.
+Status reviewed: 15 November 2026.
 
 ## Completed and merged to main
 - Svelte + Vite + TypeScript scaffold and five-scene navigation skeleton.
@@ -11,6 +11,7 @@ Status reviewed: 14 November 2026.
 - Visual style guide with palette, Fraunces and DM Sans, and spacing direction.
 - Six story beats and glossary outline.
 - README, GitHub Pages workflow and Phase 0 closure issue.
+- PR #2 reviewed, approved and merged to `main` on 15 November 2026 (`c80aec773a086d9b0b2af2c62c067260617c3689`); verification artifacts and evidence are now on `main`.
 
 ## Data-source verification
 
@@ -28,12 +29,12 @@ Four provisional regional points have evidence recorded for POWER, SRTM and GIBS
 - Finalise the four exact demo coordinates, especially the Sahel/Kenya representative site.
 - **Contracts frozen with whole-team agreement.** Weather uses weekly `{year, week, tmax, tmin, rain, soilWet, evap, solar}` records; crop traits include water use, nitrogen fixation, rooting depth, cover value and season; simulation output uses `{strategy, years[], meters{}, p10/p50/p90}`. Synthetic mock files have been reshaped to these interfaces.
 - Phase 1 data lead still needs to populate the crop catalogue (about 12 cited crops) and replace synthetic weather values with fetched weekly regional data.
-- Owner to configure branch protection/rules for `main`.
-- Create the shared team task board and add members.
-- Confirm the deployed URL opens in a normal browser session.
+- Owner to configure branch protection/rules for `main`; the connected GitHub integration cannot read classic branch protection settings, and no repository rulesets were listed.
+- Create the shared team task board and add the six members; their names and Master Plan role assignments are not in this repository.
+- Live app opened successfully in a new browser tab: https://dangolzenith12-code.github.io/Project-Field-Shift/.
 
 ## Acceptance boundary
 The UI is a navigation and storytelling skeleton. It does not yet query NASA services, run the agronomic simulation, or provide farm-specific recommendations. Mock values are synthetic and must remain labelled as such.
 
 ## Tracking
-See [Phase 0 closure checklist](../issues/1) in the repository.
+See the updated [Phase 0 closure checklist](../issues/1). The live URL is recorded there. The team gate review, role/permission confirmation, task board, and Phase 1 owner confirmations remain open.
