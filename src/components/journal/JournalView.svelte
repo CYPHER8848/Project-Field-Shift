@@ -10,9 +10,10 @@
     meterExtents,
     metersAt,
     regionById,
-    sims,
-    weatherFor
+    sims
   } from '../../lib/data';
+  import { latestFullYear, loadRegionWeather } from '../../lib/regionalWeather';
+  import type { RegionalWeather } from '../../../contracts/weather';
   import type { StrategyId } from '../../../contracts/sim-output';
 
   type Scene = 'intro' | 'region' | 'season' | 'compare' | 'reflect';
@@ -40,7 +41,28 @@
   }
 
   const region = $derived(regionById(regionId));
-  const weather = $derived(weatherFor(regionId));
+
+  // Lazy per-region weather: only the viewed region's chunk is downloaded.
+  let weatherRecords = $state<RegionalWeather | null>(null);
+  let weatherState = $state<'loading' | 'ready' | 'missing'>('loading');
+  let weatherRequest = 0;
+
+  $effect(() => {
+    const id = regionId;
+    const token = ++weatherRequest;
+    weatherState = 'loading';
+    loadRegionWeather(id)
+      .then((records) => {
+        if (token !== weatherRequest) return;
+        weatherRecords = records ? latestFullYear(records) : null;
+        weatherState = records ? 'ready' : 'missing';
+      })
+      .catch(() => {
+        if (token !== weatherRequest) return;
+        weatherRecords = null;
+        weatherState = 'missing';
+      });
+  });
 </script>
 
 <div class="journal-wrapper">
@@ -91,12 +113,14 @@
             <circle cx="590" cy="55" r="27" fill={region.sun} />
           </svg>
         </div>
-        {#if weather}
-          <WeatherStrip records={weather} />
+        {#if weatherState === 'ready' && weatherRecords}
+          <WeatherStrip records={weatherRecords} source="NASA POWER · precomputed" />
+        {:else if weatherState === 'loading'}
+          <p class="muted">Loading weekly weather…</p>
         {:else}
-          <p class="muted">No weekly weather dataset loaded for {region.label} yet — Punjab is the current demonstration dataset.</p>
+          <p class="muted">Weather dataset unavailable for {region.label}.</p>
         {/if}
-        <h2 class="subhead">The field's crop calendar <span class="muted">(shared catalogue · synthetic placeholder values)</span></h2>
+        <h2 class="subhead">The field's crop calendar <span class="muted">(curated catalogue · cited sources in the data file)</span></h2>
         <ul class="crop-list">
           {#each crops as c (c.id)}
             <li>
@@ -167,6 +191,18 @@
     color: #ECEADE;
     min-height: calc(100vh - 56px);
     padding: 24px 16px;
+
+    /* Theme bridge for shared components (MeterBand / WeatherStrip). */
+    --meter-track-bg: rgba(236, 234, 222, 0.16);
+    --meter-band-bg: #B3C7A4;
+    --meter-pin-bg: #ECEADE;
+    --meter-label-color: #B3C7A4;
+    --meter-value-color: #ECEADE;
+    --meter-unit-color: #788064;
+    --weather-bg: #1A281E;
+    --weather-border-color: #788064;
+    --weather-axis-color: #788064;
+    --weather-legend-color: #B3C7A4;
   }
   .shell {
     max-width: 960px;
@@ -259,7 +295,15 @@
     font-size: 0.95rem;
     max-width: 320px;
   }
+  .field-art {
+    width: 100%;
+    max-width: 720px;
+    margin: 18px 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
   .field-art svg {
+    display: block;
     width: 100%;
     max-height: 200px;
     border-radius: 6px;
