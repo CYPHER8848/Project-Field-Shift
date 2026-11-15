@@ -838,11 +838,13 @@
     ctx.strokeRect(itemBoxX + 2, itemBoxY + 2, itemBoxSize - 4, itemBoxSize - 4);
 
     // Active tool icon inside box (Satellite Telemetry or Seed Bag)
-    ctx.fillStyle = '#2F6FED';
-    ctx.font = '16px serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🛰️', itemBoxX + itemBoxSize / 2, itemBoxY + itemBoxSize / 2);
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(itemBoxX + itemBoxSize / 2, itemBoxY + itemBoxSize / 2, 6, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = '#E5A93C';
+    ctx.fillRect(itemBoxX + itemBoxSize / 2 - 2, itemBoxY + itemBoxSize / 2 - 2, 4, 4);
 
     ctx.restore();
   }

@@ -1,8 +1,6 @@
 <script lang="ts">
   import { REGIONS } from '../../data/mockData';
   import type { RegionInfo } from '../../types/game';
-  import StickerCard from '../common/StickerCard.svelte';
-  import Button from '../common/Button.svelte';
   import BlockPrintBorder from '../common/BlockPrintBorder.svelte';
 
   interface Props {
@@ -12,193 +10,255 @@
 
   let { onSelectRegion, onBack }: Props = $props();
 
-  const regionsList = Object.values(REGIONS);
+  interface CleanRegion {
+    id: string;
+    title: string;
+    matriarch: string;
+    summary: string;
+    isAvailable: boolean;
+    regionData: RegionInfo;
+  }
+
+  const regionsList: CleanRegion[] = [
+    {
+      id: 'punjab',
+      title: 'Punjab',
+      matriarch: 'Bebe Amarjit',
+      summary: 'Alluvial plains · Generational story through 1990, 2026, and 2040.',
+      isAvailable: true,
+      regionData: REGIONS.punjab
+    },
+    {
+      id: 'karnataka',
+      title: 'Karnataka',
+      matriarch: 'Ajji Gowri',
+      summary: 'Deccan plateau · Semi-arid ragi millets and dryland stewardship.',
+      isAvailable: false,
+      regionData: REGIONS.karnataka
+    }
+  ];
 </script>
 
-<div class="region-select-page">
-  <div class="header-section">
-    <div class="header-titles">
-      <h2 class="page-title font-display">Select Your Farm Region</h2>
-      <p class="page-desc font-body">
-        Choose an agro-ecological zone to inherit. Each region comes with authentic 45-year NASA POWER climate trends and GRACE groundwater anomalies.
-      </p>
+<div class="region-screen-viewport">
+  <div class="region-container">
+    <!-- Header -->
+    <header class="region-header">
+      <h1 class="header-title font-display">CHOOSE REGION</h1>
+      <p class="header-sub font-body">Select a region to begin your story.</p>
+    </header>
+
+    <BlockPrintBorder height={10} variant="phulkari" />
+
+    <!-- Minimal Clean Cards Grid -->
+    <div class="cards-grid">
+      {#each regionsList as item}
+        <div class="minimal-region-card {item.isAvailable ? 'available' : 'locked'}">
+          <div class="card-top">
+            <div class="region-emblem" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3C8 7 6 12 6 17c0 3.3 2.7 6 6 6s6-2.7 6-6c0-5-2-10-6-14z" fill="var(--journal-gold, #E5A93C)" stroke="var(--journal-forest, #1F3825)" />
+                <path d="M12 9v12" stroke="var(--journal-forest, #1F3825)" />
+              </svg>
+            </div>
+            <span class="matriarch-pill font-data">{item.matriarch}</span>
+          </div>
+
+          <h2 class="region-title font-display">{item.title}</h2>
+          <p class="region-summary font-body">{item.summary}</p>
+
+          <div class="card-footer">
+            {#if item.isAvailable}
+              <button 
+                type="button" 
+                class="select-btn font-display" 
+                onclick={() => onSelectRegion(item.regionData)}
+              >
+                Select Punjab →
+              </button>
+            {:else}
+              <button type="button" class="disabled-btn font-data" disabled>
+                Phase 2 · Coming Soon
+              </button>
+            {/if}
+          </div>
+        </div>
+      {/each}
     </div>
+
+    <!-- Back Button -->
     {#if onBack}
-      <Button variant="secondary" size="sm" onclick={onBack}>← Back to Intro</Button>
+      <div class="back-row">
+        <button type="button" class="back-btn font-data" onclick={onBack}>
+          ← Back
+        </button>
+      </div>
     {/if}
-  </div>
-
-  <BlockPrintBorder height={14} />
-
-  <div class="regions-grid">
-    {#each regionsList as reg, i}
-      {@const tilt = i % 2 === 0 ? -1 : 1}
-      <StickerCard tilt={tilt} class="region-card">
-        <div class="region-top">
-          <span class="region-badge font-data">{reg.badge}</span>
-          <span class="country-tag font-data">{reg.country}</span>
-        </div>
-
-        <h3 class="region-name font-display">{reg.name}</h3>
-        <p class="region-desc font-body">{reg.landscapeDescription}</p>
-
-        <div class="challenge-box">
-          <div class="box-tag font-data">⚠️ Climate Stress</div>
-          <p class="challenge-text font-body">{reg.climateChallenge}</p>
-        </div>
-
-        <div class="satellite-callout">
-          <div class="callout-tag font-data">🛰️ NASA GRACE Groundwater Observation</div>
-          <p class="callout-text font-data">{reg.graceGroundwaterTrend}</p>
-        </div>
-
-        <div class="crops-tag-strip">
-          <span class="font-data strip-label">Primary Crops:</span>
-          {#each reg.primaryCrops as crop}
-            <span class="crop-tag font-body">{crop}</span>
-          {/each}
-        </div>
-
-        <div class="card-action">
-          <Button variant="primary" size="md" onclick={() => onSelectRegion(reg)}>
-            Farm in {reg.name} →
-          </Button>
-        </div>
-      </StickerCard>
-    {/each}
   </div>
 </div>
 
 <style>
-  .region-select-page {
+  .region-screen-viewport {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 65px);
+    padding: 32px 16px;
+    background: radial-gradient(circle at center, #1E3324 0%, #111A13 100%);
+  }
+
+  .region-container {
+    max-width: 760px;
+    width: 100%;
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 3px solid var(--journal-ink, #1B2B1F);
+    box-shadow: 0 8px 0 var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-md, 8px);
+    padding: 28px 24px;
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: var(--space-4) var(--space-2);
+    gap: 16px;
   }
 
-  .header-section {
+  .region-header {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-3);
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
   }
 
-  .page-title {
+  .header-title {
     font-size: 2rem;
-    color: var(--ink);
-    transform: rotate(-1deg);
+    color: var(--journal-forest, #1F3825);
+    margin: 0;
+    letter-spacing: 0.5px;
   }
 
-  .page-desc {
-    font-size: 1rem;
-    max-width: 650px;
-  }
-
-  .regions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: var(--space-4);
-    align-items: stretch;
-  }
-
-  .region-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .region-badge {
-    background-color: var(--turmeric);
-    color: var(--ink);
-    border: 1.5px solid var(--ink);
-    border-radius: 4px;
-    padding: 2px 6px;
-    font-size: 0.72rem;
-    font-weight: bold;
-  }
-
-  .country-tag {
-    font-size: 0.75rem;
-    color: color-mix(in srgb, var(--ink) 75%, transparent);
-  }
-
-  .region-name {
-    font-size: 1.45rem;
+  .header-sub {
+    font-size: 0.95rem;
+    color: var(--journal-soil, #7C4A2D);
     margin: 0;
   }
 
-  .region-desc {
-    font-size: 0.88rem;
-    line-height: 1.35;
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 4px;
   }
 
-  .challenge-box {
-    background-color: color-mix(in srgb, var(--chili) 10%, var(--paper));
-    border: 2px solid var(--chili);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-  }
-
-  .box-tag {
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: var(--chili);
-    margin-bottom: 2px;
-  }
-
-  .challenge-text {
-    font-size: 0.82rem;
-    line-height: 1.3;
-  }
-
-  .satellite-callout {
-    background-color: color-mix(in srgb, var(--monsoon) 12%, var(--paper));
-    border: 1.5px solid var(--ink);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-  }
-
-  .callout-tag {
-    font-size: 0.68rem;
-    font-weight: bold;
-    color: var(--monsoon);
-    margin-bottom: 2px;
-  }
-
-  .callout-text {
-    font-size: 0.75rem;
-    line-height: 1.3;
-  }
-
-  .crops-tag-strip {
+  .minimal-region-card {
+    background: #FFFFFF;
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    border-radius: 8px;
+    padding: 20px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .minimal-region-card.available:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 0 var(--journal-ink, #1B2B1F);
+  }
+
+  .minimal-region-card.locked {
+    opacity: 0.7;
+    background-color: #F8F5EE;
+    border-style: dashed;
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    font-size: 0.75rem;
   }
 
-  .strip-label {
-    font-weight: bold;
-  }
-
-  .crop-tag {
-    background-color: color-mix(in srgb, var(--paddy) 25%, var(--paper));
-    border: 1px solid var(--ink);
-    border-radius: 4px;
-    padding: 1px 6px;
-  }
-
-  .card-action {
-    margin-top: auto;
+  .region-emblem {
     display: flex;
+    align-items: center;
   }
 
-  .card-action :global(.vintage-btn) {
+  .matriarch-pill {
+    background-color: color-mix(in srgb, var(--journal-gold, #E5A93C) 25%, var(--journal-paper, #FAF6ED));
+    border: 1px solid var(--journal-ink, #1B2B1F);
+    color: var(--journal-forest, #1F3825);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .region-title {
+    font-size: 1.6rem;
+    color: var(--journal-forest, #1F3825);
+    margin: 0;
+  }
+
+  .region-summary {
+    font-size: 0.88rem;
+    color: var(--journal-ink, #1B2B1F);
+    margin: 0;
+    line-height: 1.45;
+    flex-grow: 1;
+  }
+
+  .card-footer {
+    padding-top: 6px;
+  }
+
+  .select-btn {
     width: 100%;
+    background-color: var(--journal-gold, #E5A93C);
+    color: var(--journal-ink, #1B2B1F);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
+    transition: background-color 0.15s, transform 0.15s;
+  }
+
+  .select-btn:hover {
+    background-color: #F5B041;
+    transform: translateY(-1px);
+  }
+
+  .disabled-btn {
+    width: 100%;
+    background-color: #E0DDD5;
+    color: #7A7873;
+    border: 1.5px solid #BAB6AE;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: not-allowed;
+  }
+
+  .back-row {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 4px;
+  }
+
+  .back-btn {
+    background: none;
+    border: 1.5px solid var(--journal-ink, #1B2B1F);
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--journal-ink, #1B2B1F);
+    background-color: #FFFFFF;
+    transition: background-color 0.15s;
+  }
+
+  .back-btn:hover {
+    background-color: #F0EAD6;
   }
 </style>

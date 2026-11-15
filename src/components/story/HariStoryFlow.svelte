@@ -310,7 +310,7 @@
               <!-- Hari Portrait in Dialogue Box -->
               <div class="dialogue-portrait-frame">
                 <svg viewBox="0 0 40 40" width="54" height="54" shape-rendering="crispEdges">
-                  <rect width="40" height="40" fill="#142414" stroke="#00FF66" stroke-width="2" />
+                  <rect width="40" height="40" fill="#1F3825" stroke="#E5A93C" stroke-width="2" />
                   <!-- Straw Hat -->
                   <rect x="8" y="8" width="24" height="4" fill="#FBBF24" />
                   <rect x="12" y="3" width="16" height="6" fill="#F59E0B" />
@@ -678,8 +678,8 @@
 
         <!-- Ending Dialogue Box -->
         <div class="terminal-dialogue-box finale-dialogue">
-          <div class="dialogue-header-badge font-pixel" style="color: #00FF66; text-align: center; justify-content: center;">
-            ◆ THANK YOU FOR PLAYING NASA FARMING GAME! ◆
+          <div class="dialogue-header-badge font-pixel" style="color: #E5A93C; text-align: center; justify-content: center;">
+            ◆ THANK YOU FOR PLAYING FIELD SHIFT! ◆
           </div>
 
           <p class="dialogue-text-body font-retro" style="text-align: center; font-size: 1.35rem;">
@@ -724,27 +724,28 @@
     gap: 12px;
   }
 
-  /* Top Arcade Header Bar (Image 3 style) */
+  /* Top Botanical Field Header Bar */
   .arcade-header-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0A140A;
-    border: 3px solid #00FF66;
-    border-radius: 4px;
+    background-color: var(--journal-forest, #1F3825);
+    border: 2.5px solid var(--journal-gold, #E5A93C);
+    border-radius: var(--radius-sm, 6px);
     padding: 10px 18px;
-    box-shadow: 0 0 16px rgba(0, 255, 102, 0.3), 0 4px 0 #000;
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
   }
 
   .arcade-header-title {
-    color: #00FF66;
+    color: var(--journal-paper, #FAF6ED);
     font-size: 1.15rem;
+    font-weight: 700;
     letter-spacing: 1.5px;
     text-align: center;
   }
 
   .arcade-corn-glyphs {
-    color: #FFB703;
+    color: var(--journal-gold, #E5A93C);
     font-size: 1rem;
     letter-spacing: 3px;
   }
@@ -756,17 +757,22 @@
   }
 
   .retro-skip-btn {
-    background-color: #2E1810;
-    color: #D4A373;
-    border: 2px solid #8A4B2A;
-    padding: 6px 12px;
-    font-size: 0.68rem;
+    background-color: var(--journal-paper, #FAF6ED);
+    color: var(--journal-ink, #1B2B1F);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-sm, 4px);
+    padding: 6px 14px;
+    font-size: 0.72rem;
+    font-weight: 700;
     cursor: pointer;
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s, background-color 0.15s;
   }
 
   .retro-skip-btn:hover {
-    background-color: #4A2818;
-    color: #FFF;
+    background-color: var(--journal-gold, #E5A93C);
+    color: var(--journal-ink, #1B2B1F);
+    transform: translateY(-1px);
   }
 
   /* Panoramic Canvas Viewport */
@@ -774,11 +780,11 @@
     position: relative;
     width: 100%;
     min-height: 480px;
-    border: 4px solid #00FF66;
-    border-radius: 4px;
+    border: 3px solid var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-md, 8px);
     overflow: hidden;
     background-color: #121A12;
-    box-shadow: 0 6px 0 #000000;
+    box-shadow: 0 6px 0 var(--journal-ink, #1B2B1F);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -792,7 +798,7 @@
     pointer-events: none;
   }
 
-  /* Center Hero Button (Image 3 style) */
+  /* Center Hero Button */
   .center-hero-prompt {
     position: absolute;
     top: 50%;
@@ -802,22 +808,24 @@
   }
 
   .start-adventure-hero-btn {
-    background-color: #00FF66;
-    color: #000000;
-    font-size: 1.15rem;
-    padding: 16px 28px;
-    border: 3px solid #000000;
-    border-radius: 4px;
+    background-color: var(--journal-gold, #E5A93C);
+    color: var(--journal-ink, #1B2B1F);
+    font-family: var(--font-display, 'Fraunces', serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 16px 32px;
+    border: 3px solid var(--journal-ink, #1B2B1F);
+    border-radius: 999px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(0, 255, 102, 0.7), 0 6px 0 #000000;
-    transition: transform 0.15s, box-shadow 0.15s;
-    letter-spacing: 1px;
+    box-shadow: 0 6px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s;
+    letter-spacing: 0.5px;
   }
 
   .start-adventure-hero-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 30px rgba(0, 255, 102, 0.9), 0 8px 0 #000000;
-    background-color: #33FF88;
+    box-shadow: 0 9px 0 var(--journal-ink, #1B2B1F);
+    background-color: #F2BA49;
   }
 
   /* Character Sprite on Bottom Left */
@@ -834,16 +842,16 @@
     50% { transform: translateY(-4px); }
   }
 
-  /* Dialogue Box (Image 3, 4, 5 style) */
+  /* Dialogue Box */
   .terminal-dialogue-box {
     position: relative;
     z-index: 15;
-    background-color: #0B120B;
-    border: 3px solid #00FF66;
-    box-shadow: 0 0 16px rgba(0, 255, 102, 0.3), 0 4px 0 #000000;
-    border-radius: 3px;
+    background-color: var(--journal-forest, #1F3825);
+    border: 2.5px solid var(--journal-gold, #E5A93C);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-md, 8px);
     margin: 0 30px 24px 140px;
-    padding: 14px 18px;
+    padding: 16px 20px;
   }
 
   .dialogue-box-inner {
@@ -867,33 +875,34 @@
   .amma-box {
     margin: 0 30px 24px 140px;
     position: relative;
-    border-color: #FFB703;
-    box-shadow: 0 0 16px rgba(255, 183, 3, 0.3), 0 4px 0 #000000;
+    border-color: var(--journal-gold, #E5A93C);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
   }
 
   .dialogue-header-badge {
-    font-size: 0.85rem;
-    color: #00FF66;
+    font-size: 0.9rem;
+    color: var(--journal-gold, #E5A93C);
     letter-spacing: 1px;
     display: flex;
     align-items: center;
     gap: 10px;
+    font-weight: 700;
   }
 
   .sub-role {
     font-size: 1.15rem;
-    color: #A0C8AA;
+    color: var(--journal-sage, #4E7C5A);
   }
 
   .dialogue-text-body {
     font-size: 1.45rem;
-    color: #FFFFFF;
+    color: var(--journal-paper, #FAF6ED);
     line-height: 1.35;
     min-height: 52px;
   }
 
   .cursor {
-    color: #00FF66;
+    color: var(--journal-gold, #E5A93C);
     animation: cursorBlink 0.8s infinite;
   }
 
@@ -911,8 +920,9 @@
   .click-to-continue-btn {
     background: none;
     border: none;
-    color: #00FF66;
-    font-size: 0.75rem;
+    color: var(--journal-gold, #E5A93C);
+    font-size: 0.78rem;
+    font-weight: 700;
     cursor: pointer;
     letter-spacing: 1px;
     animation: textPulse 1.4s infinite;
@@ -939,21 +949,22 @@
     top: 40px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #0A0A0A;
-    border: 4px solid #8A4B2A;
-    outline: 2px solid #00FF66;
-    box-shadow: 0 0 20px rgba(230, 57, 70, 0.4), 0 6px 0 #000;
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 3px solid var(--journal-ink, #1B2B1F);
+    box-shadow: 0 6px 0 var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-md, 8px);
     max-width: 440px;
     width: 90%;
     z-index: 10;
   }
 
   .crisis-banner-header {
-    background-color: #E63946;
-    color: #FFF;
+    background-color: var(--journal-madder, #B83827);
+    color: var(--journal-paper, #FAF6ED);
     text-align: center;
-    padding: 6px;
-    font-size: 0.85rem;
+    padding: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
     letter-spacing: 1px;
   }
 
@@ -964,22 +975,23 @@
   }
 
   .nasa-telemetry-box {
-    background-color: #121612;
-    color: #FFB703;
-    padding: 8px 12px;
-    font-size: 0.72rem;
+    background-color: var(--journal-forest, #1F3825);
+    color: var(--journal-gold, #E5A93C);
+    padding: 10px 14px;
+    font-size: 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    border-top: 2px solid #8A4B2A;
+    border-top: 2px solid var(--journal-ink, #1B2B1F);
   }
 
   /* Finale Scene */
   .finale-backdrop {
-    background-color: #0A1C0A;
+    background-color: var(--journal-forest, #1F3825);
     padding: 30px;
     justify-content: center;
     align-items: center;
+    border-radius: var(--radius-md, 8px);
   }
 
   .global-farmers-lineup {
@@ -996,15 +1008,17 @@
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    background-color: #142214;
-    border: 2px solid #00FF66;
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
     padding: 8px;
-    border-radius: 4px;
+    border-radius: var(--radius-sm, 6px);
   }
 
   .flag-tag {
-    font-size: 0.62rem;
-    color: #FFB703;
+    font-size: 0.65rem;
+    color: var(--journal-madder, #B83827);
+    font-weight: 700;
   }
 
   .farmer-pixel-art {
@@ -1029,15 +1043,16 @@
   }
 
   .stat-pill {
-    background-color: #1A2E1A;
-    border: 1px solid #00FF66;
-    color: #A0C8AA;
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 1.5px solid var(--journal-ink, #1B2B1F);
+    color: var(--journal-ink, #1B2B1F);
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
     padding: 6px 12px;
-    border-radius: 3px;
-    font-size: 0.75rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
   }
 
   .stat-pill strong {
-    color: #00FF66;
+    color: var(--journal-forest, #1F3825);
   }
 </style>

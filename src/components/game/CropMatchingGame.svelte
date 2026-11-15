@@ -191,8 +191,8 @@
       <svg class="connecting-lines-svg">
         <defs>
           <linearGradient id="laserGreen" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#00FF66" />
-            <stop offset="100%" stop-color="#38B000" />
+            <stop offset="0%" stop-color="#2D6A4F" />
+            <stop offset="100%" stop-color="#52B788" />
           </linearGradient>
         </defs>
         {#each lines as line}
@@ -205,8 +205,8 @@
             stroke-width="5" 
             stroke-linecap="round"
           />
-          <circle cx={line.x1} cy={line.y1} r="4" fill="#00FF66" />
-          <circle cx={line.x2} cy={line.y2} r="4" fill="#38B000" />
+          <circle cx={line.x1} cy={line.y1} r="4" fill="#2D6A4F" />
+          <circle cx={line.x2} cy={line.y2} r="4" fill="#52B788" />
         {/each}
       </svg>
 
@@ -441,34 +441,39 @@
   }
 
   .main-title {
-    font-size: 1.2rem;
-    color: #E29578;
-    letter-spacing: 1px;
+    font-size: 1.5rem;
+    color: var(--journal-forest, #1F3825);
+    font-family: var(--font-display, 'Fraunces', serif);
+    letter-spacing: 0.5px;
     margin-bottom: 6px;
   }
 
   .sub-instruction {
-    font-size: 1.15rem;
-    color: #CDB4A2;
+    font-size: 0.95rem;
+    color: var(--journal-ink, #1B2B1F);
+    font-family: var(--font-body, 'Figtree', sans-serif);
   }
 
   .completion-banner {
-    background-color: #8B0000;
-    color: #FFF;
-    border: 3px solid #E63946;
+    background-color: var(--journal-forest, #1F3825);
+    color: var(--journal-paper, #FAF6ED);
+    border: 2.5px solid var(--journal-gold, #E5A93C);
+    border-radius: var(--radius-sm, 6px);
     padding: 12px;
     text-align: center;
     font-size: 0.95rem;
-    box-shadow: 0 4px 0 #000;
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
   }
 
   .status-alert {
-    background-color: #2E1E14;
-    color: #FFB703;
-    border: 2px solid #8A522A;
+    background-color: var(--journal-paper, #FAF6ED);
+    color: var(--journal-ink, #1B2B1F);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-sm, 6px);
     padding: 8px 14px;
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
   }
 
   .matching-stage-row {
@@ -509,9 +514,10 @@
   }
 
   .match-box {
-    background-color: #24140D;
-    border: 2px solid #6E3B1C;
-    border-radius: 4px;
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-sm, 6px);
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
     padding: 14px 8px;
     display: flex;
     flex-direction: column;
@@ -523,25 +529,33 @@
   }
 
   .match-box:hover:not(:disabled) {
-    border-color: #FFB703;
+    border-color: var(--journal-gold, #E5A93C);
     transform: translateY(-2px);
   }
 
   .match-box.is-selected {
-    border-color: #00FF66;
-    box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
-    background-color: #2A382A;
+    border-color: var(--journal-gold, #E5A93C);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
+    background-color: color-mix(in srgb, var(--journal-gold, #E5A93C) 15%, #FAF6ED);
   }
 
   .match-box.is-matched {
-    background-color: #38B000 !important;
-    border-color: #00FF66 !important;
+    background-color: var(--journal-forest, #1F3825) !important;
+    border-color: var(--journal-gold, #E5A93C) !important;
     color: #FFFFFF !important;
   }
 
+  .match-box.is-matched .box-label {
+    color: #FFFFFF !important;
+  }
+
+  .match-box.is-matched .box-sub {
+    color: var(--journal-gold, #E5A93C) !important;
+  }
+
   .match-box.is-matched-crop {
-    border-color: #38B000;
-    background-color: #1A281A;
+    border-color: var(--journal-forest, #1F3825);
+    background-color: color-mix(in srgb, var(--journal-sage, #4E7C5A) 25%, #FAF6ED);
   }
 
   .emblem-circle {
@@ -562,7 +576,7 @@
 
   .emblem-circle.co2_l2 {
     background-color: #2A5A2A;
-    border-color: #00FF66;
+    border-color: var(--journal-gold, #E5A93C);
   }
 
   .emblem-circle.no_co2 {
@@ -583,14 +597,15 @@
   }
 
   .box-label {
-    font-size: 1.05rem;
-    color: #F8EAD6;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--journal-ink, #1B2B1F);
     margin-top: 4px;
   }
 
   .box-sub {
-    font-size: 0.65rem;
-    color: #A88F78;
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--journal-ink) 70%, transparent);
   }
 
   .crop-pixel-art {
@@ -680,12 +695,14 @@
   }
 
   .proceed-btn {
-    background-color: #00FF66;
-    color: #000;
-    border: 3px solid #000;
-    box-shadow: 0 4px 0 #000;
+    background-color: var(--journal-forest, #1F3825);
+    color: var(--journal-paper, #FAF6ED);
+    border: 2.5px solid var(--journal-ink, #1B2B1F);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-sm, 6px);
     padding: 12px 18px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 700;
     cursor: pointer;
     text-align: center;
     transition: transform 0.15s, box-shadow 0.15s;
@@ -693,7 +710,7 @@
 
   .proceed-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 0 #000;
-    background-color: #33FF88;
+    box-shadow: 0 6px 0 var(--journal-ink, #1B2B1F);
+    background-color: #2D5237;
   }
 </style>

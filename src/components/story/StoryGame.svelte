@@ -506,7 +506,10 @@
     <!-- Top Story Quest Banner -->
     <div class="quest-banner sticker-card no-tape">
       <div class="quest-left">
-        <span class="farmer-avatar" aria-hidden="true">🧑🏽‍🌾</span>
+        <svg class="quest-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 3C8 7 6 12 6 17c0 3.3 2.7 6 6 6s6-2.7 6-6c0-5-2-10-6-14z" fill="var(--turmeric)" stroke="var(--ink)"/>
+          <path d="M12 9v12" stroke="var(--ink)"/>
+        </svg>
         <div class="quest-meta">
           <span class="farmer-name font-display">HARI’S FARM JOURNEY</span>
           <span class="chapter-badge font-data">{currentChapter.subtitle}</span>
@@ -517,7 +520,7 @@
         <span class="obj-text font-body">{currentChapter.objective}</span>
       </div>
       {#if onViewStyleguide}
-        <button class="styleguide-link font-data" onclick={onViewStyleguide}>🎨 Styleguide</button>
+        <button class="styleguide-link font-data" onclick={onViewStyleguide}>Styleguide</button>
       {/if}
     </div>
 
@@ -586,10 +589,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-
-  .farmer-avatar {
-    font-size: 1.5rem;
   }
 
   .quest-meta {
