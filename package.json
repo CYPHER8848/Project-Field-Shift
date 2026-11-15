@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test --experimental-strip-types --loader ./tests/loader.mjs tests/simulation/water-balance.test.ts tests/simulation/nitrogen.test.ts tests/simulation/erosion-som.test.ts tests/simulation/engine.test.ts",
-    "check": "svelte-check --tsconfig ./tsconfig.json --config ./vite.config.ts"
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
