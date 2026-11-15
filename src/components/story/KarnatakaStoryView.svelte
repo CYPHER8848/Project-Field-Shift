@@ -13,13 +13,13 @@
     DECCAN_INITIAL_METERS 
   } from '../../lib/story/karnataka-rules';
 
-  // High-resolution visual assets
-  import bg1990 from '../../assets/bg_punjab_1990.png';
-  import bg2026 from '../../assets/bg_punjab_2026.png';
-  import bg2040 from '../../assets/bg_punjab_2040.png';
-  import char1990 from '../../assets/char_bebe_1990.png';
-  import char2026 from '../../assets/char_bebe_hari_2026.png';
-  import char2040 from '../../assets/char_dada_grandchildren_2040.png';
+  // High-resolution visual assets (Bespoke Karnataka Deccan Artwork)
+  import bg1990 from '../../assets/bg_karnataka_1990.jpg';
+  import bg2026 from '../../assets/bg_karnataka_2026.jpg';
+  import bg2040 from '../../assets/bg_karnataka_2040.jpg';
+  import char1990 from '../../assets/char_ajja_gowri_1990.jpg';
+  import char2026 from '../../assets/char_gowri_chetan_2026.jpg';
+  import char2040 from '../../assets/char_ajji_grandchildren_2040.jpg';
 
   interface Props {
     onBackToRegions: () => void;
