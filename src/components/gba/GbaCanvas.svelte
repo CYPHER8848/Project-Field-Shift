@@ -118,9 +118,15 @@
         drawZeldaActionPrompt(ctx, activeEntity, tick);
       }
 
-      // 14. Weather Effects (Monsoon rain or summer heat dust)
+      // 14. Weather Effects (Monsoon rain, summer heat haze, or golden harvest chaff)
       if (weatherCondition === 'rain') {
         drawRainOverlay(ctx, tick);
+      } else if (weatherCondition === 'dry') {
+        drawDryHeatHaze(ctx, tick);
+      } else if (weatherCondition === 'harvest') {
+        drawHarvestChaff(ctx, tick);
+      } else {
+        drawAmbientPetals(ctx, tick);
       }
 
       // 15. Night Lantern Glows (rendered in world space if night)
@@ -1329,6 +1335,68 @@
       ctx.moveTo(rx, ry);
       ctx.lineTo(rx - 3, ry + 12);
       ctx.stroke();
+    }
+  }
+
+  // 18. Dry Heat Haze & Dust Motives (Summer Drought Weather)
+  function drawDryHeatHaze(ctx: CanvasRenderingContext2D, tick: number) {
+    // Shimmering dust motes
+    for (let i = 0; i < 24; i++) {
+      const dx = (i * 47 + Math.sin(tick * 0.05 + i) * 15) % WORLD_WIDTH;
+      const dy = (i * 31 - tick * 1.2) % WORLD_HEIGHT;
+      const adjY = dy < 0 ? dy + WORLD_HEIGHT : dy;
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(235, 180, 90, 0.65)' : 'rgba(215, 140, 50, 0.45)';
+      ctx.beginPath();
+      ctx.arc(dx, adjY, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Horizontal heat wave distortion ribbons
+    ctx.strokeStyle = 'rgba(255, 230, 160, 0.08)';
+    ctx.lineWidth = 3;
+    for (let w = 0; w < 4; w++) {
+      const wy = 200 + w * 120 + Math.sin(tick * 0.08 + w) * 8;
+      ctx.beginPath();
+      for (let wx = 0; wx < WORLD_WIDTH; wx += 40) {
+        const offY = Math.sin(wx * 0.04 + tick * 0.1) * 4;
+        if (wx === 0) ctx.moveTo(wx, wy + offY);
+        else ctx.lineTo(wx, wy + offY);
+      }
+      ctx.stroke();
+    }
+  }
+
+  // 19. Harvest Golden Chaff & Husk Flakes
+  function drawHarvestChaff(ctx: CanvasRenderingContext2D, tick: number) {
+    for (let i = 0; i < 30; i++) {
+      const cx = (i * 37 + tick * 3.5) % WORLD_WIDTH;
+      const cy = (i * 43 + Math.sin(tick * 0.06 + i) * 20 + tick * 1.2) % WORLD_HEIGHT;
+      const rot = tick * 0.08 + i;
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rot);
+      ctx.fillStyle = i % 3 === 0 ? '#E5A93C' : i % 3 === 1 ? '#F4D06F' : '#D68C45';
+      ctx.fillRect(-2, -1, 4, 2);
+      ctx.restore();
+    }
+  }
+
+  // 20. Gentle Ambient Flower Petals (Spring/Normal Weather)
+  function drawAmbientPetals(ctx: CanvasRenderingContext2D, tick: number) {
+    for (let i = 0; i < 18; i++) {
+      const px = (i * 53 + tick * 1.8 + Math.sin(tick * 0.04 + i) * 18) % WORLD_WIDTH;
+      const py = (i * 39 + tick * 1.4) % WORLD_HEIGHT;
+      const rot = Math.sin(tick * 0.05 + i) * 0.8;
+
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(rot);
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(255, 255, 255, 0.75)' : 'rgba(255, 215, 230, 0.65)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 3, 1.8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     }
   }
 </script>
