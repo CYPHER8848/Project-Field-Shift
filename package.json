@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json --config ./vite.config.ts"
+    "test": "node --test --experimental-strip-types --loader ./tests/loader.mjs tests/simulation/water-balance.test.ts tests/simulation/nitrogen.test.ts tests/simulation/erosion-som.test.ts tests/simulation/engine.test.ts",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
@@ -15,5 +16,11 @@
     "svelte-check": "^4.0.0",
     "typescript": "^5.7.0",
     "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "canvas-confetti": "^1.9.4",
+    "lucide-svelte": "^1.0.1",
+    "nes.css": "^2.2.1"
   }
 }

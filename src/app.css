@@ -1,0 +1,191 @@
+@import 'nes.css/css/nes.min.css';
+
+/* Field Shift: NASA Farming Game - Retro GBA / NES Arcade UI */
+:root {
+  /* Colors */
+  --retro-bg: #121612;
+  --retro-surface: #182218;
+  --retro-surface-light: #223222;
+  --retro-green: #00FF66;
+  --retro-green-dark: #2E7D32;
+  --retro-turmeric: #FFB703;
+  --retro-chili: #E63946;
+  --retro-blue: #2F6FED;
+  --retro-ink: #000000;
+  --retro-text: #FFFFFF;
+  --retro-subtext: #A0C8AA;
+
+  /* Typography */
+  --font-pixel: "Press Start 2P", monospace;
+  --font-retro: "VT323", "Silkscreen", monospace;
+  --font-data: "Space Mono", monospace;
+  --font-body: "Figtree", system-ui, sans-serif;
+
+  /* Geometry & Shadows */
+  --pixel-border: 3px solid #00FF66;
+  --pixel-shadow: 0 4px 0 #000000;
+  --fast: 120ms;
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  background-color: var(--retro-bg);
+  color: var(--retro-text);
+  font-family: var(--font-retro);
+  font-size: 18px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  image-rendering: pixelated;
+  overflow-x: hidden;
+}
+
+/* Subtle CRT Scanlines */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  z-index: 9999;
+}
+
+/* Pixel Headings */
+h1, h2, h3, h4, .font-pixel {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.5px;
+}
+
+.font-retro {
+  font-family: var(--font-retro);
+}
+
+.font-data {
+  font-family: var(--font-data);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Custom NES / GBA Arcade Container */
+.arcade-frame {
+  background-color: var(--retro-surface);
+  border: 4px solid var(--retro-green);
+  border-radius: 4px;
+  box-shadow: 0 6px 0 var(--retro-ink), inset 0 0 12px rgba(0, 255, 102, 0.15);
+  position: relative;
+}
+
+/* Top Arcade Header Bar (Henry's Farm style) */
+.arcade-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0A140A;
+  border: 3px solid var(--retro-green);
+  border-radius: 4px;
+  padding: 10px 16px;
+  box-shadow: 0 4px 0 #000;
+  margin-bottom: 12px;
+}
+
+.arcade-header-title {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.85rem, 2.2vw, 1.25rem);
+  color: var(--retro-green);
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.arcade-corn-glyphs {
+  color: var(--retro-turmeric);
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+}
+
+/* Retro Pixel Button (Enhanced NES button) */
+.pixel-btn {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  padding: 10px 18px;
+  background-color: var(--retro-green);
+  color: #000000;
+  border: 3px solid #000000;
+  box-shadow: 0 4px 0 #000000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  user-select: none;
+  transition: transform var(--fast) var(--spring), box-shadow var(--fast) var(--spring);
+}
+
+.pixel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #000000;
+  background-color: #33FF88;
+}
+
+.pixel-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #000000;
+}
+
+.pixel-btn.btn-warning {
+  background-color: var(--retro-turmeric);
+}
+
+.pixel-btn.btn-danger {
+  background-color: var(--retro-chili);
+  color: #FFFFFF;
+}
+
+.pixel-btn.btn-secondary {
+  background-color: #2A382A;
+  color: var(--retro-green);
+  border-color: var(--retro-green);
+}
+
+.pixel-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A140A;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--retro-green);
+  border-radius: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

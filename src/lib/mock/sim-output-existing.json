@@ -1,0 +1,13 @@
+{
+  "strategy": "existing_rotation",
+  "years": [
+    { "year": 2026, "meters": { "soilMoisture": 0.41, "organicMatter": 1.8, "nitrogen": 36, "erosionRisk": 0.26, "income": 100, "waterUse": 430 } },
+    { "year": 2030, "meters": { "soilMoisture": 0.39, "organicMatter": 1.7, "nitrogen": 34, "erosionRisk": 0.29, "income": 97, "waterUse": 445 } },
+    { "year": 2040, "meters": { "soilMoisture": 0.36, "organicMatter": 1.5, "nitrogen": 31, "erosionRisk": 0.34, "income": 92, "waterUse": 470 } }
+  ],
+  "meters": { "soilMoisture": 0.36, "organicMatter": 1.5, "nitrogen": 31, "erosionRisk": 0.34, "income": 92, "waterUse": 470 },
+  "p10": { "soilMoisture": 0.30, "organicMatter": 1.3, "nitrogen": 26, "erosionRisk": 0.42, "income": 80, "waterUse": 505 },
+  "p50": { "soilMoisture": 0.36, "organicMatter": 1.5, "nitrogen": 31, "erosionRisk": 0.34, "income": 92, "waterUse": 470 },
+  "p90": { "soilMoisture": 0.42, "organicMatter": 1.7, "nitrogen": 37, "erosionRisk": 0.27, "income": 102, "waterUse": 440 },
+  "limitations": ["Entirely synthetic contract example; not observed farm data.", "Not calibrated to a real farm.", "Not a yield forecast or agronomic recommendation."]
+}

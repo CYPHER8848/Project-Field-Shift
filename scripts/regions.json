@@ -1,0 +1,41 @@
+{
+  "source": "Phase 0 report: provisional illustrative points; team approval required before representing as farm locations.",
+  "dateRange": {
+    "start": "1981-01-01",
+    "end": "2025-12-31"
+  },
+  "regions": [
+    {
+      "id": "punjab",
+      "name": "Punjab, India",
+      "latitude": 30.901,
+      "longitude": 75.8573,
+      "site": "Ludhiana-area illustrative point",
+      "status": "provisional"
+    },
+    {
+      "id": "iowa",
+      "name": "Iowa, USA",
+      "latitude": 42.0308,
+      "longitude": -93.6319,
+      "site": "Ames-area illustrative point",
+      "status": "provisional"
+    },
+    {
+      "id": "karnataka",
+      "name": "Karnataka, India",
+      "latitude": 16.2076,
+      "longitude": 77.3463,
+      "site": "Raichur-area illustrative point",
+      "status": "provisional"
+    },
+    {
+      "id": "sahel-kenya",
+      "name": "Sahel / Kenya",
+      "latitude": 3.1167,
+      "longitude": 35.6,
+      "site": "Turkana-area illustrative point",
+      "status": "provisional; confirms Kenya interpretation, requires team approval"
+    }
+  ]
+}

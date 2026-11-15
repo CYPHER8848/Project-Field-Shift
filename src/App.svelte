@@ -1,31 +1,414 @@
 <script lang="ts">
-  type Scene = 'intro' | 'region' | 'season' | 'compare' | 'reflect';
-  const scenes: { id: Scene; label: string }[] = [
-    { id: 'intro', label: 'The inheritance' }, { id: 'region', label: 'Choose a region' },
-    { id: 'season', label: 'A changing season' }, { id: 'compare', label: 'Compare paths' },
-    { id: 'reflect', label: 'What we leave behind' }
-  ];
-  let active: Scene = $state('intro');
-  let region = $state('Punjab, India');
-  function next() {
-    const index = scenes.findIndex((scene) => scene.id === active);
-    active = scenes[Math.min(index + 1, scenes.length - 1)].id;
+  import type { SceneView, RegionInfo, EraInfo, FarmMeters, StrategyOption } from './types/game';
+  import { REGIONS, ERAS } from './data/mockData';
+  import IntroScreen from './components/intro/IntroScreen.svelte';
+  import RegionSelectScreen from './components/region/RegionSelectScreen.svelte';
+  import FarmPlayScreen from './components/game/FarmPlayScreen.svelte';
+  import GbaGame from './components/gba/GbaGame.svelte';
+  import HariStoryFlow from './components/story/HariStoryFlow.svelte';
+  import CompareScreen from './components/compare/CompareScreen.svelte';
+  import NasaDataView from './components/nasa/NasaDataView.svelte';
+  import StyleguideView from './components/styleguide/StyleguideView.svelte';
+  import JournalView from './components/journal/JournalView.svelte';
+
+  // Extended SceneView to include Member C's Field Journal
+  type ExtendedSceneView = SceneView | 'JOURNAL';
+
+  // Master State Machine - Starts directly into Hari's Story Game!
+  let currentView = $state<ExtendedSceneView>('STORY_GAME');
+  let selectedRegion = $state<RegionInfo>(REGIONS.punjab);
+  let eraIndex = $state(0);
+  const currentEra = $derived(ERAS[eraIndex]);
+
+  // Seasons cycle
+  const SEASONS = ['Kharif (Monsoon)', 'Rabi (Winter)', 'Zaid (Summer)'];
+  let seasonIndex = $state(0);
+  const currentSeasonName = $derived(SEASONS[seasonIndex]);
+
+  // Live Farm Meters
+  let meters = $state<FarmMeters>({ ...REGIONS.punjab.initialMeters });
+
+  // Play Mode: 'gba' (GBA Pokémon/Zelda style) vs 'almanac' (classic illustrated almanac)
+  let playMode = $state<'gba' | 'almanac'>('gba');
+
+  // Weather condition for graphics
+  let weatherCondition = $state<'normal' | 'rain' | 'dry' | 'harvest'>('normal');
+
+  // Sound toggle (visual indicator)
+  let isMuted = $state(false);
+
+  // Transition to specific view
+  function setView(view: ExtendedSceneView) {
+    currentView = view;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Region Selection Handler
+  function handleSelectRegion(region: RegionInfo) {
+    selectedRegion = region;
+    meters = { ...region.initialMeters };
+    setView('SEASON_PLAY');
+  }
+
+  // Season Progression
+  function advanceSeason() {
+    seasonIndex = (seasonIndex + 1) % SEASONS.length;
+    
+    // If completed full year, advance era or cycle
+    if (seasonIndex === 0) {
+      if (eraIndex < ERAS.length - 1) {
+        eraIndex++;
+      }
+    }
+
+    // Dynamic seasonal adjustments based on weather
+    if (seasonIndex === 0) {
+      // Monsoon
+      weatherCondition = 'rain';
+      meters.soilMoisture = Math.min(95, meters.soilMoisture + 35);
+      meters.erosionRisk = Math.min(85, meters.erosionRisk + 12);
+      meters.waterUse += 120;
+    } else if (seasonIndex === 1) {
+      // Winter harvest
+      weatherCondition = 'harvest';
+      meters.soilMoisture = Math.max(25, meters.soilMoisture - 18);
+      meters.income += 45;
+      meters.organicMatter = Math.min(90, meters.organicMatter + 4);
+    } else {
+      // Dry Summer
+      weatherCondition = 'dry';
+      meters.soilMoisture = Math.max(15, meters.soilMoisture - 24);
+      meters.erosionRisk = Math.min(90, meters.erosionRisk + 8);
+    }
+  }
+
+  // Trigger manual weather condition
+  function handleTriggerEvent(event: 'rain' | 'dry' | 'harvest' | 'normal') {
+    weatherCondition = event;
+    if (event === 'rain') {
+      meters.soilMoisture = Math.min(100, meters.soilMoisture + 25);
+    } else if (event === 'dry') {
+      meters.soilMoisture = Math.max(10, meters.soilMoisture - 20);
+    } else if (event === 'harvest') {
+      meters.income += 30;
+      meters.nitrogen = Math.min(100, meters.nitrogen + 10);
+    }
+  }
+
+  // Strategy Adoption
+  function handleSelectStrategy(strat: StrategyOption) {
+    meters.soilMoisture = Math.min(100, Math.max(10, meters.soilMoisture - strat.metrics.waterStressDelta * 0.4));
+    meters.income = Math.max(20, Math.round(meters.income * (1 + strat.metrics.incomeReturn / 100)));
+    meters.organicMatter = Math.min(100, Math.max(15, meters.organicMatter + strat.metrics.soilCarbonDelta * 0.5));
+    meters.erosionRisk = Math.max(10, Math.min(90, meters.erosionRisk - 15));
+    setView('SEASON_PLAY');
   }
 </script>
-<svelte:head><title>Field Shift — Four Seasons of Amma's Field</title></svelte:head>
-<main class="shell">
-  <header class="topbar"><a class="wordmark" href="#intro" onclick={() => active = 'intro'}>FIELD SHIFT</a><span class="eyebrow">A farm, across generations</span></header>
-  <nav aria-label="Game scenes" class="scene-nav">{#each scenes as scene}<button class:current={active === scene.id} onclick={() => active = scene.id}>{scene.label}</button>{/each}</nav>
-  {#if active === 'intro'}
-    <section class="hero"><p class="eyebrow">FOUR SEASONS OF AMMA'S FIELD</p><h1>Every season leaves<br />something behind.</h1><p class="lead">A family farm. A changing climate. Decisions that echo beyond one harvest.</p><button class="primary" onclick={next}>Begin the story</button></section>
-  {:else if active === 'region'}
-    <section class="panel"><p class="eyebrow">CHAPTER 01 · PLACE</p><h1>Where does your story begin?</h1><label for="region">Choose a demonstration region</label><select id="region" bind:value={region}><option>Punjab, India</option><option>Iowa, USA</option><option>Karnataka, India</option><option>Sahel / Kenya (site to be confirmed)</option></select><p class="muted">Demonstration context only, not a farm-specific diagnosis.</p><button class="primary" onclick={next}>Continue</button></section>
-  {:else if active === 'season'}
-    <section class="panel"><p class="eyebrow">CHAPTER 02 · THE FIELD</p><h1>{region}</h1><div class="field-art" role="img" aria-label="Illustrative farm plot with rows of crops"><svg viewBox="0 0 720 260" aria-hidden="true"><rect width="720" height="260" fill="#dce5c9" /><path d="M0 140 Q180 95 360 140 T720 130 V260 H0Z" fill="#9a815b" />{#each [0,1,2,3,4,5] as n}<path d={'M' + (60+n*110) + ' 260 Q' + (90+n*105) + ' 185 ' + (120+n*100) + ' 135'} stroke="#d4b987" stroke-width="16" fill="none" /><path d={'M' + (60+n*110) + ' 210 l-18 -25 m18 25 l22 -30'} stroke="#486c42" stroke-width="7" stroke-linecap="round" />{/each}<circle cx="590" cy="55" r="27" fill="#e8b95c" /></svg></div><p class="muted">Illustrative scene only. Environmental indicators will be connected in later phases.</p><button class="primary" onclick={next}>See the possible paths</button></section>
-  {:else if active === 'compare'}
-    <section class="panel"><p class="eyebrow">CHAPTER 03 · CHOICES</p><h1>There is more than one way forward.</h1><div class="cards"><article><h2>Keep the rhythm</h2><p>Continue the existing rotation. A baseline for comparison, not a recommendation.</p></article><article><h2>Build resilience</h2><p>Explore a rotation that prioritises soil cover and water resilience.</p></article><article><h2>Protect income</h2><p>Explore a rotation that places greater weight on near-term farm income.</p></article></div><p class="muted">Strategy results are placeholders until the simulation and evidence pipeline are implemented.</p><button class="primary" onclick={next}>Reflect</button></section>
-  {:else}
-    <section class="panel"><p class="eyebrow">EPILOGUE · STEWARDSHIP</p><h1>The data can show a pattern.<br />The farmer knows the field.</h1><p class="lead">Field Shift is designed to support farmers and local experts, not replace their judgement.</p><button class="primary" onclick={() => active = 'intro'}>Begin again</button></section>
-  {/if}
-  <footer>NASA Earth observation data · Decision support, not a yield forecast</footer>
-</main>
+
+<div class="app-root">
+  <!-- Persistent Retro Arcade Console Top Bar -->
+  <header class="app-header">
+    <div class="header-inner">
+      <button class="brand-link" onclick={() => setView('STORY_GAME')}>
+        <span class="seed-symbol font-pixel">◆</span>
+        <span class="brand-title font-pixel">FIELD SHIFT</span>
+        <span class="brand-sub font-data">AMMA'S FIELD</span>
+      </button>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-links">
+        <button 
+          class="nav-tab {currentView === 'STORY_GAME' ? 'active' : ''}" 
+          onclick={() => setView('STORY_GAME')}
+        >
+          [◆ HARI'S STORY]
+        </button>
+
+        <button 
+          class="nav-tab {currentView === 'SEASON_PLAY' ? 'active' : ''}" 
+          onclick={() => setView('SEASON_PLAY')}
+        >
+          [🎮 GBA OVERWORLD]
+        </button>
+
+        <button 
+          class="nav-tab {currentView === 'REGION_SELECT' ? 'active' : ''}" 
+          onclick={() => setView('REGION_SELECT')}
+        >
+          [🌍 REGIONS]
+        </button>
+
+        <button 
+          class="nav-tab {currentView === 'STRATEGY_COMPARE' ? 'active' : ''}" 
+          onclick={() => setView('STRATEGY_COMPARE')}
+        >
+          [⚖️ STRATEGIES]
+        </button>
+
+        <button 
+          class="nav-tab {currentView === 'JOURNAL' ? 'active' : ''}" 
+          onclick={() => setView('JOURNAL')}
+        >
+          [📖 FIELD JOURNAL]
+        </button>
+
+        <button 
+          class="nav-tab {currentView === 'NASA_DATA' ? 'active' : ''}" 
+          onclick={() => setView('NASA_DATA')}
+        >
+          [🛰️ NASA DATA]
+        </button>
+
+        <button 
+          class="nav-tab {currentView === 'STYLEGUIDE' ? 'active' : ''}" 
+          onclick={() => setView('STYLEGUIDE')}
+        >
+          [? STYLEGUIDE]
+        </button>
+      </nav>
+
+      <!-- Sound Toggle -->
+      <button 
+        class="sound-btn font-data" 
+        onclick={() => isMuted = !isMuted}
+        title={isMuted ? "Sound Muted" : "Sound Enabled"}
+      >
+        {isMuted ? "[♪ MUTED]" : "[♪ AUDIO ON]"}
+      </button>
+    </div>
+  </header>
+
+  <!-- Active Main Content Scene -->
+  <main class="app-main">
+    {#if currentView === 'STORY_GAME'}
+      <HariStoryFlow 
+        currentRegion={selectedRegion}
+        onViewStyleguide={() => setView('STYLEGUIDE')}
+        onOpenOverworld={() => setView('SEASON_PLAY')}
+      />
+    {:else if currentView === 'INTRO'}
+      <IntroScreen 
+        onStartGame={() => setView('REGION_SELECT')} 
+        onViewStyleguide={() => setView('STYLEGUIDE')}
+        onViewNasaDocs={() => setView('NASA_DATA')}
+      />
+    {:else if currentView === 'REGION_SELECT'}
+      <RegionSelectScreen 
+        onSelectRegion={handleSelectRegion}
+        onBack={() => setView('STORY_GAME')}
+      />
+    {:else if currentView === 'SEASON_PLAY'}
+      <div class="mode-switch-bar">
+        <span class="mode-label font-data">Display Mode:</span>
+        <button 
+          class="mode-btn font-pixel {playMode === 'gba' ? 'active' : ''}" 
+          onclick={() => playMode = 'gba'}
+        >
+          [2D GBA OVERWORLD]
+        </button>
+        <button 
+          class="mode-btn font-pixel {playMode === 'almanac' ? 'active' : ''}" 
+          onclick={() => playMode = 'almanac'}
+        >
+          [ILLUSTRATED ALMANAC]
+        </button>
+      </div>
+
+      {#if playMode === 'gba'}
+        <GbaGame 
+          currentRegion={selectedRegion}
+          {currentEra}
+          {meters}
+          {currentSeasonName}
+          {weatherCondition}
+          onOpenCompare={() => setView('STRATEGY_COMPARE')}
+          onOpenNasa={() => setView('NASA_DATA')}
+          onOpenRegionSelect={() => setView('REGION_SELECT')}
+          onOpenStyleguide={() => setView('STYLEGUIDE')}
+          onAdvanceSeason={advanceSeason}
+        />
+      {:else}
+        <FarmPlayScreen 
+          currentRegion={selectedRegion}
+          {currentEra}
+          {meters}
+          {currentSeasonName}
+          {weatherCondition}
+          onOpenCompare={() => setView('STRATEGY_COMPARE')}
+          onChangeRegion={() => setView('REGION_SELECT')}
+          onViewNasaDocs={() => setView('NASA_DATA')}
+          onAdvanceSeason={advanceSeason}
+          onTriggerEvent={handleTriggerEvent}
+        />
+      {/if}
+    {:else if currentView === 'STRATEGY_COMPARE'}
+      <CompareScreen 
+        regionId={selectedRegion.id}
+        onSelectStrategy={handleSelectStrategy}
+        onBack={() => setView('SEASON_PLAY')}
+      />
+    {:else if currentView === 'JOURNAL'}
+      <JournalView />
+    {:else if currentView === 'NASA_DATA'}
+      <NasaDataView onBack={() => setView('SEASON_PLAY')} />
+    {:else if currentView === 'STYLEGUIDE'}
+      <StyleguideView onBack={() => setView('SEASON_PLAY')} />
+    {/if}
+  </main>
+</div>
+
+<style>
+  .app-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #0E140E;
+    color: #FFFFFF;
+  }
+
+  .app-header {
+    background-color: #080D08;
+    border-bottom: 3px solid #00FF66;
+    padding: 8px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 255, 102, 0.2);
+  }
+
+  .header-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    color: #00FF66;
+  }
+
+  .seed-symbol {
+    font-size: 1.1rem;
+    color: #FFB703;
+  }
+
+  .brand-title {
+    font-size: 0.95rem;
+    color: #00FF66;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .brand-sub {
+    font-size: 0.65rem;
+    color: #FFB703;
+    padding: 2px 6px;
+    background-color: #1A261A;
+    border: 1px solid #FFB703;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .nav-tab {
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    color: #A0C8AA;
+    background-color: #141F14;
+    border: 2px solid #2E5A35;
+    padding: 6px 9px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #000;
+    transition: transform var(--fast) var(--spring), background-color var(--fast) ease, color var(--fast) ease;
+  }
+
+  .nav-tab:hover {
+    color: #00FF66;
+    border-color: #00FF66;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #000;
+  }
+
+  .nav-tab:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #000;
+  }
+
+  .nav-tab.active {
+    background-color: #00FF66;
+    color: #000000;
+    border-color: #000000;
+    font-weight: bold;
+    box-shadow: 0 3px 0 #000, 0 0 10px rgba(0, 255, 102, 0.4);
+  }
+
+  .sound-btn {
+    font-family: var(--font-pixel);
+    font-size: 0.65rem;
+    background-color: #1A281A;
+    color: #FFB703;
+    border: 2px solid #FFB703;
+    padding: 6px 10px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #000;
+  }
+
+  .sound-btn:hover {
+    background-color: #FFB703;
+    color: #000000;
+  }
+
+  .mode-switch-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background-color: #141F14;
+    border-bottom: 2px solid #2E5A35;
+  }
+
+  .mode-label {
+    font-size: 0.85rem;
+    color: #A0C8AA;
+  }
+
+  .mode-btn {
+    font-size: 0.65rem;
+    padding: 5px 12px;
+    background-color: #1A281A;
+    border: 2px solid #4A7A52;
+    color: #C0DFC4;
+    cursor: pointer;
+  }
+
+  .mode-btn.active {
+    background-color: #FFB703;
+    color: #000000;
+    border-color: #000000;
+    font-weight: bold;
+  }
+
+  .app-main {
+    flex-grow: 1;
+    width: 100%;
+    background-color: #0E140E;
+  }
+</style>
