@@ -26,6 +26,9 @@
     onOpenRegionSelect: () => void;
     onOpenStyleguide: () => void;
     onAdvanceSeason: () => void;
+    onOpenStory?: () => void;
+    onReturnToStart?: () => void;
+    onOpenJournal?: () => void;
   }
 
   let { 
@@ -38,7 +41,10 @@
     onOpenNasa,
     onOpenRegionSelect,
     onOpenStyleguide,
-    onAdvanceSeason 
+    onAdvanceSeason,
+    onOpenStory,
+    onReturnToStart,
+    onOpenJournal
   }: Props = $props();
 
   // Player State
@@ -333,28 +339,46 @@
           onclick={(e) => e.stopPropagation()} 
           onkeydown={(e) => e.stopPropagation()}
         >
-          <div class="menu-title font-display">🌱 FARM ALMANAC MENU</div>
+          <div class="menu-title font-display">PAUSE MENU</div>
           <div class="menu-options font-body">
+            {#if onOpenStory}
+              <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenStory?.(); }}>
+                <span class="bullet">▶</span>
+                <span>Enter Punjab Story Mode</span>
+              </button>
+            {/if}
             <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenCompare(); }}>
               <span class="bullet">▶</span>
-              <span>🌾 3-Crop Rotation Compare Matrix</span>
+              <span>Compare Rotation Paths</span>
             </button>
             <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenNasa(); }}>
               <span class="bullet">▶</span>
-              <span>🛰️ NASA Earth Science Logbook</span>
+              <span>NASA Data & Evidence</span>
+            </button>
+            {#if onOpenJournal}
+              <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenJournal?.(); }}>
+                <span class="bullet">▶</span>
+                <span>Field Journal</span>
+              </button>
+            {/if}
+            <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenStyleguide(); }}>
+              <span class="bullet">▶</span>
+              <span>Design Styleguide</span>
             </button>
             <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenRegionSelect(); }}>
               <span class="bullet">▶</span>
-              <span>🗺️ Switch Region (Punjab, Iowa, Sahel, Deccan)</span>
+              <span>Choose Region</span>
             </button>
             <button class="menu-item" onclick={() => { isMenuOpen = false; onAdvanceSeason(); }}>
               <span class="bullet">▶</span>
-              <span>⏭️ Advance Season ({currentSeasonName})</span>
+              <span>Advance Season ({currentSeasonName})</span>
             </button>
-            <button class="menu-item" onclick={() => { isMenuOpen = false; onOpenStyleguide(); }}>
-              <span class="bullet">▶</span>
-              <span>🎨 Design System Styleguide</span>
-            </button>
+            {#if onReturnToStart}
+              <button class="menu-item" onclick={() => { isMenuOpen = false; onReturnToStart?.(); }}>
+                <span class="bullet">▶</span>
+                <span>Return to Start Screen</span>
+              </button>
+            {/if}
             <button class="menu-item close" onclick={toggleMenu}>
               <span class="bullet">✕</span>
               <span>Resume Game</span>

@@ -40,6 +40,11 @@
     active = scenes[Math.min(index + 1, scenes.length - 1)].id;
   }
 
+  interface Props {
+    onBack?: () => void;
+  }
+  let { onBack }: Props = $props();
+
   const region = $derived(regionById(regionId));
 
   // Lazy per-region weather: only the viewed region's chunk is downloaded.
@@ -67,6 +72,17 @@
 
 <div class="journal-wrapper">
   <main class="shell">
+    <header class="topbar">
+      <div>
+        <span class="wordmark">FIELD SHIFT JOURNAL</span>
+        <span class="eyebrow">A farm, across generations</span>
+      </div>
+      {#if onBack}
+        <button type="button" class="back-btn font-body" onclick={onBack}>
+          ← Back to Story
+        </button>
+      {/if}
+    </header>
     <nav aria-label="Game scenes" class="scene-nav">
       {#each scenes as scene}
         <button class:current={active === scene.id} onclick={() => active = scene.id}>
@@ -186,22 +202,10 @@
 
 <style>
   .journal-wrapper {
-    background-color: #24372B;
-    color: #ECEADE;
-    min-height: calc(100vh - 130px);
-    padding: 16px;
-
-    /* Theme bridge for shared components (MeterBand / WeatherStrip). */
-    --meter-track-bg: rgba(236, 234, 222, 0.16);
-    --meter-band-bg: #B3C7A4;
-    --meter-pin-bg: #ECEADE;
-    --meter-label-color: #B3C7A4;
-    --meter-value-color: #ECEADE;
-    --meter-unit-color: #788064;
-    --weather-bg: #1A281E;
-    --weather-border-color: #788064;
-    --weather-axis-color: #788064;
-    --weather-legend-color: #B3C7A4;
+    background-color: var(--journal-paper, #FAF6ED);
+    color: var(--journal-ink, #1B2B1F);
+    min-height: calc(100vh - 60px);
+    padding: 24px 16px;
   }
   .shell {
     max-width: 960px;
@@ -210,11 +214,44 @@
     flex-direction: column;
     gap: 16px;
   }
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 12px;
+    border-bottom: 2px solid var(--journal-ink, #1B2B1F);
+    padding-bottom: 12px;
+  }
+  .back-btn {
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 1.5px solid var(--journal-ink, #1B2B1F);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s;
+  }
+  .back-btn:hover {
+    transform: translateY(-1px);
+    background-color: #f0ead6;
+  }
+  .wordmark {
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    font-family: var(--font-display, 'Fraunces', serif);
+    font-size: 1.25rem;
+    color: var(--journal-forest, #1F3825);
+  }
   .eyebrow {
-    font-size: 0.75rem;
+    margin-left: 10px;
+    font-size: 0.78rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #B3C7A4;
+    font-weight: 700;
+    color: var(--journal-gold, #D98E16);
   }
   .scene-nav {
     display: flex;
@@ -229,24 +266,34 @@
   .scene-nav button {
     flex: 0 0 auto;
     white-space: nowrap;
-    background: transparent;
-    border: 1px solid #788064;
-    color: #ECEADE;
-    padding: 5px 12px;
+    background: var(--journal-paper, #FAF6ED);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    color: var(--journal-ink, #1B2B1F);
+    padding: 6px 16px;
     border-radius: 999px;
     cursor: pointer;
     font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s, background-color 0.15s;
+  }
+  .scene-nav button:hover {
+    transform: translateY(-1px);
+    background-color: #f0ead6;
   }
   .scene-nav button.current {
-    background-color: #B3C7A4;
-    color: #24372B;
-    border-color: #B3C7A4;
-    font-weight: 600;
+    background-color: var(--journal-forest, #1F3825);
+    color: var(--journal-paper, #FAF6ED);
+    border-color: var(--journal-ink, #1B2B1F);
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
+    font-weight: 700;
   }
-  .hero, .panel {
-    background-color: rgba(36, 55, 43, 0.85);
-    border: 1px solid #788064;
-    border-radius: 8px;
+  .hero,
+  .panel {
+    background-color: #ffffff;
+    border: 2.5px solid var(--journal-ink, #1B2B1F);
+    border-radius: var(--radius-md, 8px);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
     padding: 24px 20px;
     display: flex;
     flex-direction: column;
@@ -255,64 +302,73 @@
   h1 {
     font-size: 1.8rem;
     line-height: 1.25;
-    color: #ECEADE;
+    font-family: var(--font-display, 'Fraunces', serif);
+    color: var(--journal-forest, #1F3825);
   }
   .lead {
     font-size: 1.05rem;
-    color: #B3C7A4;
+    color: var(--journal-ink, #1B2B1F);
+    font-family: var(--font-body, 'Figtree', sans-serif);
     max-width: 600px;
+    line-height: 1.5;
   }
   .muted {
     font-size: 0.85rem;
-    color: #788064;
+    color: color-mix(in srgb, var(--journal-ink) 65%, transparent);
   }
   button.primary {
     align-self: flex-start;
-    background-color: #B3C7A4;
-    color: #24372B;
-    border: none;
-    padding: 10px 22px;
-    border-radius: 6px;
-    font-weight: 600;
+    background-color: var(--journal-forest, #1F3825);
+    color: var(--journal-paper, #FAF6ED);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-weight: 700;
     cursor: pointer;
     font-size: 0.95rem;
+    transition: transform 0.15s, background-color 0.15s;
   }
   button.primary:hover {
-    background-color: #d1dfc9;
+    background-color: #2d5237;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 var(--journal-ink, #1B2B1F);
   }
   select {
-    padding: 8px 12px;
-    border-radius: 4px;
-    border: 1px solid #788064;
-    background-color: #1A281E;
-    color: #ECEADE;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    background-color: var(--journal-paper, #FAF6ED);
+    color: var(--journal-ink, #1B2B1F);
     font-size: 0.95rem;
+    font-weight: 600;
     max-width: 320px;
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
   }
   .field-art {
     width: 100%;
     max-width: 640px;
-    margin: 10px 0;
-    border-radius: 8px;
-    overflow: hidden;
+    margin: 4px 0;
   }
   .field-art svg {
     display: block;
     width: 100%;
     max-height: 180px;
     border-radius: 6px;
+    border: 2px solid var(--journal-ink, #1B2B1F);
   }
   .crop-details {
-    border: 1px solid #788064;
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    border-radius: 8px;
+    background: var(--journal-paper, #FAF6ED);
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
   }
   .crop-details summary {
     cursor: pointer;
     padding: 10px 14px;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #ECEADE;
+    color: var(--journal-ink, #1B2B1F);
     list-style: none;
   }
   .crop-details summary::-webkit-details-marker {
@@ -322,7 +378,7 @@
     content: '▸';
     display: inline-block;
     width: 1.1em;
-    color: #B3C7A4;
+    color: var(--journal-forest, #1F3825);
   }
   .crop-details[open] summary::before {
     content: '▾';
@@ -334,19 +390,20 @@
   .crop-list {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 6px;
-    padding: 0 14px 14px;
+    padding: 0 12px 12px;
   }
   .crop-list li {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    background: rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    border: 1.5px solid color-mix(in srgb, var(--journal-ink) 35%, transparent);
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 0.8rem;
-    color: #B3C7A4;
+    color: var(--journal-ink-soft, #2D4233);
   }
   .crop-head {
     display: flex;
@@ -355,7 +412,7 @@
     gap: 8px;
   }
   .crop-head strong {
-    color: #ECEADE;
+    color: var(--journal-ink, #1B2B1F);
     font-size: 0.9rem;
   }
   .crop-facts {
@@ -363,28 +420,31 @@
   }
   .crop-list .tag {
     flex: 0 0 auto;
-    background-color: #788064;
-    color: #ECEADE;
+    background-color: var(--journal-forest, #1F3825);
+    color: var(--journal-paper, #FAF6ED);
     padding: 1px 8px;
     border-radius: 4px;
     font-size: 0.68rem;
+    font-weight: 700;
   }
   .horizon-toggle {
     display: flex;
     gap: 8px;
   }
   .horizon-toggle button {
-    background: transparent;
-    border: 1px solid #788064;
-    color: #ECEADE;
-    padding: 4px 12px;
-    border-radius: 4px;
+    background: var(--journal-paper, #FAF6ED);
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    color: var(--journal-ink, #1B2B1F);
+    padding: 4px 14px;
+    border-radius: 999px;
     cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
   }
   .horizon-toggle button.current {
-    background-color: #B3C7A4;
-    color: #24372B;
-    font-weight: 600;
+    background-color: var(--journal-gold, #D98E16);
+    color: var(--journal-ink, #1B2B1F);
+    font-weight: 700;
   }
   .cards {
     display: grid;
@@ -392,9 +452,10 @@
     gap: 16px;
   }
   .strat {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid #788064;
-    border-radius: 6px;
+    background: #ffffff;
+    border: 2px solid var(--journal-ink, #1B2B1F);
+    box-shadow: 0 3px 0 var(--journal-ink, #1B2B1F);
+    border-radius: 8px;
     padding: 18px;
     display: flex;
     flex-direction: column;
@@ -402,6 +463,8 @@
   }
   .strat h2 {
     font-size: 1.15rem;
+    font-family: var(--font-display, 'Fraunces', serif);
+    color: var(--journal-forest, #1F3825);
   }
   .meters {
     display: flex;
@@ -411,15 +474,20 @@
   footer {
     text-align: center;
     font-size: 0.75rem;
-    color: #788064;
+    color: color-mix(in srgb, var(--journal-ink) 70%, transparent);
     padding: 16px 0;
   }
   @media (max-width: 560px) {
     h1 {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
-    .hero, .panel {
+    .hero,
+    .panel {
       padding: 20px 16px;
+    }
+    .eyebrow {
+      display: block;
+      margin-left: 0;
     }
   }
 </style>

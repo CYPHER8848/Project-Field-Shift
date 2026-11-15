@@ -1,15 +1,16 @@
 /**
- * Harvest Almanac compatibility tokens.
+ * Legacy Harvest Almanac token aliases.
  *
- * The integrated retro theme (src/app.css, from 56df023) replaced the original
- * vintage design-system tokens, but Member D's components (StickerCard,
- * CompareScreen, RegionSelectScreen, NasaDataView, StyleguideView, meters,
- * GBA controls...) still reference them. Without these values the tokens
- * resolve to nothing: cards render transparent, outlines disappear and
- * headings fall back to the wrong font.
+ * The current Botanical Field Journal design system (src/app.css, PR #11)
+ * defines its own --journal-* palette, fonts, radii and shadows. A few
+ * components still in the tree were never migrated and keep referencing the
+ * old Harvest Almanac names (NasaDataView, StyleguideView, GbaControls,
+ * Slider, FarmPlayScreen...). Without these aliases those screens lose their
+ * card backgrounds, ink outlines and hard offset shadows.
  *
- * Values restored verbatim from 6fd3d89:src/app.css. The retro shell keeps its
- * own --retro-* palette; vintage views paint their own --paper backdrop.
+ * Only names the new system does NOT define are declared here, so upstream's
+ * tokens (--font-display, --radius-sm, --shadow-active, --fast, --spring...)
+ * stay authoritative for the redesign.
  */
 :root {
   /* 9 semantic colors */
@@ -28,19 +29,15 @@
   --outline-thick: 4px solid var(--ink);
   --outline-thin: 2px solid var(--ink);
   --radius: 16px;
-  --radius-sm: 8px;
   --radius-pill: 9999px;
   --shadow: 0 5px 0 var(--ink);
   --shadow-sm: 0 2px 0 var(--ink);
   --shadow-lg: 0 8px 0 var(--ink);
-  --shadow-active: 0 1px 0 var(--ink);
 
   /* Motion tokens that app.css does not define */
   --med: 240ms;
+  --slow: 600ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-
-  /* Typography: vintage display face (loaded in index.html) */
-  --font-display: "Bagel Fat One", system-ui, cursive, sans-serif;
 
   /* Spacing scale: 4, 8, 16, 24, 40 */
   --space-1: 4px;
@@ -48,9 +45,4 @@
   --space-3: 16px;
   --space-4: 24px;
   --space-5: 40px;
-}
-
-.font-display {
-  font-family: var(--font-display);
-  letter-spacing: normal;
 }

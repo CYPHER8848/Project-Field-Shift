@@ -75,7 +75,7 @@
 
   <div class="meter-info">
     <span class="meter-label font-body">{label}</span>
-    <span class="meter-readout font-data">🪙 {value}</span>
+    <span class="meter-readout font-data">{value} Coins</span>
   </div>
 </div>
 

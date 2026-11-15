@@ -16,19 +16,21 @@
 <div class="gba-hud-strip">
   <div class="hud-left">
     <div class="hud-badge era-badge font-display">
-      <span>⏳ {era.year}</span>
+      <span>{era.year}</span>
       <span class="sub font-data">[{era.label}]</span>
     </div>
 
     <div class="hud-badge season-badge font-data">
-      <span>☀️ {seasonName}</span>
+      <span>{seasonName}</span>
     </div>
   </div>
 
   <div class="hud-center-meters">
     <!-- Mini Water Jar -->
     <div class="mini-meter" title="Root-Zone Moisture: {meters.soilMoisture}%">
-      <span class="mini-icon">💧</span>
+      <svg class="mini-svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="var(--journal-monsoon, #2B69A3)" />
+      </svg>
       <div class="mini-bar">
         <div class="bar-fill water" style:width="{meters.soilMoisture}%"></div>
       </div>
@@ -37,7 +39,9 @@
 
     <!-- Mini Soil Health -->
     <div class="mini-meter" title="Organic Matter: {meters.organicMatter}%">
-      <span class="mini-icon">🌱</span>
+      <svg class="mini-svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="M12 2C8 6 6 11 6 16c0 3.3 2.7 6 6 6s6-2.7 6-6c0-5-2-10-6-14z" fill="var(--journal-forest, #1F3825)" />
+      </svg>
       <div class="mini-bar">
         <div class="bar-fill soil" style:width="{meters.organicMatter}%"></div>
       </div>
@@ -46,14 +50,16 @@
 
     <!-- Mini Coins -->
     <div class="mini-meter coins" title="Farm Income Vault: {meters.income} Coins">
-      <span class="mini-icon">🪙</span>
+      <svg class="mini-svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="var(--journal-gold, #E5A93C)" stroke="var(--journal-ink, #1B2B1F)" stroke-width="2" />
+      </svg>
       <span class="mini-val font-data">{meters.income}</span>
     </div>
   </div>
 
   <div class="hud-right">
     <button class="hud-btn font-display" onclick={onOpenCompare} title="Compare 3 Rotations">
-      🌾 Compare
+      Compare
     </button>
     <button class="hud-btn menu-btn font-data" onclick={onOpenMenu} title="GBA Pause Menu">
       START ☰
@@ -121,10 +127,6 @@
     border: 1.5px solid var(--ink);
     border-radius: 4px;
     padding: 2px 6px;
-  }
-
-  .mini-icon {
-    font-size: 0.82rem;
   }
 
   .mini-bar {
