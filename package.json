@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test --experimental-strip-types --loader ./tests/loader.mjs tests/simulation/water-balance.test.ts tests/simulation/nitrogen.test.ts tests/simulation/erosion-som.test.ts tests/simulation/engine.test.ts",
+    "test": "node --test --experimental-strip-types --loader ./tests/loader.mjs tests/simulation/water-balance.test.ts tests/simulation/nitrogen.test.ts tests/simulation/erosion-som.test.ts tests/simulation/engine.test.ts tests/gba/dialogue-graph.test.ts tests/gba/movement-physics.test.ts tests/gba/tool-mechanics.test.ts",
+    "test:sim": "node --test --experimental-strip-types --loader ./tests/loader.mjs tests/simulation/water-balance.test.ts tests/simulation/nitrogen.test.ts tests/simulation/erosion-som.test.ts tests/simulation/engine.test.ts",
+    "test:gba": "node --test --experimental-strip-types --loader ./tests/loader.mjs tests/gba/dialogue-graph.test.ts tests/gba/movement-physics.test.ts tests/gba/tool-mechanics.test.ts",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
