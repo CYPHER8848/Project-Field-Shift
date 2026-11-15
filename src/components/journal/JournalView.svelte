@@ -39,6 +39,11 @@
     active = scenes[Math.min(index + 1, scenes.length - 1)].id;
   }
 
+  interface Props {
+    onBack?: () => void;
+  }
+  let { onBack }: Props = $props();
+
   const region = $derived(regionById(regionId));
   const weather = $derived(weatherFor(regionId));
 </script>
@@ -46,8 +51,15 @@
 <div class="journal-wrapper">
   <main class="shell">
     <header class="topbar">
-      <span class="wordmark">FIELD SHIFT JOURNAL</span>
-      <span class="eyebrow">A farm, across generations</span>
+      <div>
+        <span class="wordmark">FIELD SHIFT JOURNAL</span>
+        <span class="eyebrow">A farm, across generations</span>
+      </div>
+      {#if onBack}
+        <button type="button" class="back-btn font-body" onclick={onBack}>
+          ← Back to Story
+        </button>
+      {/if}
     </header>
     <nav aria-label="Game scenes" class="scene-nav">
       {#each scenes as scene}
@@ -178,9 +190,24 @@
   .topbar {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     border-bottom: 2px solid var(--journal-ink, #1B2B1F);
     padding-bottom: 12px;
+  }
+  .back-btn {
+    background-color: var(--journal-paper, #FAF6ED);
+    border: 1.5px solid var(--journal-ink, #1B2B1F);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 0 var(--journal-ink, #1B2B1F);
+    transition: transform 0.15s;
+  }
+  .back-btn:hover {
+    transform: translateY(-1px);
+    background-color: #F0EAD6;
   }
   .wordmark {
     font-weight: 700;

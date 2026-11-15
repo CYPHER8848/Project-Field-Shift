@@ -20,18 +20,15 @@
   <!-- Status & Era Badge Header -->
   <div class="hud-badge-strip">
     <div class="badge-pill era-pill font-display">
-      <span class="pill-icon">⏳</span>
       <span>{currentEra.year}</span>
       <span class="sub font-data">[{currentEra.label}]</span>
     </div>
 
     <div class="badge-pill region-pill font-display">
-      <span class="pill-icon">📍</span>
       <span>{currentRegion.name}</span>
     </div>
 
     <div class="badge-pill season-pill font-body">
-      <span class="pill-icon">☀️</span>
       <span>{seasonName}</span>
     </div>
 

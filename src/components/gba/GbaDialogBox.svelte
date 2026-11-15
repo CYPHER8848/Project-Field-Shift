@@ -172,7 +172,7 @@
         <span class="speaker-title font-data">[{dialogue.speakerTitle}]</span>
       {/if}
       {#if dialogue.nasaChip}
-        <span class="nasa-chip font-data">🛰️ SATELLITE ACTIVE</span>
+        <span class="nasa-chip font-data">[NASA SATELLITE ACTIVE]</span>
       {/if}
     </div>
 

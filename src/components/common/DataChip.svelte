@@ -27,7 +27,14 @@
     title="Click to view NASA Satellite Note"
     aria-expanded={showPopover}
   >
-    <span class="satellite-icon">🛰️</span>
+    <span class="satellite-icon">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="M4 10l4-4 4 4-4 4-4-4z" fill="none" stroke="currentColor" stroke-width="2" />
+        <line x1="8" y1="6" x2="5" y2="3" stroke="currentColor" stroke-width="2" />
+        <line x1="12" y1="10" x2="15" y2="13" stroke="currentColor" stroke-width="2" />
+        <path d="M16 12a5 5 0 0 1 5 5" stroke="currentColor" stroke-width="2" fill="none" />
+      </svg>
+    </span>
     <span class="tag-name">[{note.dataset}]</span>
     {#if value}
       <span class="val">{value}</span>

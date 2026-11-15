@@ -9,7 +9,14 @@
 
 <div class="amma-bubble-wrapper">
   <div class="amma-avatar-badge font-display" aria-hidden="true">
-    👵🏾
+    <svg viewBox="0 0 32 32" width="28" height="28">
+      <circle cx="16" cy="16" r="14" fill="var(--journal-paper, #FAF6ED)" stroke="var(--journal-ink, #1B2B1F)" stroke-width="2" />
+      <circle cx="16" cy="14" r="7" fill="#C59B6D" />
+      <circle cx="21" cy="10" r="4.5" fill="#C8C4BE" />
+      <path d="M 9 13 C 11 8 21 8 23 13" stroke="#C8C4BE" stroke-width="2.5" fill="none" />
+      <circle cx="16" cy="13" r="1" fill="var(--journal-madder, #B83827)" />
+      <path d="M 8 27 C 10 20 22 20 24 27 Z" fill="var(--journal-forest, #1F3825)" />
+    </svg>
   </div>
   <div class="speech-bubble">
     <div class="bubble-header font-display">{sublabel}</div>

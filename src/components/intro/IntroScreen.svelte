@@ -73,10 +73,10 @@
         Begin Farm Journey (1990) →
       </Button>
       <Button variant="secondary" size="md" onclick={onViewNasaDocs}>
-        🛰️ NASA Satellite Sources
+        NASA Satellite Sources
       </Button>
       <Button variant="secondary" size="md" onclick={onViewStyleguide}>
-        🎨 Design Styleguide
+        Design Styleguide
       </Button>
     </div>
   </div>

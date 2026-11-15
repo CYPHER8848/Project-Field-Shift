@@ -122,7 +122,7 @@
         <!-- Winning Banner Ribbon -->
         {#if isWinner}
           <div class="winner-ribbon font-display" aria-live="polite">
-            🏆 TOP RECOMMENDED MATCH ({strat.currentScore} PTS)
+            TOP MATCH ({strat.currentScore} PTS)
           </div>
         {/if}
 
@@ -155,14 +155,14 @@
           {#if simOutputs[strat.id]}
             {@const sim = simOutputs[strat.id]}
             <div class="sim-metrics-box font-data">
-              <div class="sim-metrics-title">🛰️ NASA POWER & Simulation Engine Metrics</div>
+              <div class="sim-metrics-title">NASA POWER & Simulation Engine Metrics</div>
               <div class="sim-metrics-grid">
-                <span title="Mass-balanced daily soil moisture fraction">💧 Moisture: {(sim.meters.soilMoisture * 100).toFixed(0)}%</span>
-                <span title="Soil organic matter modeled dynamics">🌱 SOM: {sim.meters.organicMatter.toFixed(1)}%</span>
-                <span title="Soil available nitrogen including BNF">🌿 Nitrogen: {sim.meters.nitrogen.toFixed(0)} kg/ha</span>
-                <span title="USLE rainfall-crop cover erosion risk proxy">⛰️ Erosion: {sim.meters.erosionRisk.toFixed(2)}</span>
-                <span title="Modeled net farm income index">💰 Income: ₹{sim.meters.income}</span>
-                <span title="Total seasonal crop water demand">🌾 Water Use: {sim.meters.waterUse} mm</span>
+                <span title="Mass-balanced daily soil moisture fraction">Moisture: {(sim.meters.soilMoisture * 100).toFixed(0)}%</span>
+                <span title="Soil organic matter modeled dynamics">SOM: {sim.meters.organicMatter.toFixed(1)}%</span>
+                <span title="Soil available nitrogen including BNF">Nitrogen: {sim.meters.nitrogen.toFixed(0)} kg/ha</span>
+                <span title="USLE rainfall-crop cover erosion risk proxy">Erosion: {sim.meters.erosionRisk.toFixed(2)}</span>
+                <span title="Modeled net farm income index">Income: ₹{sim.meters.income}</span>
+                <span title="Total seasonal crop water demand">Water Use: {sim.meters.waterUse} mm</span>
               </div>
             </div>
           {/if}
@@ -235,7 +235,7 @@
   <!-- Control Panel: Farmer Priorities & Climate Sliders -->
   <div class="control-panel-card sticker-card no-tape">
     <div class="panel-header">
-      <h3 class="panel-title font-display">🎛️ Live Sensitivity Control Panel</h3>
+      <h3 class="panel-title font-display">Sensitivity Control Panel</h3>
       <p class="panel-desc font-body">
         Drag sliders to see how NASA climate projections and your family's personal priorities re-weight the recommendations.
       </p>
@@ -247,7 +247,7 @@
         <h4 class="group-title font-display">Farmer Priorities (Live Re-Weighting)</h4>
         <Slider 
           label="Water Conservation Weight" 
-          icon="💧" 
+          icon="" 
           bind:value={priorities.water} 
           min={0} 
           max={100} 
@@ -255,7 +255,7 @@
         />
         <Slider 
           label="Immediate Income Weight" 
-          icon="🪙" 
+          icon="" 
           bind:value={priorities.income} 
           min={0} 
           max={100} 
@@ -263,7 +263,7 @@
         />
         <Slider 
           label="Long-Term Soil Health" 
-          icon="🌱" 
+          icon="" 
           bind:value={priorities.soilHealth} 
           min={0} 
           max={100} 
@@ -271,7 +271,7 @@
         />
         <Slider 
           label="Labor Availability Weight" 
-          icon="🧤" 
+          icon="" 
           bind:value={priorities.labor} 
           min={0} 
           max={100} 
@@ -284,7 +284,7 @@
         <h4 class="group-title font-display">NASA Climate Scenario Stress-Test</h4>
         <Slider 
           label="Global Temperature Shift" 
-          icon="🌡️" 
+          icon="" 
           bind:value={climate.tempOffset} 
           min={0} 
           max={3} 
@@ -294,7 +294,7 @@
         />
         <Slider 
           label="Monsoon Rainfall Anomaly" 
-          icon="🌧️" 
+          icon="" 
           bind:value={climate.rainOffset} 
           min={-20} 
           max={20} 
@@ -304,7 +304,7 @@
         />
 
         <div class="panel-info-box">
-          <span class="info-icon">ℹ️</span>
+          <span class="info-icon">[NOTE]</span>
           <span class="font-body">
             NASA POWER & MERRA-2 models indicate that exceeding +1.5°C doubles heat-stress during summer pod fill. Notice how traditional rotations drop in score under high heat!
           </span>
