@@ -1,0 +1,538 @@
+{
+  "title": "Field Shift Phase 0 Data-Source Verification Report",
+  "timestamp_utc": "2026-11-14T17:19:15.130843+00:00",
+  "environment": {
+    "os": "win32",
+    "python_version": "3.15.2 (tags/v3.15.2:5e58eaa, Oct 25 2026, 17:27:03) [MSC v.1951 64 bit (AMD64)]"
+  },
+  "sources": {
+    "nasa_power": {
+      "url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2M,T2M_MAX,T2M_MIN,PRECTOTCORR,EVLAND,GWETROOT,GWETTOP,ALLSKY_SFC_SW_DWN&community=AG&longitude=75.85&latitude=30.9&start=20250101&end=20250107&format=JSON&time-standard=UTC",
+      "community": "AG",
+      "status": 200,
+      "elapsed_s": 1.661,
+      "success": true,
+      "parameters_returned": [
+        "T2M",
+        "T2M_MAX",
+        "T2M_MIN",
+        "PRECTOTCORR",
+        "EVLAND",
+        "GWETROOT",
+        "GWETTOP",
+        "ALLSKY_SFC_SW_DWN"
+      ],
+      "missing_parameters": [],
+      "sample_values": {
+        "T2M": {
+          "first_date": "20250101",
+          "first_val": 12.56,
+          "days_count": 7
+        },
+        "T2M_MAX": {
+          "first_date": "20250101",
+          "first_val": 21.5,
+          "days_count": 7
+        },
+        "T2M_MIN": {
+          "first_date": "20250101",
+          "first_val": 4.71,
+          "days_count": 7
+        },
+        "PRECTOTCORR": {
+          "first_date": "20250101",
+          "first_val": 0.0,
+          "days_count": 7
+        },
+        "EVLAND": {
+          "first_date": "20250101",
+          "first_val": 0.68,
+          "days_count": 7
+        },
+        "GWETROOT": {
+          "first_date": "20250101",
+          "first_val": 0.4,
+          "days_count": 7
+        },
+        "GWETTOP": {
+          "first_date": "20250101",
+          "first_val": 0.37,
+          "days_count": 7
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "first_date": "20250101",
+          "first_val": 6.94,
+          "days_count": 7
+        }
+      },
+      "metadata": {
+        "T2M": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters"
+        },
+        "T2M_MAX": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Maximum"
+        },
+        "T2M_MIN": {
+          "units": "C",
+          "longname": "Temperature at 2 Meters Minimum"
+        },
+        "PRECTOTCORR": {
+          "units": "mm/day",
+          "longname": "Precipitation Corrected"
+        },
+        "EVLAND": {
+          "units": "mm/day",
+          "longname": "Evaporation Land"
+        },
+        "GWETROOT": {
+          "units": "1",
+          "longname": "Root Zone Soil Wetness"
+        },
+        "GWETTOP": {
+          "units": "1",
+          "longname": "Surface Soil Wetness"
+        },
+        "ALLSKY_SFC_SW_DWN": {
+          "units": "MJ/m^2/day",
+          "longname": "All Sky Surface Shortwave Downward Irradiance"
+        }
+      },
+      "header": {
+        "title": "NASA/POWER Source Native Resolution Daily Data",
+        "api": {
+          "version": "v2.10.3",
+          "name": "POWER Daily API"
+        },
+        "sources": [
+          "MERRA2",
+          "SYN1DEG",
+          "POWER"
+        ],
+        "fill_value": -999.0,
+        "time_standard": "UTC",
+        "start": "20250101",
+        "end": "20250107"
+      },
+      "warnings": [],
+      "has_nulls_or_missing": false,
+      "decision": "WORKS"
+    },
+    "nasa_power_community_re": {
+      "status": 200,
+      "parameters_returned": [
+        "T2M",
+        "T2M_MAX",
+        "T2M_MIN",
+        "PRECTOTCORR",
+        "EVLAND",
+        "GWETROOT",
+        "GWETTOP",
+        "ALLSKY_SFC_SW_DWN"
+      ]
+    },
+    "nasa_gibs": {
+      "capabilities_url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+      "status": 200,
+      "elapsed_s": 0.657,
+      "xml_valid": true,
+      "total_layers": 1330,
+      "verified_layers": {
+        "MODIS_Aqua_Land_Surface_Temp_Day": {
+          "identifier": "MODIS_Aqua_Land_Surface_Temp_Day",
+          "title": "Land Surface Temperature (Day, MODIS, Aqua)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level7"
+          ],
+          "default_time": "2026-11-14",
+          "time_extents_sample": [
+            "2002-07-03/2002-07-29/P1D",
+            "2002-08-07/2002-09-12/P1D",
+            "2002-09-14/2022-03-31/P1D"
+          ]
+        },
+        "MODIS_Terra_Land_Surface_Temp_Day": {
+          "identifier": "MODIS_Terra_Land_Surface_Temp_Day",
+          "title": "Land Surface Temperature (Day, MODIS, Terra)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level7"
+          ],
+          "default_time": "2026-11-14",
+          "time_extents_sample": [
+            "2000-02-24/2000-04-25/P1D",
+            "2000-04-28/2000-08-06/P1D",
+            "2000-08-18/2001-06-15/P1D"
+          ]
+        },
+        "MODIS_Terra_Land_Surface_Temp_Night": {
+          "identifier": "MODIS_Terra_Land_Surface_Temp_Night",
+          "title": "Land Surface Temperature (Night, MODIS, Terra)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level7"
+          ],
+          "default_time": "2026-11-14",
+          "time_extents_sample": [
+            "2000-02-24/2000-04-25/P1D",
+            "2000-04-28/2000-08-05/P1D",
+            "2000-08-18/2001-06-15/P1D"
+          ]
+        },
+        "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture": {
+          "identifier": "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+          "title": "Root Zone Soil Moisture (L4, 12z Instantaneous, Model Value-Added, SMAP)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level6"
+          ],
+          "default_time": "2026-11-10",
+          "time_extents_sample": [
+            "2015-03-31/2025-07-06/P1D",
+            "2025-07-08/2025-07-09/P1D",
+            "2025-07-11/2025-07-20/P1D"
+          ]
+        },
+        "SMAP_L3_Passive_Day_Soil_Moisture": {
+          "identifier": "SMAP_L3_Passive_Day_Soil_Moisture",
+          "title": "Soil Moisture (L3, Passive, Day, Radiometer, SMAP)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level6"
+          ],
+          "default_time": "2026-11-11",
+          "time_extents_sample": [
+            "2015-03-31/2015-05-12/P1D",
+            "2015-05-14/2015-12-15/P1D",
+            "2015-12-17/2016-04-30/P1D"
+          ]
+        },
+        "SMAP_L4_Analyzed_Surface_Soil_Moisture": {
+          "identifier": "SMAP_L4_Analyzed_Surface_Soil_Moisture",
+          "title": "Surface Soil Moisture (L4, 12z Instantaneous, Model Value-Added, SMAP)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level6"
+          ],
+          "default_time": "2026-11-10",
+          "time_extents_sample": [
+            "2015-03-31/2025-07-27/P1D",
+            "2025-07-29/2025-10-09/P1D",
+            "2025-12-12/2026-03-16/P1D"
+          ]
+        },
+        "MODIS_Aqua_L3_NDVI_16Day": {
+          "identifier": "MODIS_Aqua_L3_NDVI_16Day",
+          "title": "Vegetation Index (16-Day, MODIS, Aqua)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level9"
+          ],
+          "default_time": "2026-10-24",
+          "time_extents_sample": [
+            "2002-07-04/2002-12-27/P16D",
+            "2003-01-09/2003-12-27/P16D",
+            "2004-01-09/2004-12-26/P16D"
+          ]
+        },
+        "MODIS_Terra_L3_NDVI_16Day": {
+          "identifier": "MODIS_Terra_L3_NDVI_16Day",
+          "title": "Vegetation Index (16-Day, MODIS, Terra)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level9"
+          ],
+          "default_time": "2026-10-16",
+          "time_extents_sample": [
+            "2000-03-05/2000-12-18/P16D",
+            "2001-01-01/2001-12-19/P16D",
+            "2002-01-01/2002-12-19/P16D"
+          ]
+        },
+        "MODIS_Terra_L3_NDVI_Monthly": {
+          "identifier": "MODIS_Terra_L3_NDVI_Monthly",
+          "title": "Vegetation Index (L3, Monthly, MODIS, Terra)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level7"
+          ],
+          "default_time": "2026-10-01",
+          "time_extents_sample": [
+            "2000-03-01/2025-03-01/P1M",
+            "2025-05-01/2026-10-01/P1M"
+          ]
+        },
+        "MODIS_Terra_NDVI_8Day": {
+          "identifier": "MODIS_Terra_NDVI_8Day",
+          "title": "Vegetation Index (rolling 8-Day, MODIS, Terra)",
+          "formats": [
+            "image/png"
+          ],
+          "tileMatrixSets": [
+            "GoogleMapsCompatible_Level9"
+          ],
+          "default_time": "2026-11-13",
+          "time_extents_sample": [
+            "2025-02-12/2025-08-21/P1D",
+            "2025-08-23/2025-09-04/P1D",
+            "2025-09-06/2025-09-16/P1D"
+          ]
+        }
+      },
+      "sample_tiles": [
+        {
+          "category": "MODIS NDVI (16-Day)",
+          "layer": "MODIS_Terra_L3_NDVI_16Day",
+          "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_NDVI_16Day/default/2026-10-16/GoogleMapsCompatible_Level9/5/13/22.png",
+          "status": 200,
+          "is_valid_png": true,
+          "bytes": 54579,
+          "elapsed_s": 0.803,
+          "region": "Punjab, India"
+        },
+        {
+          "category": "MODIS Land Surface Temp (Day)",
+          "layer": "MODIS_Terra_Land_Surface_Temp_Day",
+          "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_Land_Surface_Temp_Day/default/2026-11-13/GoogleMapsCompatible_Level7/5/13/22.png",
+          "status": 200,
+          "is_valid_png": true,
+          "bytes": 21945,
+          "elapsed_s": 0.817,
+          "region": "Punjab, India"
+        },
+        {
+          "category": "SMAP Root Zone Soil Moisture",
+          "layer": "SMAP_L4_Analyzed_Root_Zone_Soil_Moisture",
+          "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/SMAP_L4_Analyzed_Root_Zone_Soil_Moisture/default/2026-11-10/GoogleMapsCompatible_Level6/5/13/22.png",
+          "status": 200,
+          "is_valid_png": true,
+          "bytes": 14991,
+          "elapsed_s": 0.819,
+          "region": "Punjab, India"
+        }
+      ],
+      "decision": "WORKS"
+    },
+    "soilgrids": {
+      "root_url": "https://rest.isric.org/",
+      "root_status": null,
+      "query_url": "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=75.85&lat=30.9&property=clay&property=sand&property=soc&property=phh2o",
+      "query_status": null,
+      "query_elapsed_s": 12.549,
+      "query_error": "The read operation timed out",
+      "docs_url": "https://rest.isric.org/soilgrids/v2.0/docs",
+      "docs_status": 200,
+      "provider_notice": "REST API v2.0 is still under active development (beta stage). Occasional issues and downtimes may occur. This service does not come with a guarantee of uptime or any other types of support.",
+      "properties_evaluated": [
+        "clay",
+        "sand",
+        "soc (soil organic carbon)",
+        "phh2o (pH in H2O)"
+      ],
+      "status_label": "USE FALLBACK",
+      "decision": "USE FALLBACK",
+      "recommendation": "SoilGrids REST API data query hangs/times out (no SLA/uptime guarantee). Do not call SoilGrids REST at simulation runtime. Use clearly labelled provisional regional fallback values derived from published FAO/ICAR soil series tables or omit soil property dependencies in the sim engine. Never describe fallback values as measured farm observations."
+    },
+    "opentopodata": {
+      "url": "https://api.opentopodata.org/v1/srtm30m?locations=30.9,75.85",
+      "status": 200,
+      "elapsed_s": 0.613,
+      "elevation_m": 247.0,
+      "dataset": "srtm30m",
+      "slope_derivation_feasible": true,
+      "slope_test_results": [],
+      "decision": "WORKS",
+      "slope_test_elevations": [
+        247.0,
+        247.0,
+        249.0,
+        248.0,
+        248.0
+      ],
+      "slope_sample_dz": {
+        "dz_ns_m": 2.0,
+        "dz_ew_m": 0.0
+      }
+    }
+  },
+  "regional_verification": {
+    "punjab": {
+      "region_meta": {
+        "name": "Punjab, India",
+        "description": "Wheat/rice rotation; acute groundwater overdraft & tubewell stress",
+        "lat": 30.9,
+        "lon": 75.85,
+        "location_notes": "Central Punjab plain near Ludhiana (Punjab Agricultural University vicinity)",
+        "provisional": true
+      },
+      "power": {
+        "status": 200,
+        "decision": "WORKS",
+        "sample_t2m": 12.56,
+        "sample_rain": 0.0,
+        "sample_soilWet": 0.4,
+        "sample_evland": 0.68,
+        "sample_solar": 6.94
+      },
+      "elevation": {
+        "status": 200,
+        "elevation_m": 247.0,
+        "dataset": "srtm30m",
+        "slope_derivation_feasible": true
+      },
+      "gibs": {
+        "layer": "MODIS_Terra_L3_NDVI_16Day",
+        "tile_url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_NDVI_16Day/default/2026-10-16/GoogleMapsCompatible_Level9/5/13/22.png",
+        "status": 200,
+        "is_png": true,
+        "bytes": 54579
+      }
+    },
+    "iowa": {
+      "region_meta": {
+        "name": "Iowa, USA",
+        "description": "Corn/soybean rotation; topsoil loss, extreme rainfall & tile drainage",
+        "lat": 42.03,
+        "lon": -93.63,
+        "location_notes": "Story County / Ames (Iowa State University agronomy research corridor)",
+        "provisional": true
+      },
+      "power": {
+        "status": 200,
+        "decision": "WORKS",
+        "sample_t2m": -4.05,
+        "sample_rain": 0.0,
+        "sample_soilWet": 0.49,
+        "sample_evland": 0.67,
+        "sample_solar": 5.23
+      },
+      "elevation": {
+        "status": 200,
+        "elevation_m": 277.0,
+        "dataset": "srtm30m",
+        "slope_derivation_feasible": true
+      },
+      "gibs": {
+        "layer": "MODIS_Terra_L3_NDVI_16Day",
+        "tile_url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_NDVI_16Day/default/2026-10-16/GoogleMapsCompatible_Level9/5/11/7.png",
+        "status": 200,
+        "is_png": true,
+        "bytes": 52134
+      }
+    },
+    "karnataka": {
+      "region_meta": {
+        "name": "Karnataka, India",
+        "description": "Semi-arid rain-fed millet (ragi), sorghum & pulse systems under monsoonal uncertainty",
+        "lat": 15.45,
+        "lon": 75.0,
+        "location_notes": "Dharwad / Northern Transition Zone (UAS Dharwad agro-ecological benchmark)",
+        "provisional": true
+      },
+      "power": {
+        "status": 200,
+        "decision": "WORKS",
+        "sample_t2m": 21.24,
+        "sample_rain": 0.0,
+        "sample_soilWet": 0.62,
+        "sample_evland": 2.65,
+        "sample_solar": 16.71
+      },
+      "elevation": {
+        "status": 200,
+        "elevation_m": 739.0,
+        "dataset": "srtm30m",
+        "slope_derivation_feasible": true
+      },
+      "gibs": {
+        "layer": "MODIS_Terra_L3_NDVI_16Day",
+        "tile_url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_NDVI_16Day/default/2026-10-16/GoogleMapsCompatible_Level9/5/14/22.png",
+        "status": 200,
+        "is_png": true,
+        "bytes": 26056
+      }
+    },
+    "kenya": {
+      "region_meta": {
+        "name": "Sahel / Kenya (Machakos Site)",
+        "description": "Dryland drought-tolerant sorghum, pearl millet, cowpea & terraced soil moisture conservation",
+        "lat": -1.52,
+        "lon": 37.26,
+        "location_notes": "Machakos County, eastern Kenya (semi-arid smallholder agro-ecosystem benchmark)",
+        "provisional": true
+      },
+      "power": {
+        "status": 200,
+        "decision": "WORKS",
+        "sample_t2m": 22.61,
+        "sample_rain": 0.08,
+        "sample_soilWet": 0.52,
+        "sample_evland": 2.29,
+        "sample_solar": 23.76
+      },
+      "elevation": {
+        "status": 200,
+        "elevation_m": 1611.0,
+        "dataset": "srtm30m",
+        "slope_derivation_feasible": true
+      },
+      "gibs": {
+        "layer": "MODIS_Terra_L3_NDVI_16Day",
+        "tile_url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_L3_NDVI_16Day/default/2026-10-16/GoogleMapsCompatible_Level9/5/16/19.png",
+        "status": 200,
+        "is_png": true,
+        "bytes": 32991
+      }
+    }
+  },
+  "summary_table": [
+    {
+      "source": "NASA POWER",
+      "http_status": 200,
+      "actual_result": "Returned all 8 requested parameters for 7 days (mean T2M 6.5\u00b0C, fill_value -999.0, 0 nulls)",
+      "status": "WORKS",
+      "decision": "Use POWER Daily Point API (AG community) as weather backbone. Precompute/aggregate to weekly contract."
+    },
+    {
+      "source": "NASA GIBS",
+      "http_status": 200,
+      "actual_result": "Capabilities XML verified (1330 layers). Exact NDVI/LST/SMAP layers identified; sample tiles returned valid PNG images (53-54 KB).",
+      "status": "WORKS",
+      "decision": "Use GIBS WMTS (EPSG:3857) for visual satellite maps. Target MODIS_Terra_L3_NDVI_16Day and MODIS_Terra_Land_Surface_Temp_Day."
+    },
+    {
+      "source": "SoilGrids",
+      "http_status": "None (root) / Timeout (query)",
+      "actual_result": "REST API root returns active development beta disclaimer; property query timed out with 0 bytes received (no SLA/uptime guarantee).",
+      "status": "USE FALLBACK",
+      "decision": "Do not depend on SoilGrids REST at runtime. Precompute labelled regional soil textures from published soil series or omit soil properties."
+    },
+    {
+      "source": "Open Topo Data",
+      "http_status": 200,
+      "actual_result": "SRTM 30m returned 247.0 m for Punjab baseline; 5-point local neighborhood query confirmed slope derivation feasibility.",
+      "status": "WORKS",
+      "decision": "Use Open Topo Data SRTM 30m to precompute elevation and baseline slope for the 4 regional points; do not call dynamically in browser."
+    }
+  ]
+}
