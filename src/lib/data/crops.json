@@ -1,0 +1,242 @@
+[
+  {
+    "id": "wheat",
+    "name": "Wheat",
+    "waterUse": 550,
+    "nitrogenFixation": false,
+    "rootingDepth": 120,
+    "coverValue": 0.65,
+    "season": [
+      "rabi",
+      "winter"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Irrigation and Drainage Paper 56 (crop coefficients and rooting depth guidance)",
+      "FAO Crop Water Needs, Table 14 (450–650 mm; midpoint used)"
+    ],
+    "notes": "Indicative seasonal water need midpoint; cultivar, climate and duration change actual demand."
+  },
+  {
+    "id": "rice",
+    "name": "Rice (paddy)",
+    "waterUse": 575,
+    "nitrogenFixation": false,
+    "rootingDepth": 60,
+    "coverValue": 0.85,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14 (450–700 mm; midpoint used)",
+      "FAO Irrigation and Drainage Paper 56"
+    ],
+    "notes": "Indicative crop water need excludes conveyance losses and does not represent total irrigation withdrawal."
+  },
+  {
+    "id": "maize",
+    "name": "Maize",
+    "waterUse": 650,
+    "nitrogenFixation": false,
+    "rootingDepth": 100,
+    "coverValue": 0.75,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14 (500–800 mm; midpoint used)",
+      "FAO Irrigation and Drainage Paper 56"
+    ],
+    "notes": "Grain maize indicative midpoint."
+  },
+  {
+    "id": "soybean",
+    "name": "Soybean",
+    "waterUse": 575,
+    "nitrogenFixation": true,
+    "rootingDepth": 100,
+    "coverValue": 0.75,
+    "season": [
+      "summer",
+      "kharif"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14 (450–700 mm; midpoint used)",
+      "FAO Irrigation and Drainage Paper 56"
+    ],
+    "notes": "N fixation depends on effective rhizobium inoculation and soil conditions."
+  },
+  {
+    "id": "millet",
+    "name": "Pearl millet",
+    "waterUse": 550,
+    "nitrogenFixation": false,
+    "rootingDepth": 150,
+    "coverValue": 0.6,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14: sorghum/millet 450–650 mm (midpoint used)",
+      "ICRISAT crop production guidance"
+    ],
+    "notes": "Drought-adapted cereal; species and cultivar differ."
+  },
+  {
+    "id": "sorghum",
+    "name": "Sorghum",
+    "waterUse": 550,
+    "nitrogenFixation": false,
+    "rootingDepth": 150,
+    "coverValue": 0.65,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14: sorghum/millet 450–650 mm (midpoint used)",
+      "FAO Irrigation and Drainage Paper 56"
+    ],
+    "notes": "Indicative seasonal demand; drought response depends on crop stage."
+  },
+  {
+    "id": "groundnut",
+    "name": "Groundnut",
+    "waterUse": 600,
+    "nitrogenFixation": true,
+    "rootingDepth": 100,
+    "coverValue": 0.55,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14: peanut 500–700 mm (midpoint used)",
+      "ICRISAT groundnut production guidance"
+    ],
+    "notes": "N fixation is conditional on compatible rhizobia and adequate phosphorus."
+  },
+  {
+    "id": "dry-bean",
+    "name": "Dry bean",
+    "waterUse": 400,
+    "nitrogenFixation": true,
+    "rootingDepth": 90,
+    "coverValue": 0.55,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14: bean 300–500 mm (midpoint used)",
+      "FAO Irrigation and Drainage Paper 56"
+    ],
+    "notes": "Broad dry-bean proxy; species-specific traits vary."
+  },
+  {
+    "id": "lentil",
+    "name": "Lentil",
+    "waterUse": 450,
+    "nitrogenFixation": true,
+    "rootingDepth": 90,
+    "coverValue": 0.5,
+    "season": [
+      "rabi",
+      "winter"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14: lentil/pulses guidance (450–650 mm; approximate midpoint)",
+      "ICAR/ICRISAT pulse production guidance"
+    ],
+    "notes": "Pulse category value is approximate; local extension guidance should replace it for field use."
+  },
+  {
+    "id": "chickpea",
+    "name": "Chickpea",
+    "waterUse": 450,
+    "nitrogenFixation": true,
+    "rootingDepth": 100,
+    "coverValue": 0.55,
+    "season": [
+      "rabi",
+      "winter"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14: lentil/pulses indicative range (proxy)",
+      "ICRISAT chickpea production guidance"
+    ],
+    "notes": "Uses FAO pulse proxy; validate cultivar- and region-specific water need."
+  },
+  {
+    "id": "pigeonpea",
+    "name": "Pigeonpea",
+    "waterUse": 650,
+    "nitrogenFixation": true,
+    "rootingDepth": 150,
+    "coverValue": 0.7,
+    "season": [
+      "kharif",
+      "year_round"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "ICRISAT pigeonpea production guidance",
+      "FAO Irrigation and Drainage Paper 56 (rooting-depth framework)"
+    ],
+    "notes": "Water-use value is a provisional model input, not a cited universal crop coefficient."
+  },
+  {
+    "id": "cotton",
+    "name": "Cotton",
+    "waterUse": 1000,
+    "nitrogenFixation": false,
+    "rootingDepth": 150,
+    "coverValue": 0.7,
+    "season": [
+      "kharif",
+      "summer"
+    ],
+    "waterUseUnit": "mm_per_growing_season",
+    "rootingDepthUnit": "cm",
+    "coverValueScale": "0_to_1",
+    "sources": [
+      "FAO Crop Water Needs, Table 14 (700–1300 mm; midpoint used)",
+      "FAO Irrigation and Drainage Paper 56"
+    ],
+    "notes": "Indicative seasonal midpoint; long-season cotton can require substantially more."
+  }
+]
