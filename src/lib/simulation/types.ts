@@ -1,6 +1,7 @@
 import type { CropTraits } from '../../../contracts/crops.js';
 import type { WeeklyWeatherRecord } from '../../../contracts/weather.js';
 import type { StrategyId, MeterValues, SimulationYear, PercentileBand, SimulationOutput } from '../../../contracts/sim-output.js';
+import type { RegionalCalendar, SupportedRegionId } from './regional-calendars.js';
 
 /**
  * Discretized daily weather record.
@@ -19,6 +20,22 @@ export interface DailyWeatherStep {
   soilWet: number | null;
   evap: number | null;
   solar: number | null;
+}
+
+/**
+ * Quantified observation coverage for weather data.
+ */
+export interface ObservationCoverage {
+  totalWeeks: number;
+  totalDays: number;
+  validRainfallDays: number;
+  missingRainfallDays: number;
+  rainfallCoveragePercent: number;
+  validEvaporationDays: number;
+  missingEvaporationDays: number;
+  evaporationCoveragePercent: number;
+  isRainfallComplete: boolean;
+  isEvaporationComplete: boolean;
 }
 
 /**
@@ -79,6 +96,8 @@ export interface SoilState {
   erosionRisk: number;      // Current erosion risk proxy (0 to 1)
   cumulativeWaterUse: number; // Total cumulative crop water use (mm)
   relativeIncome: number;   // Relative income indicator (100 = baseline)
+  isRainMissing?: boolean;  // Flag if today's rainfall input was an unobserved gap
+  isEvapMissing?: boolean;  // Flag if today's evaporation input was an unobserved gap
 }
 
 /**
@@ -103,12 +122,37 @@ export interface CropRotationPlan {
   strategyId: StrategyId;
   name: string;
   description: string;
-  // Sequence of crop IDs across seasonal windows (kharif, rabi, zaid / fallow)
+  managementRegime: 'conventional' | 'conservation' | 'intensive_commercial';
   rotationBySeason: {
     season: 'kharif' | 'rabi' | 'zaid';
     cropId: string;
-    targetYieldIndex: number; // Economic potential relative to baseline
+    targetYieldIndex: number; // Baseline yield expectation under optimal moisture
   }[];
+}
+
+/**
+ * Modeled economic assumptions for calculating net income.
+ * Crop pricing and input costs are not present in the frozen crop contract.
+ */
+export interface StrategyEconomics {
+  grossRevenuePotential: number; // Modeled revenue index before stress
+  baseProductionCost: number;     // Fixed seed, labor, equipment costs
+  irrigationCostPerMm: number;    // Pumping energy/water cost per mm applied
+  fertilizerCostPerKgN: number;   // Cost of synthetic nitrogen fertilizer ($/kg N)
+  stressVulnerability: number;    // Downside revenue loss factor under moisture stress
+}
+
+/**
+ * Run options passed into runSimulation.
+ */
+export interface SimulationRunOptions {
+  region?: SupportedRegionId | string;
+  regionalCalendar?: RegionalCalendar;
+  validateRegion?: boolean;
+  config?: Partial<SimulationConfig>;
+  initialSoil?: Partial<SoilState>;
+  cropCatalog?: CropTraits[];
+  recordHistory?: boolean;
 }
 
 /**
@@ -118,13 +162,15 @@ export interface CropRotationPlan {
 export interface InternalSimulationResult {
   strategy: StrategyId;
   strategyName: string;
+  region: string;
   years: SimulationYear[];
   finalMeters: MeterValues;
   meterDistributions: Record<keyof MeterValues, PercentileBand>;
   overallScore: PercentileBand;
+  coverage: ObservationCoverage;
   explanation: string;
   limitations: string[];
   stepHistory?: StepResult[];
 }
 
-export type { CropTraits, WeeklyWeatherRecord, StrategyId, MeterValues, SimulationYear, PercentileBand, SimulationOutput };
+export type { CropTraits, WeeklyWeatherRecord, StrategyId, MeterValues, SimulationYear, PercentileBand, SimulationOutput, SupportedRegionId, RegionalCalendar };

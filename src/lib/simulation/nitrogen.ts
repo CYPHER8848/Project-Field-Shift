@@ -43,12 +43,12 @@ export function stepDailyNitrogen(
   const somScaling = Math.max(0.2, currentSOM / 1.8);
   const mineralizationGainKg = (baseMineralizationPerYearKg * somScaling) / 365;
 
-  // 3. Crop uptake demand
+  // 3. Crop uptake demand from soil mineral pool
   let cropUptakeKg = 0;
   if (crop) {
-    // Non-legume cereals have high external N demand (~100 kg/ha/season)
-    // Legumes supply a major portion of their own N via fixation (~35 kg/ha external uptake)
-    const seasonalDemandKg = crop.nitrogenFixation ? 35 : 95;
+    // Non-legume cereals draw heavily on soil mineral N (~95 kg/ha/season)
+    // Legumes obtain majority of N from atmosphere via BNF, drawing minimally (~15 kg/ha) on soil pool
+    const seasonalDemandKg = crop.nitrogenFixation ? 15 : 95;
     const dailyBaseUptake = seasonalDemandKg / 110;
     cropUptakeKg = dailyBaseUptake * Math.max(0.2, waterStressFactor);
     // Uptake cannot exceed available soil nitrogen

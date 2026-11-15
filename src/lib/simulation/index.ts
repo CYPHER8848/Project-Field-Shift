@@ -1,4 +1,5 @@
 export * from './types.js';
+export * from './regional-calendars.js';
 export * from './weather-discretizer.js';
 export * from './water-balance.js';
 export * from './nitrogen.js';
