@@ -769,6 +769,29 @@
     color: #FFF;
   }
 
+  @media (max-width: 640px) {
+    .arcade-header-bar {
+      gap: 8px;
+      padding: 8px 10px;
+    }
+    .arcade-corn-glyphs {
+      display: none;
+    }
+    .arcade-header-title {
+      flex: 1;
+      font-size: 0.62rem;
+      line-height: 1.6;
+    }
+    .arcade-right-actions {
+      gap: 0;
+    }
+    .retro-skip-btn {
+      font-size: 0.55rem;
+      padding: 5px 8px;
+      white-space: nowrap;
+    }
+  }
+
   /* Panoramic Canvas Viewport */
   .panoramic-canvas-stage {
     position: relative;

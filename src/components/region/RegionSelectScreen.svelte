@@ -107,8 +107,10 @@
 
   .region-top {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap: 4px 8px;
   }
 
   .region-badge {

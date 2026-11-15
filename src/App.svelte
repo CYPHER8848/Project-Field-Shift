@@ -189,16 +189,20 @@
         onOpenOverworld={() => setView('SEASON_PLAY')}
       />
     {:else if currentView === 'INTRO'}
-      <IntroScreen 
-        onStartGame={() => setView('REGION_SELECT')} 
-        onViewStyleguide={() => setView('STYLEGUIDE')}
-        onViewNasaDocs={() => setView('NASA_DATA')}
-      />
+      <div class="paper-view">
+        <IntroScreen 
+          onStartGame={() => setView('REGION_SELECT')} 
+          onViewStyleguide={() => setView('STYLEGUIDE')}
+          onViewNasaDocs={() => setView('NASA_DATA')}
+        />
+      </div>
     {:else if currentView === 'REGION_SELECT'}
-      <RegionSelectScreen 
-        onSelectRegion={handleSelectRegion}
-        onBack={() => setView('STORY_GAME')}
-      />
+      <div class="paper-view">
+        <RegionSelectScreen 
+          onSelectRegion={handleSelectRegion}
+          onBack={() => setView('STORY_GAME')}
+        />
+      </div>
     {:else if currentView === 'SEASON_PLAY'}
       <div class="mode-switch-bar">
         <span class="mode-label font-data">Display Mode:</span>
@@ -230,31 +234,39 @@
           onAdvanceSeason={advanceSeason}
         />
       {:else}
-        <FarmPlayScreen 
-          currentRegion={selectedRegion}
-          {currentEra}
-          {meters}
-          {currentSeasonName}
-          {weatherCondition}
-          onOpenCompare={() => setView('STRATEGY_COMPARE')}
-          onChangeRegion={() => setView('REGION_SELECT')}
-          onViewNasaDocs={() => setView('NASA_DATA')}
-          onAdvanceSeason={advanceSeason}
-          onTriggerEvent={handleTriggerEvent}
-        />
+        <div class="paper-view">
+          <FarmPlayScreen 
+            currentRegion={selectedRegion}
+            {currentEra}
+            {meters}
+            {currentSeasonName}
+            {weatherCondition}
+            onOpenCompare={() => setView('STRATEGY_COMPARE')}
+            onChangeRegion={() => setView('REGION_SELECT')}
+            onViewNasaDocs={() => setView('NASA_DATA')}
+            onAdvanceSeason={advanceSeason}
+            onTriggerEvent={handleTriggerEvent}
+          />
+        </div>
       {/if}
     {:else if currentView === 'STRATEGY_COMPARE'}
-      <CompareScreen 
-        regionId={selectedRegion.id}
-        onSelectStrategy={handleSelectStrategy}
-        onBack={() => setView('SEASON_PLAY')}
-      />
+      <div class="paper-view">
+        <CompareScreen 
+          regionId={selectedRegion.id}
+          onSelectStrategy={handleSelectStrategy}
+          onBack={() => setView('SEASON_PLAY')}
+        />
+      </div>
     {:else if currentView === 'JOURNAL'}
       <JournalView />
     {:else if currentView === 'NASA_DATA'}
-      <NasaDataView onBack={() => setView('SEASON_PLAY')} />
+      <div class="paper-view">
+        <NasaDataView onBack={() => setView('SEASON_PLAY')} />
+      </div>
     {:else if currentView === 'STYLEGUIDE'}
-      <StyleguideView onBack={() => setView('SEASON_PLAY')} />
+      <div class="paper-view">
+        <StyleguideView onBack={() => setView('SEASON_PLAY')} />
+      </div>
     {/if}
   </main>
 </div>
@@ -408,6 +420,13 @@
     }
   }
 
+  /* Vintage almanac pages keep their paper backdrop inside the retro shell. */
+  .paper-view {
+    background-color: var(--paper);
+    color: var(--ink);
+    min-height: calc(100vh - 90px);
+  }
+
   .mode-switch-bar {
     display: flex;
     align-items: center;
@@ -437,6 +456,28 @@
     color: #000000;
     border-color: #000000;
     font-weight: bold;
+  }
+
+  @media (max-width: 640px) {
+    .mode-switch-bar {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 8px 10px;
+    }
+    .mode-switch-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .mode-label {
+      display: none;
+    }
+    .mode-btn {
+      flex: 0 0 auto;
+      font-size: 0.55rem;
+      padding: 4px 8px;
+    }
   }
 
   .app-main {
