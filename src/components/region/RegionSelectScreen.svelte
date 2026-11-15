@@ -33,7 +33,7 @@
       title: 'Karnataka',
       matriarch: 'Ajji Gowri',
       summary: 'Deccan plateau · Semi-arid ragi millets and dryland stewardship.',
-      isAvailable: false,
+      isAvailable: true,
       regionData: REGIONS.karnataka
     }
   ];
@@ -73,7 +73,7 @@
                 class="select-btn font-display" 
                 onclick={() => onSelectRegion(item.regionData)}
               >
-                Select Punjab →
+                Select {item.title} →
               </button>
             {:else}
               <button type="button" class="disabled-btn font-data" disabled>

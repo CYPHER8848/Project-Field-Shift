@@ -1,16 +1,46 @@
 <script lang="ts">
   import type { FarmMeters, EraInfo, RegionInfo } from '../../types/game';
+  import type { TimeOfDay, EquippedTool } from './types';
 
   interface Props {
     meters: FarmMeters;
     era: EraInfo;
     region: RegionInfo;
     seasonName: string;
+    timeOfDay?: TimeOfDay;
+    equippedTool?: EquippedTool;
+    onToggleTimeOfDay?: () => void;
+    onCycleTool?: () => void;
     onOpenMenu: () => void;
     onOpenCompare: () => void;
   }
 
-  let { meters, era, region, seasonName, onOpenMenu, onOpenCompare }: Props = $props();
+  let { 
+    meters, 
+    era, 
+    region, 
+    seasonName, 
+    timeOfDay = 'noon',
+    equippedTool = 'seeds',
+    onToggleTimeOfDay,
+    onCycleTool,
+    onOpenMenu, 
+    onOpenCompare 
+  }: Props = $props();
+
+  const toolLabels: Record<EquippedTool, string> = {
+    seeds: 'Cover Seeds',
+    water: 'AWD Water',
+    probe: 'SMAP Probe',
+    almanac: 'Almanac'
+  };
+
+  const todLabels: Record<TimeOfDay, string> = {
+    dawn: 'Dawn',
+    noon: 'Noon',
+    sunset: 'Sunset',
+    night: 'Night'
+  };
 </script>
 
 <div class="gba-hud-strip">
@@ -23,6 +53,17 @@
     <div class="hud-badge season-badge font-data">
       <span>{seasonName}</span>
     </div>
+
+    {#if onToggleTimeOfDay}
+      <button 
+        type="button" 
+        class="hud-badge tod-badge font-data" 
+        onclick={onToggleTimeOfDay}
+        title="Click to toggle lighting (Dawn / Noon / Sunset / Night)"
+      >
+        <span>{todLabels[timeOfDay]}</span>
+      </button>
+    {/if}
   </div>
 
   <div class="hud-center-meters">
@@ -48,13 +89,25 @@
       <span class="mini-val font-data">{meters.organicMatter}%</span>
     </div>
 
-    <!-- Mini Coins -->
-    <div class="mini-meter coins" title="Farm Income Vault: {meters.income} Coins">
+    <!-- Mini Nitrogen -->
+    <div class="mini-meter" title="Soil Nitrogen: {meters.nitrogen} kg/ha">
       <svg class="mini-svg" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" fill="var(--journal-gold, #E5A93C)" stroke="var(--journal-ink, #1B2B1F)" stroke-width="2" />
+        <circle cx="12" cy="12" r="8" fill="var(--journal-rust, #C86D51)" />
       </svg>
-      <span class="mini-val font-data">{meters.income}</span>
+      <span class="mini-val font-data">N:{meters.nitrogen}</span>
     </div>
+
+    <!-- Active Tool Indicator Pill -->
+    {#if onCycleTool}
+      <button 
+        type="button" 
+        class="mini-meter tool-pill" 
+        onclick={onCycleTool} 
+        title="Click to cycle active tool [Q]"
+      >
+        <span class="tool-tag font-data">TOOL: {toolLabels[equippedTool]}</span>
+      </button>
+    {/if}
   </div>
 
   <div class="hud-right">
@@ -110,6 +163,34 @@
     background-color: color-mix(in srgb, var(--monsoon) 18%, var(--paper));
     color: var(--ink);
     font-weight: bold;
+  }
+
+  .tod-badge {
+    background-color: color-mix(in srgb, var(--turmeric) 25%, var(--paper));
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform var(--fast);
+  }
+
+  .tod-badge:hover {
+    transform: translateY(-1px);
+  }
+
+  .tool-pill {
+    background-color: color-mix(in srgb, var(--forest) 18%, var(--paper));
+    cursor: pointer;
+    border: 1.5px solid var(--forest);
+    transition: transform var(--fast);
+  }
+
+  .tool-pill:hover {
+    transform: translateY(-1px);
+  }
+
+  .tool-tag {
+    font-size: 0.72rem;
+    font-weight: bold;
+    color: var(--forest);
   }
 
   .hud-center-meters {

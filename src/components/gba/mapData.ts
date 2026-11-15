@@ -128,6 +128,30 @@ export const INTERACTIVE_ENTITIES: InteractiveEntity[] = [
     height: 60,
     interactionRadius: 70,
     dialogueId: 'seed_shed_inspect'
+  },
+  {
+    id: 'sacred_bullock',
+    type: 'farmhouse',
+    name: 'Ganga the Farm Bullock',
+    promptText: 'Greet Bullock & Check Compost',
+    x: 270,
+    y: 110,
+    width: 45,
+    height: 35,
+    interactionRadius: 65,
+    dialogueId: 'bullock_inspect'
+  },
+  {
+    id: 'canal_sluice',
+    type: 'water_channel',
+    name: 'Canal Sluice Regulator',
+    promptText: 'Check AWD Sluice Gate',
+    x: 480,
+    y: 470,
+    width: 40,
+    height: 30,
+    interactionRadius: 65,
+    dialogueId: 'sluice_inspect'
   }
 ];
 
@@ -190,6 +214,7 @@ export const DIALOGUE_NODES: Record<string, DialogueNode> = {
       "Current Tubewell Head Pressure: Marginal (42% capacity). Excessive rice flooding risks pump burnout during dry spells."
     ],
     choices: [
+      { text: "Calibrate Valve & AWD Flow Rate", action: 'calibrate_pump' },
       { text: "Review NASA Groundwater Citations", action: 'open_nasa' },
       { text: "Compare Water-Smart Rotations", action: 'open_compare' },
       { text: "Step away from pump.", action: 'close' }
@@ -290,6 +315,38 @@ export const DIALOGUE_NODES: Record<string, DialogueNode> = {
     choices: [
       { text: "Review 3-Strategy Rotation Plans", action: 'open_compare' },
       { text: "Close seed chest.", action: 'close' }
+    ]
+  },
+  bullock_inspect: {
+    id: 'bullock_inspect',
+    speaker: 'Ganga (Farm Bullock)',
+    speakerTitle: 'Desi Sahiwal Companion',
+    portrait: 'amma_wise',
+    text: [
+      "*Ganga turns her head calmly, chewing cud beside the neem bedding.*",
+      "Her composted manure bed provides 4 tonnes of organic matter per season, rich in native mycorrhizae that synthetic fertilizers kill off.",
+      "Amma always says: 'A tractor drinks diesel you cannot sow, but a bullock feeds the soil that feeds your children.'"
+    ],
+    choices: [
+      { text: "Collect Compost & Feed Soil (Boost SOM)", action: 'boost_som' },
+      { text: "Open 3-Rotation Compare Matrix", action: 'open_compare' },
+      { text: "Gently pat Ganga.", action: 'close' }
+    ]
+  },
+  sluice_inspect: {
+    id: 'sluice_inspect',
+    speaker: 'Canal Sluice Gate',
+    speakerTitle: 'PAU Intermittent AWD System',
+    portrait: 'satellite',
+    nasaChip: 'POWER_RAIN',
+    text: [
+      "[ ALTERNATE WETTING & DRYING (AWD) SLUICE ]",
+      "Field Perforated Tube Depth: 5 cm below soil surface.",
+      "Allowing standing water to naturally subside aerates rhizosphere root tips, reduces methane volatilization by 38%, and conserves canal reserves."
+    ],
+    choices: [
+      { text: "Open 3-Rotation Compare Matrix", action: 'open_compare' },
+      { text: "Keep sluice gate calibrated.", action: 'close' }
     ]
   }
 };
