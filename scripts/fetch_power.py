@@ -117,15 +117,20 @@ def main():
             # Contract units: weekly precipitation sum; daily-mean wetness/ET/solar;
             # extrema across the days available in the ISO week.
             evap_raw = mean(values["evap"])
-            evap_unit = payload.get("parameters", {}).get("EVLAND", {}).get("units", "")
-            # POWER EVLAND daily hydrology values are energy flux (MJ/m²/day).
-            # Convert latent-energy equivalent to mm/day; if metadata differs, fail
-            # rather than silently publish a wrong unit.
+            evap_unit = str(
+                payload.get("parameters", {}).get("EVLAND", {}).get("units", "")
+            ).strip()
+
             if evap_raw is not None:
-                if "MJ" in str(evap_unit):
+                if "mm" in evap_unit.lower() and "day" in evap_unit.lower():
+                    evap_value = evap_raw
+                elif "mj" in evap_unit.lower():
                     evap_value = evap_raw / LATENT_HEAT_MJ_PER_KG
                 else:
-                    raise ValueError(f"Unexpected EVLAND unit {evap_unit!r}; review conversion before publishing.")
+                    raise ValueError(
+                        f"Unexpected EVLAND unit {evap_unit!r}; "
+                        "review conversion before publishing."
+                    )
             else:
                 evap_value = None
             records.append({

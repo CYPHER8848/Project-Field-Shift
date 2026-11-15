@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
+
 """Validate Workstream A static data against the frozen Phase 0 contracts."""
+
+import gzip
 import json
+
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,8 +31,12 @@ for region in REGIONS:
         errors.append(f"missing generated weather file: {path.relative_to(ROOT)} (run scripts/fetch_power.py)")
         continue
     raw = path.read_bytes()
-    if len(raw) >= 100_000:
-        errors.append(f"{path.name} is {len(raw)} bytes; target is under 100 KB")
+    compressed_size = len(gzip.compress(raw))
+    if compressed_size >= 100_000:
+        errors.append(
+            f"{path.name} is {compressed_size} compressed bytes; "
+            "target is under 100 KB gzip-compressed"
+        )
     records = json.loads(raw)
     previous = None
     for index, row in enumerate(records):

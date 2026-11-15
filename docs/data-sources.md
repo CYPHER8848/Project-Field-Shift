@@ -13,9 +13,9 @@ The static regional weather files are precomputed from the NASA POWER **daily po
 | `evap` | `EVLAND` | mean daily latent-energy equivalent converted to water depth | mm/day |
 | `solar` | `ALLSKY_SFC_SW_DWN` | mean daily shortwave radiation | MJ/m²/day |
 
-EVLAND is a latent-energy flux in the daily hydrology product. The prep script converts MJ/m²/day to an equivalent mm/day using 2.45 MJ/kg. This is an energy-equivalent evaporation proxy, not a direct field measurement. If POWER response metadata reports a different EVLAND unit, the script stops rather than publishing a silent unit error.
+EVLAND is a latent-energy flux in the daily hydrology product. The prep script checks the response metadata before publishing values. If POWER reports mm/day, the value is used directly. If POWER reports MJ/m²/day, the script converts it to an equivalent mm/day using 2.45 MJ/kg. Any unrecognized unit causes the script to stop rather than publish a silent unit error. This is an energy-equivalent evaporation proxy, not a direct field measurement.
 
-The date range is 1981-01-01 through 2025-12-31 (45 calendar years). Records are grouped by ISO year and ISO week. A missing POWER value (`-999`) becomes `null`; it is never interpolated or replaced with synthetic values. In a week with partial observations, aggregation uses available daily values. Consumers should preserve nulls and should not treat them as zero.
+The date range is 1981-01-01 through 2025-12-31 (45 calendar years). Records are grouped by ISO year and ISO week. A missing POWER value (`-999`) becomes `null`; it is never interpolated or replaced with synthetic values. In a week with partial observations, aggregation uses available daily values. Consumers should preserve nulls and should not treat them as zero.The final three calendar days (29–31 December 2025) belong to ISO year 2026, week 1. Therefore, the final record is labelled 2026-W01 and contains only those three days. This preserves the complete requested calendar date range.
 
 ### API and parameter references
 
