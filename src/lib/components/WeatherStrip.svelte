@@ -47,7 +47,7 @@
     <span><i class="swatch" style:background="#5b7fa6"></i>Rain (mm/week)</span>
     <span><i class="swatch" style:background="#b65d3d"></i>Temperature range (°C)</span>
     <span><i class="swatch" style:background="#486c42"></i>Soil wetness (fraction)</span>
-    <span class="legend-note">{records.length} weeks loaded · {source} · missing observations are left as gaps, never interpolated</span>
+    <span class="legend-note">{records.length} weeks · {source} · gaps not interpolated</span>
   </figcaption>
 </figure>
 

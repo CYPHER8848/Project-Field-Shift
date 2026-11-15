@@ -109,14 +109,25 @@
   <!-- Persistent Retro Arcade Console Top Bar -->
   <header class="app-header">
     <div class="header-inner">
-      <button class="brand-link" onclick={() => setView('STORY_GAME')}>
-        <span class="seed-symbol font-pixel">◆</span>
-        <span class="brand-title font-pixel">FIELD SHIFT</span>
-        <span class="brand-sub font-data">AMMA'S FIELD</span>
-      </button>
+      <div class="header-bar">
+        <button class="brand-link" onclick={() => setView('STORY_GAME')}>
+          <span class="seed-symbol font-pixel">◆</span>
+          <span class="brand-title font-pixel">FIELD SHIFT</span>
+          <span class="brand-sub font-data">AMMA'S FIELD</span>
+        </button>
+
+        <!-- Sound Toggle -->
+        <button
+          class="sound-btn font-data"
+          onclick={() => isMuted = !isMuted}
+          title={isMuted ? "Sound Muted" : "Sound Enabled"}
+        >
+          {isMuted ? "[♪ MUTED]" : "[♪ AUDIO ON]"}
+        </button>
+      </div>
 
       <!-- Navigation Tabs -->
-      <nav class="nav-links">
+      <nav class="nav-links" aria-label="Sections">
         <button 
           class="nav-tab {currentView === 'STORY_GAME' ? 'active' : ''}" 
           onclick={() => setView('STORY_GAME')}
@@ -166,15 +177,6 @@
           [? STYLEGUIDE]
         </button>
       </nav>
-
-      <!-- Sound Toggle -->
-      <button 
-        class="sound-btn font-data" 
-        onclick={() => isMuted = !isMuted}
-        title={isMuted ? "Sound Muted" : "Sound Enabled"}
-      >
-        {isMuted ? "[♪ MUTED]" : "[♪ AUDIO ON]"}
-      </button>
     </div>
   </header>
 
@@ -269,7 +271,7 @@
   .app-header {
     background-color: #080D08;
     border-bottom: 3px solid #00FF66;
-    padding: 8px 16px;
+    padding: 6px 16px 8px;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -280,10 +282,15 @@
     max-width: 1320px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .header-bar {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    flex-wrap: wrap;
   }
 
   .brand-link {
@@ -323,17 +330,25 @@
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
+    gap: 5px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
     font-family: var(--font-pixel);
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: #A0C8AA;
     background-color: #141F14;
     border: 2px solid #2E5A35;
-    padding: 6px 9px;
+    padding: 5px 7px;
     cursor: pointer;
     box-shadow: 0 3px 0 #000;
     transition: transform var(--fast) var(--spring), background-color var(--fast) ease, color var(--fast) ease;
@@ -360,6 +375,7 @@
   }
 
   .sound-btn {
+    flex: 0 0 auto;
     font-family: var(--font-pixel);
     font-size: 0.65rem;
     background-color: #1A281A;
@@ -373,6 +389,23 @@
   .sound-btn:hover {
     background-color: #FFB703;
     color: #000000;
+  }
+
+  @media (max-width: 560px) {
+    .brand-sub {
+      display: none;
+    }
+    .brand-title {
+      font-size: 0.72rem;
+    }
+    .sound-btn {
+      font-size: 0.55rem;
+      padding: 5px 8px;
+    }
+    .nav-tab {
+      font-size: 0.6rem;
+      padding: 5px 7px;
+    }
   }
 
   .mode-switch-bar {

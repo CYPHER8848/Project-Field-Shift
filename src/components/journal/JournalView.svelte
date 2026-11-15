@@ -67,10 +67,6 @@
 
 <div class="journal-wrapper">
   <main class="shell">
-    <header class="topbar">
-      <span class="wordmark">FIELD SHIFT JOURNAL</span>
-      <span class="eyebrow">A farm, across generations</span>
-    </header>
     <nav aria-label="Game scenes" class="scene-nav">
       {#each scenes as scene}
         <button class:current={active === scene.id} onclick={() => active = scene.id}>
@@ -120,20 +116,23 @@
         {:else}
           <p class="muted">Weather dataset unavailable for {region.label}.</p>
         {/if}
-        <h2 class="subhead">The field's crop calendar <span class="muted">(curated catalogue · cited sources in the data file)</span></h2>
-        <ul class="crop-list">
-          {#each crops as c (c.id)}
-            <li>
-              <strong>{c.name}</strong>
-              <span>water use {c.waterUse} mm/season</span>
-              <span>roots {c.rootingDepth} cm</span>
-              <span>{c.nitrogenFixation ? 'fixes nitrogen' : 'no N fixation'}</span>
-              <span>cover {c.coverValue.toFixed(2)}</span>
-              <span class="tag">{c.season.join(' / ')}</span>
-            </li>
-          {/each}
-        </ul>
-        <p class="muted">Illustrative scene only. Environmental indicators will be connected in later phases.</p>
+        <details class="crop-details">
+          <summary>The field's crop calendar <span class="muted">{crops.length} crops · cited sources</span></summary>
+          <ul class="crop-list">
+            {#each crops as c (c.id)}
+              <li>
+                <span class="crop-head">
+                  <strong>{c.name}</strong>
+                  <span class="tag">{c.season.join(' / ')}</span>
+                </span>
+                <span class="crop-facts">
+                  {c.waterUse} mm water · roots {c.rootingDepth} cm · cover {c.coverValue.toFixed(2)}{c.nitrogenFixation ? ' · fixes N' : ''}
+                </span>
+              </li>
+            {/each}
+          </ul>
+        </details>
+        <p class="muted">Illustrative plot. Environmental indicators connect in later phases.</p>
         <button class="primary" onclick={next}>See the possible paths</button>
       </section>
     {:else if active === 'compare'}
@@ -170,7 +169,7 @@
             </article>
           {/each}
         </div>
-        <p class="muted">Bars show the p10–p90 range with the most likely value pinned; scales are shared across strategies for comparison. Strategy results are synthetic placeholders until the simulation and evidence pipeline are implemented, and meter units are provisional.</p>
+        <p class="muted">Bands show p10–p90 with the most likely value pinned; scales shared across strategies. Synthetic placeholders until the simulation pipeline lands; units provisional.</p>
         <button class="primary" onclick={next}>Reflect</button>
       </section>
     {:else}
@@ -189,8 +188,8 @@
   .journal-wrapper {
     background-color: #24372B;
     color: #ECEADE;
-    min-height: calc(100vh - 56px);
-    padding: 24px 16px;
+    min-height: calc(100vh - 130px);
+    padding: 16px;
 
     /* Theme bridge for shared components (MeterBand / WeatherStrip). */
     --meter-track-bg: rgba(236, 234, 222, 0.16);
@@ -209,19 +208,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-  }
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 1px solid #788064;
-    padding-bottom: 12px;
-  }
-  .wordmark {
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: #ECEADE;
+    gap: 16px;
   }
   .eyebrow {
     font-size: 0.75rem;
@@ -231,14 +218,21 @@
   }
   .scene-nav {
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .scene-nav::-webkit-scrollbar {
+    display: none;
   }
   .scene-nav button {
+    flex: 0 0 auto;
+    white-space: nowrap;
     background: transparent;
     border: 1px solid #788064;
     color: #ECEADE;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 999px;
     cursor: pointer;
     font-size: 0.85rem;
@@ -253,10 +247,10 @@
     background-color: rgba(36, 55, 43, 0.85);
     border: 1px solid #788064;
     border-radius: 8px;
-    padding: 32px 24px;
+    padding: 24px 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
   h1 {
     font-size: 1.8rem;
@@ -297,43 +291,83 @@
   }
   .field-art {
     width: 100%;
-    max-width: 720px;
-    margin: 18px 0;
+    max-width: 640px;
+    margin: 10px 0;
     border-radius: 8px;
     overflow: hidden;
   }
   .field-art svg {
     display: block;
     width: 100%;
-    max-height: 200px;
+    max-height: 180px;
     border-radius: 6px;
   }
-  .subhead {
-    font-size: 1.1rem;
-    margin-top: 12px;
+  .crop-details {
+    border: 1px solid #788064;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.15);
+  }
+  .crop-details summary {
+    cursor: pointer;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ECEADE;
+    list-style: none;
+  }
+  .crop-details summary::-webkit-details-marker {
+    display: none;
+  }
+  .crop-details summary::before {
+    content: '▸';
+    display: inline-block;
+    width: 1.1em;
+    color: #B3C7A4;
+  }
+  .crop-details[open] summary::before {
+    content: '▾';
+  }
+  .crop-details summary .muted {
+    margin-left: 6px;
+    font-weight: 400;
   }
   .crop-list {
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 6px;
+    padding: 0 14px 14px;
   }
   .crop-list li {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
+    flex-direction: column;
+    gap: 2px;
     background: rgba(0, 0, 0, 0.2);
-    padding: 8px 14px;
+    padding: 8px 12px;
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    color: #B3C7A4;
+  }
+  .crop-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .crop-head strong {
+    color: #ECEADE;
+    font-size: 0.9rem;
+  }
+  .crop-facts {
+    font-size: 0.75rem;
   }
   .crop-list .tag {
+    flex: 0 0 auto;
     background-color: #788064;
     color: #ECEADE;
-    padding: 2px 8px;
+    padding: 1px 8px;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 0.68rem;
   }
   .horizon-toggle {
     display: flex;
@@ -379,5 +413,13 @@
     font-size: 0.75rem;
     color: #788064;
     padding: 16px 0;
+  }
+  @media (max-width: 560px) {
+    h1 {
+      font-size: 1.2rem;
+    }
+    .hero, .panel {
+      padding: 20px 16px;
+    }
   }
 </style>
