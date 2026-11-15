@@ -6,7 +6,7 @@ Status reviewed: 15 November 2026.
 - Svelte + Vite + TypeScript scaffold and five-scene navigation skeleton.
 - `npm run check` passed in GitHub Actions.
 - `npm run build` passed in GitHub Actions.
-- GitHub Pages artifact upload and deployment job passed in GitHub Actions.
+- GitHub Pages deploy from Actions passed for the post-merge report commit (run [#43680975445](https://github.com/dangolzenith12-code/Project-Field-Shift/actions/runs/43680975445)).
 - Three first-draft TypeScript contract files and synthetic mock datasets.
 - Visual style guide with palette, Fraunces and DM Sans, and spacing direction.
 - Six story beats and glossary outline.
